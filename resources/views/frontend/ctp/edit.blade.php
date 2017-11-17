@@ -117,6 +117,11 @@
                 <div class="col-md-10">{!! Form::textarea('remark3', '<br>', array('class' => 'form-control', 'id'=> 'summernote3')) !!}</div>
               </div>
 
+              <div class="form-group row ">
+                {!! Form::label('confirmby3', 'Confirm By', ['class' => 'col-md-2']) !!}
+                <div class="col-md-10">{!! Form::text('confirmby3', Auth::user()->first_name.' '.Auth::user()->last_name, array('class' => 'form-control', 'id'=>'summernote')) !!}</div>
+              </div>
+
               <div class="form-group row">
               <button type="submit" class="btn btn-success btn-block" value="Create"> APPROVE </button>
             </div>

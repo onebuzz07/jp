@@ -11,7 +11,7 @@
             <div class="col-lg-12">
               {!! Form::model($sales, array('route' => array('frontend.slsmark.storeform', $sales->id), 'method' => 'POST', 'files'=>true)) !!}
 
-              {!! Form::hidden('paf_number', $product->paf_number , array('class' => 'form-control')) !!}
+              {!! Form::hidden('paf_number', $product->paf_number) !!}
 
               <div class="form-group row ">
                 {!! Form::label('remarkbig', 'Remarks ', array('class' => 'col-md-2')) !!}

@@ -123,11 +123,11 @@
               //Being injected from FrontendController
               // console.log(test);
               </script>
-              <div>
+              {{-- <div>
                   <label> Remaining stock:
                     {!!$stock!!}
                   </label>
-              </div>
+              </div> --}}
           </div>
 
             {{-- <form name="stock" id="stock" method="POST" action ="{!! route('frontend.slsmark.storestock', $sales->id) !!}"> --}}
@@ -152,10 +152,10 @@
                   <tr id="Add">
                     {{-- <td></td> --}}
                     <td>{!! Form::text('idNum', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('POQuantity', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('stock_taken', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('adj', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('balance', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
+                    <td>{!! Form::number('POQuantity', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
+                    <td>{!! Form::number('stock_taken', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
+                    <td>{!! Form::number('adj', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
+                    <td>{!! Form::number('balance',$stock, array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::text('receiveDate', \Carbon\Carbon::now()->format('d/m/Y'), array('id'=>'datepicker', 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::text('remarkStock', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                   </tr>

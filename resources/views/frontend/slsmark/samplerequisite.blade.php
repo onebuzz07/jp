@@ -77,7 +77,7 @@
 
             <div class="form-group row">
               {!! Form::label('remarksSRO', 'Remarks', ['class' => 'col-md-2']) !!}
-              <div class="col-md-10">{!! Form::textarea('remarksSRO', '', array('class' => 'form-control', 'id'=>'1')) !!}</div>
+              <div class="col-md-10">{!! Form::textarea('remarksSRO', '<br>', array('class' => 'form-control', 'id'=>'1')) !!}</div>
             </div>
 
             <div class="form-group row">

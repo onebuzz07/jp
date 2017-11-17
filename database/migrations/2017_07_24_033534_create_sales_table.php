@@ -18,7 +18,8 @@ class CreateSalesTable extends Migration
             $table->integer("items_id")->nullable();
             $table->string('sco_number')->nullable();
             $table->string('salesline')->nullable();
-            //$table->unique('salesline');
+            $table->string('salesorder')->nullable();
+            $table->string('line')->nullable();
             $table->date('datetime')->nullable();
             $table->string('custName')->nullable();
             $table->string('purchaseOrder')->nullable();

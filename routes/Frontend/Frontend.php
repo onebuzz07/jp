@@ -86,6 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('sotable', 'SalesController@sotable')->name('slsmark.sotable');
         Route::get('wotable', 'SalesController@wotable')->name('slsmark.wotable');
         Route::get('wosotable', 'SalesController@wosotable')->name('slsmark.wosotable');
+        Route::get('destroyreq/{id}', 'SalesController@destroyreq')->name('slsmark.destroyreq');
 
 
     });

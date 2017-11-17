@@ -33,7 +33,7 @@
                 <th>Part Number</th>
                 <th>Part Description</th>
                 <th>Status</th>
-                <th>Repeat?</th>
+                <th>Repeat from</th>
                 <th>Created at </th>
                 <th>Actions</th>
             </tr>

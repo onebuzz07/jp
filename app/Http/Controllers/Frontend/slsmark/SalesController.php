@@ -103,6 +103,8 @@ class SalesController extends Controller
         $sales->datetime = $dt;
         $sales->custName = $request->input('custName');
         $sales->purchaseOrder = $request->input('purchaseOrder');
+        $sales->salesorder = $salesqad->Sales_Order;
+        $sales->line = $salesqad->Line;
         $sales->salesline = $request->input('salesline');
         $dte  = \DateTime::createFromFormat('d/m/Y',$request->input('deliverDate'));
         $sales->deliverDate = $dte ;
@@ -249,7 +251,7 @@ class SalesController extends Controller
       else
       {
         $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-        ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc' , 'sales.status', 'sales.repeat','sales.id']);
+        ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc' , 'sales.status','sales.repeat_from','sales.created_at', 'sales.id']);
 
         return Datatables::of($sales)
 
@@ -259,7 +261,12 @@ class SalesController extends Controller
             <a href="'. route('frontend.slsmark.show', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-check"></i> View </a>
             ';
               })
-
+        ->editColumn('created_at', function ($date) {
+                  return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
+              })
+        ->order(function ($sales) {
+                       $sales->orderBy('created_at', 'desc');
+                   })
         ->escapeColumns([])
         ->make();
       }
@@ -322,7 +329,7 @@ class SalesController extends Controller
           // $product=Product::find($id);
           $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
                               ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
-                              ->select(['products.paf_number', 'sales.custName','items.partNo','items.partDesc', 'products.id' ])
+                              ->select(['products.paf_number', 'sales.custName','items.partNo','items.partDesc','products.rev', 'products.id' ])
                               ->where('sales.status', '=', 'Approved');
 
           return Datatables::of($product)
@@ -624,6 +631,16 @@ class SalesController extends Controller
                 $product->paf_number = 'PAF-' . Carbon::now()->format('y') .'-'. str_pad($number,5,'0',STR_PAD_LEFT );
             }
 
+            $latestrevision = Product::orderby('created_at', 'desc')->first();
+            if ($latestrevision === null){
+                $product->rev = 'rev-'.'01';
+            }
+            else{
+                $number = (int) substr($latestrevision->rev,-2,2);
+                $number ++;
+                $product->rev = 'rev-'. str_pad($number,2,'0',STR_PAD_LEFT );
+            }
+
             $product->approval =Input::get('approval');
             $product->remarkbig =Input::get('remarkbig');
             $product->material = Input::get('material');
@@ -682,7 +699,6 @@ class SalesController extends Controller
            // foreach <img> in the submited message
             foreach($images as $img){
                 $src = $img->getAttribute('src');
-
                 // if the img source is 'data-url'
                 if(preg_match('/data:image/', $src)){
                     // get the mimetype
@@ -704,9 +720,6 @@ class SalesController extends Controller
                 } // <!--endif
             } // <!-
             $product->remarkbig = $dom->saveHTML();
-
-            $product->save();
-
             $product->save();
 
             $sales= Sales::find($id);
@@ -733,21 +746,24 @@ class SalesController extends Controller
       // // START file upload save
       $pictureProd = '';
 
-      if ($request->hasFile('fileProd')) {
-              $files = $request->file('fileProd');
-              $filename = $files->getClientOriginalName();
-              $extension = $files->getClientOriginalExtension();
-              $pictureProd = $filename;
-              $destinationPath = base_path() . '/public/upload';
+      if ($request->hasFile('images')) {
+              $files = $request->file('images');
+              foreach($files as $file){
+              $filename = $file->getClientOriginalName();
+              $extension = $file->getClientOriginalExtension();
+              $picture = $filename;
+              $destinationPath = base_path() . '/public/uploaded';
 
-              $files->move($destinationPath, $pictureProd);
+              $file->move($destinationPath, $picture);
 
               $fileUpload = new FileUpload;
               $fileUpload->filename = $filename;
-              $fileUpload->products_id = $product->id;
+              $fileUpload->sales_id = $sales->id;
+              $fileUpload->doc_id = $product->paf_number;
               $fileUpload->user_id = Auth::user()->id;
               $fileUpload->save();
           }
+        }
 
 
       // // END file upload save
@@ -804,6 +820,9 @@ class SalesController extends Controller
             $number ++;
             $sales->sco_number = 'SCO-' . Carbon::now()->format('y') .'-'.str_pad($number,5,'0',STR_PAD_LEFT );
         }
+
+        $sales->salesorder = $request->input('salesorder');
+        $sales->line = $request->input('line');
 
         $sales->approval = $request->input('approval');
         $dtrepeat = \DateTime::createFromFormat('d/m/Y', $request->input("datetime"));
@@ -1061,12 +1080,12 @@ class SalesController extends Controller
       if (access()->hasPermissions(['sales-marketing']))
       {
         $sales = Sales::leftJoin('items', 'sales.items_id', '=', 'items.id')
-        ->select(['sales.salesline','sales.custName', 'items.partNo','items.partDesc', 'sales.id']);
-
+        ->select(['sales.salesline','sales.custName', 'items.partNo','items.partDesc', 'sales.id'])
+        ->where('sales.status', '=', 'Approved');
         return Datatables::of($sales)
           ->editColumn('id', function ($sales) {
           //return $sales->action_buttons;
-          return '<a href="'. route('frontend.slsmark.stock', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus"></i> Add Stock </a>
+          return '<a href="'. route('frontend.slsmark.stock', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus"></i>Stock</a>
           ';
           //  <a href="'. route('frontend.slsmark.viewstock', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-th-list"></i> List of Stock </a>
         })
@@ -1106,7 +1125,9 @@ class SalesController extends Controller
         $stock = $balance;
       }
       else {
-        $stock = $balance - $stockupdate->stock_taken;
+        // $stock =$stockupdate->stock_taken - $balance + $stockupdate->adj ;
+        $stock =  DB::table("stockupdates")->where('items_id','=', $items->id)->sum('stock_taken') - $balance + DB::table("stockupdates")->where('items_id','=', $items->id)->sum('adj');
+
       }
       return view('frontend.slsmark.stock')
       ->with('sales',$sales)
@@ -1326,16 +1347,14 @@ class SalesController extends Controller
      public function tablesample()
      {
          $sales = Sales::leftJoin('items', 'sales.items_id', '=', 'items.id')
-         ->select(['sales.custName', 'items.partNo', 'items.partDesc', 'sales.id']);
+         ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc', 'sales.id']);
 
          return Datatables::of($sales)
          ->editColumn('id', function ($sales) {
            //return $sales->action_buttons;
            return '<a href="'. route('frontend.slsmark.samplerequisite', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus"></i> New </a>';
          })
-        //  ->order(function ($salesqad) {
-        //                  $salesqad->orderBy('sales_order', 'desc');
-        //              })
+
          ->escapeColumns([])
          ->make();
        }
@@ -1349,7 +1368,9 @@ class SalesController extends Controller
            ->editColumn('id', function ($requisite) {
              //return $sales->action_buttons;
              return '<a href="'. route('frontend.slsmark.editreq', $requisite->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit </a>
-             <a href="'. route('frontend.slsmark.viewreq', $requisite->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View </a>';
+             <a href="'. route('frontend.slsmark.viewreq', $requisite->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View </a>
+             <a href="'. route('frontend.slsmark.destroyreq', $requisite->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-search"></i> Cancel </a>
+             ';
            })
            ->order(function ($requisite) {
                            $requisite->orderBy('created_at', 'desc');
@@ -1381,13 +1402,8 @@ class SalesController extends Controller
      //dah
      public function storeeditreq ($id, Request $request)
      {   //return $request->all();
-
-         $this->validate($request,[
-          //  'customerName' => 'max:400'
-
-           ]);
-         $requisite = Requisite::find($id);
-         // $requisite = new Requisite;
+         // $requisite = Requisite::find($id);
+         $requisite = new Requisite;
 
          $latestrequisite = Requisite::orderBy('created_at', 'desc')->first();
          if ($latestrequisite === null){
@@ -1399,7 +1415,17 @@ class SalesController extends Controller
              $requisite->SRO_number = 'SRO-' . Carbon::now()->format('y') .'-'.str_pad($number,5,'0',STR_PAD_LEFT );
          }
 
-         $requisite->revSRO = 'REVISION';
+         $latestrevision = Requisite::orderby('created_at', 'desc')->first();
+         if ($latestrevision === null){
+             $requisite->revSRO = 'rev-'.'01';
+         }
+         else{
+             $number = (int) substr($latestrevision->revSRO,-2,2);
+             $number ++;
+             $requisite->revSRO = 'rev-'. str_pad($number,2,'0',STR_PAD_LEFT );
+         }
+
+         // $requisite->revSRO = 'REVISION';
          $dtsro = \DateTime::createFromFormat('d/m/Y', $request->input("dateSRO"));
          $requisite->dateSRO = $dtsro;
          $requisite->release = $request->input('release');
@@ -1477,17 +1503,18 @@ class SalesController extends Controller
            $process->save();
          }
 
+         // START file upload save
          $picture = '';
 
          if ($request->hasFile('images')) {
                  $files = $request->file('images');
-
-                 $filename = $files->getClientOriginalName();
-                 $extension = $files->getClientOriginalExtension();
+                 foreach($files as $file){
+                 $filename = $file->getClientOriginalName();
+                 $extension = $file->getClientOriginalExtension();
                  $picture = $filename;
                  $destinationPath = base_path() . '/public/uploaded';
 
-                 $files->move($destinationPath, $picture);
+                 $file->move($destinationPath, $picture);
 
                  $fileUpload = new FileUpload;
                  $fileUpload->filename = $filename;
@@ -1495,8 +1522,9 @@ class SalesController extends Controller
                  $fileUpload->doc_id = $requisite->SRO_number;
                  $fileUpload->user_id = Auth::user()->id;
                  $fileUpload->save();
+               }
              }
-      //  END file upload save
+       // END file upload save
 
          return redirect()->route('frontend.slsmark.showsales')->withFlashSuccess('The data is  saved ');
      }
@@ -1621,30 +1649,42 @@ class SalesController extends Controller
 
     public function destroy($id)
     {
-        $sales = Sales::findOrFail($id)->delete();
+        $sales = Sales::find($id);
+        $salesqad = Salesqad::where('Sales_Order',$sales->salesorder)->where('Line', $sales->line)->first();
+        $salesqad->status = '' ;
+        $salesqad->save();
+
+
+        $sales = Sales::findOrFail($id)->forceDelete();
         // redirect
         return redirect()->route('frontend.slsmark.index')->withFlashSuccess('The data is cancelled.');
     }
 
     public function delete($id)
     {
-      $product = Product::findOrFail($id)->delete();
+      $product = Product::findOrFail($id)->forceDelete();
       // redirect
       return redirect()->route('frontend.slsmark.review')->withFlashSuccess('The data is cancelled.');
     }
 
     public function destroyrepeat($id)
     {
-      $sales = Sales::findOrFail($id)->delete();
+      $sales = Sales::findOrFail($id)->forceDelete();
       // redirect
       return redirect()->route('frontend.slsmark.index')->withFlashSuccess('The data is cancelled.');
     }
 
     public function deletestock($id)
     {
-      $stockupdate = Stockupdate::findOrFail($id)->delete();
+      $stockupdate = Stockupdate::findOrFail($id)->forceDelete();
       // redirect
       return redirect()->route('frontend.slsmark.listStock')->withFlashSuccess('The data is cancelled.');
+    }
+    public function destroyreq($id)
+    {
+      $requisite = Requisite::findOrFail($id)->forceDelete();
+      // redirect
+      return redirect()->route('frontend.slsmark.showsales')->withFlashSuccess('The data is cancelled.');
     }
 
 

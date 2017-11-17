@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col-md-2 ">
     <img src="{{URL::asset('/img/vissol.jpeg')}}" alt="Vissol" height="61" width="150" align="centre">
-    <br><p style="font-size:6%">Powered by Vissol</p>
+    {{-- <br><p style="font-size:6%">Powered by Vissol</p> --}}
   </div>
         <div class="col-md-10 ">
             <div class="panel panel-default">

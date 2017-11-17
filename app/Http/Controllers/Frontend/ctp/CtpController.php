@@ -71,6 +71,7 @@ class CtpController extends Controller
               } // <!--endif
           } // <!-
           $sales->remark3 = $dom->saveHTML();
+          $sales->confirmby3 = Input::get('confirmby3');
           $sales->status = 'Printing Dept';
           $sales->save();
 
@@ -84,14 +85,19 @@ class CtpController extends Controller
     if (access()->hasPermissions(['planning']))
     {
         $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.status', 'sales.id']);
-
+        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
 
         return Datatables::of($sales)
           ->editColumn('id', function ($sales) {
-                    return '<a href="'. route('frontend.ctp.edit', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit </a>
+                    return '<a href="'. route('frontend.ctp.edit', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View </a>
                     ';
                 })
+          ->editColumn('created_at', function ($date) {
+                    return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
+                })
+          ->order(function ($sales) {
+                     $sales->orderBy('created_at', 'desc');
+                 })
 
         ->escapeColumns([])
         ->where('status', '=', "CTP Dept")
@@ -100,14 +106,17 @@ class CtpController extends Controller
       else
       {
         $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.status', 'sales.id']);
-
-
+        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
         return Datatables::of($sales)
           ->editColumn('id', function ($sales) {
                     return '';
                 })
-
+         ->editColumn('created_at', function ($date) {
+                    return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
+              })
+        ->order(function ($sales) {
+                     $sales->orderBy('created_at', 'desc');
+               })
         ->escapeColumns([])
         ->where('status', '=', "CTP Dept")
         ->make();

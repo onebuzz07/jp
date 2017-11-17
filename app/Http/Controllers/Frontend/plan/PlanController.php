@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use App\Models\Access\plan;
 use App\Models\Access\sales;
-use App\Models\Access\Repeat;
 use App\Models\Access\product;
 use App\Models\Access\item;
 use App\Models\Access\SoftCover;
@@ -45,8 +44,7 @@ class PlanController extends Controller
     public function index()
     {
       $sales=Sales::where('sales.status','Planning Dept')->get();
-      $repeat=Repeat::where('repeats.status','Planning Dept(repeat)')->get();
-      return view('frontend.plan.index')->with('sales',$sales)->with('repeat', $repeat);
+      return view('frontend.plan.index')->with('sales',$sales);
     }
 
     public function edit($id)
@@ -91,7 +89,7 @@ class PlanController extends Controller
                 } // <!--endif
             } // <!-
             $sales->remark2 = $dom->saveHTML();
-          //  $sales->approval = Input::get('approval');
+            $sales->confirmby2 = Input::get('confirmby2');
             $sales->status = 'CTP Dept';
             $sales->save();
 
@@ -105,26 +103,38 @@ class PlanController extends Controller
       if (access()->hasPermissions(['planning']))
       {
           $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.status', 'sales.id']);
+          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
 
           return Datatables::of($sales)
             ->editColumn('id', function ($sales) {
-                      return '<a href="'. route('frontend.plan.edit', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit </a>
+                      return '<a href="'. route('frontend.plan.edit', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View </a>
                       ';
                   })
-
+          ->editColumn('created_at', function ($date) {
+                    return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
+                })
+          ->order(function ($sales) {
+                       $sales->orderBy('created_at', 'desc');
+                   })
           ->escapeColumns([])
           ->where('status', '=', "Planning Dept" )
           ->make();
         }
         else {
           $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.status', 'sales.id']);
+          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
 
           return Datatables::of($sales)
             ->editColumn('id', function ($sales) {
                       return '';
                   })
+
+          ->editColumn('created_at', function ($date) {
+                    return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
+                })
+          ->order(function ($sales) {
+                         $sales->orderBy('created_at', 'desc');
+                     })
 
           ->escapeColumns([])
           ->where('status', '=', "Planning Dept" )
@@ -226,11 +236,12 @@ class PlanController extends Controller
 
    public function pafTable()
    {
-         $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
-                             ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
-                             ->select(['sales.custName','items.partNo','items.partDesc', 'products.id' ]);
+     $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
+                         ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
+                         ->select(['products.paf_number', 'sales.custName','items.partNo','items.partDesc','products.rev', 'products.id' ])
+                         ->where('sales.status', '=', 'Approved');
 
-         return Datatables::of($product)
+     return Datatables::of($product)
              ->editColumn('id', function ($product) {
                return '<a href="'. route('frontend.plan.pafform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> View </a>
                ';
@@ -1643,12 +1654,12 @@ class PlanController extends Controller
    public function listTable()
    {
        $sales = Sales::leftJoin('items', 'sales.items_id', '=', 'items.id')
-       ->select(['sales.salesline','sales.custName', 'items.partNo','items.partDesc', 'sales.id']);
-
+       ->select(['sales.salesline','sales.custName', 'items.partNo','items.partDesc', 'sales.id'])
+       ->where('sales.status', '=', 'Approved');
        return Datatables::of($sales)
          ->editColumn('id', function ($sales) {
          //return $sales->action_buttons;
-         return '<a href="'. route('frontend.plan.stock', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus"></i> Add Stock </a>
+         return '<a href="'. route('frontend.plan.stock', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus"></i> Stock </a>
          ';
        })
        ->escapeColumns([])
@@ -1779,7 +1790,7 @@ class PlanController extends Controller
 
    public function deletestock($id)
    {
-     $stockupdatepowo = Stockupdatepowo::findOrFail($id)->delete();
+     $stockupdatepowo = Stockupdatepowo::findOrFail($id)->forceDelete();
      // redirect
      return redirect()->route('frontend.plan.listStock')->withFlashSuccess('The data is cancelled.');
    }

@@ -16,6 +16,11 @@ class sales extends Model implements AuditableContract
 
   protected $dates = ['deleted_at','datetime', 'deliverDate', 'Due_Date'];
   protected $table = 'sales';
+
+  public function salesqad()
+  {
+      return $this->hasOne('App\Models\Access\Salesqad');
+  }
     public function items()
     {
         return $this->hasOne('App\Models\Access\item');

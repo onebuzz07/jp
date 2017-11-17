@@ -22,6 +22,7 @@ class CreateFileUploadsTable extends Migration
             $table->string('filename')->nullable();
             $table->string('user_id')->nullable();
 
+            $table->SoftDeletes();
             $table->timestamps();
         });
     }

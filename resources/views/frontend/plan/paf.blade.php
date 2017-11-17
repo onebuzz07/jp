@@ -8,10 +8,12 @@
   <table class="table table-bordered" id="users-table2">
       <thead>
           <tr>
-              <th>Customer Name</th>
-              <th>Part Number</th>
-              <th>Part Description</th>
-              <th>Actions</th>
+            <th>PAF #</th>
+            <th>Customer Name</th>
+            <th>Part Number</th>
+            <th>Part Description</th>
+            <th>Revision</th>
+            <th>Actions</th>
           </tr>
       </thead>
   </table>

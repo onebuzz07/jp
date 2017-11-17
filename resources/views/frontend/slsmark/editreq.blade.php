@@ -110,11 +110,18 @@
               <div class="col-md-10">{!! Form::text('preparedBy',Auth::user()->first_name.' '.Auth::user()->last_name, array('class' => 'form-control')) !!}</div>
             </div>
 
+            <div class="form-group row ">
+              {{ Form::label('images[]', 'Files(If any)', array('class' => 'control-label col-md-2')) }}
+              <div class="col-md-10">
+              <input multiple="multiple" class="btn btn-default btn-file " name="images[]" type="file" id="images[]">
+              </div>
+            </div>
+
             <div class="form-group row">
                       {!! Form::label('images', 'Files', array('class' => 'control-label col-md-2')) !!}
                     <div class="col-md-10">
                       @foreach($requisite->fileupload as $file)
-                        <a href="{!! "/uploaded/$file->filename" !!}" download="{!! $file->filename !!}">{!! $file->filename !!}</a>
+                        <a href="{!! "/uploaded/$file->filename" !!}" download="{!! $file->filename !!}" >{!! $file->filename !!}</a><button> Delete </button>
                             {!! '&nbsp;'!!}
                       @endforeach
                     </div>

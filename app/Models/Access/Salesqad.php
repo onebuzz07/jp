@@ -16,4 +16,9 @@ class Salesqad extends Model implements AuditableContract
       'deliverDate' => 'date',
 
     ];
+
+    public function sales()
+    {
+        return $this->belongsTo('App\Models\Access\sales');
+    }
 }

@@ -5,7 +5,7 @@
 @include('frontend.plan.includes.nav')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
   <div class="page-header">
-      <h3 class="box-title"> {!! trans('STOCK STATUS ') !!}</h3>
+      <h3 class="box-title"> {!! trans('FORECAST STOCK ') !!}</h3>
   </div> <!--page-header-->
   <div class="container-fluid">
         <div class="row" id="app">
@@ -66,10 +66,6 @@
 
                       });
                   });
-
-
-                  //Being injected from FrontendController
-                  // console.log(test);
                   </script>
                 <label>
                   Stock(QAD): {!!$balance!!}
@@ -93,9 +89,6 @@
                 </thead>
             </table>
 
-{{--
-            {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
-            {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }} --}}
             <script>
               $(function() {
                   $('#users-table20').DataTable({
@@ -118,9 +111,6 @@
               //Being injected from FrontendController
               // console.log(test);
               </script>
-              <div>
-                  <label> Remaining stock: {!!$stock!!} </label>
-              </div>
           </div>
           <div>
               {{-- Remaining stock: {!!((int)$stockupdate->stock -(int)$stockupdate->stock_taken);!!} --}}
@@ -150,7 +140,7 @@
                     <td>{!! Form::text('POQuantity', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::text('stock_taken', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::text('adj', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('balance', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
+                    <td>{!! Form::text('balance', $stock, array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::text('receiveDate', \Carbon\Carbon::now()->format('d/m/Y'), array('id'=>'datepicker', 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::text('remarkStock', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                   </tr>
