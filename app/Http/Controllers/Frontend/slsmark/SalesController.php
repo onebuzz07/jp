@@ -235,9 +235,10 @@ class SalesController extends Controller
 
       ->editColumn('id', function ($sales) {
         //return $sales->action_buttons;
+        $message = 'Are you sure you want to cancel '.$sales->sco_number.'?';
         return '<a href="'. route('frontend.slsmark.editscof', $sales->id) . '" class="btn btn-xs btn-info"><i class="glyphicon glyphicon-edit"></i> Edit </a>
         <a href="'. route('frontend.slsmark.show', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-check"></i> View </a>
-        <a href="'. route('frontend.slsmark.destroy', $sales->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel </a>';
+        <a href="'. route('frontend.slsmark.destroy', $sales->id) . '" class="btn btn-xs btn-danger" onclick="return confirm(\'' . $message . ' \')"><i class="glyphicon glyphicon-remove"></i> Cancel </a>';
       })
       ->editColumn('created_at', function ($date) {
                 return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
