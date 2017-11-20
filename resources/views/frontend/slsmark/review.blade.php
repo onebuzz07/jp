@@ -22,7 +22,9 @@
 
 
     {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
+
     {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }}
+    {{ Html::style("https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css") }}
 
   <script>
       $(function() {
