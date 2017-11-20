@@ -1605,7 +1605,9 @@ class PlanController extends Controller
 
    public function softcoverpreview($id)
    {
+     //return "id: " . $id;
      $sales = Sales::find($id);
+
      $softcover = Softcover::where('sales_id',$sales->id)->first();
      return view('frontend.plan.softcoverpreview')->with('sales', $sales)->with('softcover', $softcover);
    }
@@ -1717,24 +1719,23 @@ class PlanController extends Controller
    //show datatable
    public function viewstocktable(Request $request)
    {
-     $stockupdatepowo = Stockupdatepowo::leftJoin('items', 'stockupdatepowos.items_id', '=', 'items.id')
-     ->select(['stockupdatepowos.idNum', 'stockupdatepowos.POQuantity', 'stockupdatepowos.balance','stockupdatepowos.stock_taken', 'stockupdatepowos.adj',
-      'stockupdatepowos.receiveDate', 'stockupdatepowos.remarkStock', 'stockupdatepowos.id'])
-      ->where('items.id', '=', $request->input('id') )
-     ;
+        $stockupdatepowo = Stockupdatepowo::leftJoin('items', 'stockupdatepowos.items_id', '=', 'items.id')
+        ->select(['stockupdatepowos.idNum', 'stockupdatepowos.POQuantity', 'stockupdatepowos.balance','stockupdatepowos.stock_taken', 'stockupdatepowos.adj',
+        'stockupdatepowos.receiveDate', 'stockupdatepowos.remarkStock', 'stockupdatepowos.id'])
+        ->where('items.id', '=', $request->input('id') );
 
-   return Datatables::of($stockupdatepowo)
-   ->editColumn('receiveDate', function ($date) {
+        return Datatables::of($stockupdatepowo)
+        ->editColumn('receiveDate', function ($date) {
            return $date->receiveDate ? with(new Carbon($date->receiveDate))->format('d/m/Y') : '';
-       })
-   ->editColumn('id', function ($stockupdatepowo) {
-   //return $sales->action_buttons;
-   return '<a href="'. route('frontend.plan.deletestock',$stockupdatepowo->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel </a>';
+        })
+        ->editColumn('id', function ($stockupdatepowo) {
+           //return $sales->action_buttons;
+           return '<a href="'. route('frontend.plan.deletestock',$stockupdatepowo->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel </a>';
 
- })
- ->escapeColumns([])
- ->make();
-   }
+        })
+        ->escapeColumns([])
+        ->make();
+    }
 
    public function powotable(Request $request)
    {
@@ -1805,14 +1806,15 @@ class PlanController extends Controller
    {
          $softcover = Softcover::leftJoin('sales', 'soft_covers.sales_id', '=', 'sales.id')
           ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-          ->select(['sales.custName','items.partNo','items.partDesc', 'soft_covers.created_at', 'soft_covers.id' ]);
+          ->select(['sales.custName','items.partNo','items.partDesc', 'soft_covers.created_at', 'soft_covers.id', 'soft_covers.sales_id' ]);
 
          return Datatables::of($softcover)
           ->editColumn('created_at', function ($date) {
                return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
              })
          ->editColumn('id', function ($softcover) {
-              return '<a href="'. route('frontend.plan.softcoverpreview', $softcover->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+             // wan change FROM: route('frontend.plan.softcoverpreview', $softcover->id) TO: route('frontend.plan.softcoverpreview', $softcover->sales_id)
+              return '<a href="'. route('frontend.plan.softcoverpreview', $softcover->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
                ';
          })
          ->escapeColumns([])
@@ -1829,14 +1831,14 @@ class PlanController extends Controller
    {
      $softcoverbw = Softcoverbw::leftJoin('sales', 'softcoverbws.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'softcoverbws.created_at', 'softcoverbws.id' ]);
+      ->select(['sales.custName','items.partNo','items.partDesc', 'softcoverbws.created_at', 'softcoverbws.id', 'softcoverbws.sales_id' ]);
 
       return Datatables::of($softcoverbw)
        ->editColumn('created_at', function ($date) {
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($softcoverbw) {
-           return '<a href="'. route('frontend.plan.softcoverbwpreview', $softcoverbw->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.softcoverbwpreview', $softcoverbw->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
@@ -1853,14 +1855,14 @@ class PlanController extends Controller
    {
      $overseasfb = Overseasfb::leftJoin('sales', 'overseasfbs.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'overseasfbs.created_at', 'overseasfbs.id' ]);
+      ->select(['sales.custName','items.partNo','items.partDesc', 'overseasfbs.created_at', 'overseasfbs.id', 'overseasfbs.sales_id' ]);
 
       return Datatables::of($overseasfb)
        ->editColumn('created_at', function ($date) {
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($overseasfb) {
-           return '<a href="'. route('frontend.plan.softcoveroverseaspreview', $overseasfb->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.softcoveroverseaspreview', $overseasfb->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
@@ -1877,14 +1879,14 @@ class PlanController extends Controller
    {
      $overseaswt = Overseaswt::leftJoin('sales', 'overseaswts.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'overseaswts.created_at', 'overseaswts.id' ]);
+      ->select(['sales.custName','items.partNo','items.partDesc', 'overseaswts.created_at', 'overseaswts.id', 'overseaswts.sales_id' ]);
 
       return Datatables::of($overseaswt)
        ->editColumn('created_at', function ($date) {
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($overseaswt) {
-           return '<a href="'. route('frontend.plan.softcoveroverseaswtpreview', $overseaswt->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.softcoveroverseaswtpreview', $overseaswt->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
@@ -1901,14 +1903,14 @@ class PlanController extends Controller
    {
      $boxes = Boxes::leftJoin('sales', 'boxes.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'boxes.created_at', 'boxes.id' ]);
+      ->select(['sales.custName','items.partNo','items.partDesc', 'boxes.created_at', 'boxes.id', 'boxes.sales_id' ]);
 
       return Datatables::of($boxes)
        ->editColumn('created_at', function ($date) {
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($boxes) {
-           return '<a href="'. route('frontend.plan.boxespreview', $boxes->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.boxespreview', $boxes->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
