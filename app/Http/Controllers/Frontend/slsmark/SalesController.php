@@ -27,6 +27,7 @@ use App\Models\Access\Process;
 use App\Models\Access\Salesorder;
 use App\Models\Access\Workorder;
 use App\Models\Access\Stock;
+use App\Models\Access\Inventory;
 
 use Image;
 use Carbon\Carbon;
@@ -1115,6 +1116,7 @@ class SalesController extends Controller
       $items = Item::find($sales->items_id);
       $stockupdate = Stockupdate::where('items_id', $items->id)->first();
       $stocks = Stock::where('item_number', $items->partNo)->first();
+      $inventory = Inventory::where("item_id", $items->partNo)->first();
       if ($stocks == null){
         $balance = 0;
       }
@@ -1135,7 +1137,8 @@ class SalesController extends Controller
       ->with('stockupdate', $stockupdate)
       ->with('stocks', $stocks)
       ->with('balance', $balance)
-      ->with('stock', $stock);
+      ->with('stock', $stock)
+      ->with('inventory', $inventory->qty_oh);
     }
 
     public function storestock ($id, Request $request)

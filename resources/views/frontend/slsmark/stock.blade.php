@@ -21,7 +21,7 @@
 
               <div class="col-md-4" id="n1">
                 <label> Stock(On hand):
-                  {{-- {!!$balance!!} --}}
+                  {{ $inventory}}
                     {{-- {!!($salesorders) ? $salesorders->Quantity_Ordered : 'Please Import Data'  !!} --}}
                   </label>
               </div>
@@ -73,7 +73,7 @@
                   // console.log(test);
                   </script>
                   <label>
-                    Stock(QAD):{!!$balance!!}
+                    Stock(QAD):{!!$balance + $inventory!!}
                       {{-- {!!($salesorders) ? $salesorders->Quantity_Ordered : 'Please Import Data'  !!} --}}
                     </label>
               </div>
