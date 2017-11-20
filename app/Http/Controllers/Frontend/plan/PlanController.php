@@ -1927,14 +1927,14 @@ class PlanController extends Controller
    {
      $planning = Planning::leftJoin('sales', 'plannings.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'plannings.created_at', 'plannings.id' ]);
+      ->select(['sales.custName','items.partNo','items.partDesc', 'plannings.created_at', 'plannings.id', 'plannings.sales_id' ]);
 
       return Datatables::of($planning)
        ->editColumn('created_at', function ($date) {
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($planning) {
-           return '<a href="'. route('frontend.plan.planningpreview', $planning->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.planningpreview', $planning->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
