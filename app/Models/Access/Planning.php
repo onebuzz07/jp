@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 class Planning extends Model
 {
   //use SoftDeletes;
-  use Auditable;
+  //use Auditable;
 
   protected $dates = ['datetime', 'deliverDate'];
   public function sales()

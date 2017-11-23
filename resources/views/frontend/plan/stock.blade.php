@@ -37,9 +37,11 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Ref</th>
+                            <th>Finished Goods</th>
                             <th>Raw Material</th>
+                            <th>ID</th>
                             <th>Due Date</th>
+                            <th>Job</th>
                             <th>Quantity Ordered</th>
                         </tr>
                     </thead>

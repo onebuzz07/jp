@@ -1396,10 +1396,11 @@ class PlanController extends Controller
      $overseasfb->stripWaste1  = $request->input('stripWaste1');
      $overseasfb->foldMake1  = $request->input('foldMake1');
      $overseasfb->foldWaste1  = $request->input('foldWaste1');
-     $overseasfb->sewMake1  = $request->input('sewMake1');
-     $overseasfb->sewWaste1  = $request->input('sewWaste1');
-     $overseasfb->bindMake1  = $request->input('bindMake1');
-     $overseasfb->bindWaste1  = $request->input('bindWaste1');
+     //wan commented this
+     //$overseasfb->sewMake1  = $request->input('sewMake1');
+     //$overseasfb->sewWaste1  = $request->input('sewWaste1');
+     //$overseasfb->bindMake1  = $request->input('bindMake1');
+     //$overseasfb->bindWaste1  = $request->input('bindWaste1');
      $overseasfb->threeMake1  = $request->input('threeMake1');
      $overseasfb->threeWaste1  = $request->input('threeWaste1');
      $overseasfb->PackMake1  = $request->input('PackMake1');
@@ -1605,45 +1606,59 @@ class PlanController extends Controller
 
    public function softcoverpreview($id)
    {
-     //return "id: " . $id;
-     $sales = Sales::find($id);
-
-     $softcover = Softcover::where('sales_id',$sales->id)->first();
-     return view('frontend.plan.softcoverpreview')->with('sales', $sales)->with('softcover', $softcover);
-   }
+        // $sales = Sales::find($id);
+        //
+        // $softcover = Softcover::where('sales_id',$sales->id)->first();
+        $softcover = Softcover::find($id);
+        $sales = Sales::find($softcover->sales_id);
+        return view('frontend.plan.softcoverpreview')->with('sales', $sales)->with('softcover', $softcover);
+    }
 
    public function softcoverbwpreview($id)
    {
-     $sales = Sales::find($id);
-     $softcoverbw = Softcoverbw::where('sales_id',$sales->id)->first();
+     // $sales = Sales::find($id);
+     // $softcoverbw = Softcoverbw::where('sales_id',$sales->id)->first();
+
+        $softcoverbw = Softcoverbw::find($id);
+        $sales = Sales::find($softcoverbw->sales_id);
      return view('frontend.plan.softcoverbwpreview')->with('sales', $sales)->with('softcoverbw', $softcoverbw);
    }
 
    public function softcoveroverseaspreview($id)
    {
-     $sales = Sales::find($id);
-     $overseasfb = Overseasfb::where('sales_id',$sales->id)->first();
+     // $sales = Sales::find($id);
+     // $overseasfb = Overseasfb::where('sales_id',$sales->id)->first();
+     $overseasfb = Overseasfb::find($id);
+     $sales = Sales::find($overseasfb->sales_id);
      return view('frontend.plan.softcoveroverseaspreview')->with('sales', $sales)->with('overseasfb', $overseasfb);
    }
 
    public function softcoveroverseaswtpreview($id)
    {
-     $sales = Sales::find($id);
-     $overseaswt = Overseaswt::where('sales_id',$sales->id)->first();
+     // $sales = Sales::find($id);
+     // $overseaswt = Overseaswt::where('sales_id',$sales->id)->first();
+        $oveseaswt = Overseaswt::find($id);
+        $sales = Sales::find($overseaswt->sales_id);
      return view('frontend.plan.softcoveroverseaswtpreview')->with('sales', $sales)->with('overseaswt', $overseaswt);
    }
 
    public function boxespreview($id)
    {
-     $sales = Sales::find($id);
-     $boxes = Boxes::where('sales_id',$sales->id)->first();
+     // $sales = Sales::find($id);
+     // $boxes = Boxes::where('sales_id',$sales->id)->first();
+     $boxes = Boxes::find($id);
+     $sales = Sales::find($boxes->id);
+
      return view('frontend.plan.boxespreview')->with('sales', $sales)->with('boxes', $boxes);
    }
 
    public function planningpreview($id)
    {
-     $sales = Sales::find($id);
-     $plannings = Planning::where('sales_id',$sales->id)->first();
+     // $sales = Sales::find($id);
+     // $plannings = Planning::where('sales_id',$sales->id)->first();
+
+     $plannings = Planning::find($id);
+     $sales = Sales::find($plannings->sales_id);
      return view('frontend.plan.planningpreview')->with('sales', $sales)->with('plannings', $plannings);
    }
 
@@ -1739,8 +1754,8 @@ class PlanController extends Controller
 
    public function powotable(Request $request)
    {
-     $powos = Powo::select(['status', 'reference','rawmaterial', 'due_date', 'quantity_ordered'])
-     ->where('item_number', '=', $request->input('partNo') );
+     $powos = Powo::select(['status', 'reference','rawmaterial','wo_id', 'due_date','job', 'quantity_ordered'])
+     ->where('reference', '=', $request->input('partNo') );
      return Datatables::of($powos)
      ->editColumn('due_date', function ($date) {
              return $date->due_date ? with(new Carbon($date->due_date))->format('d/m/Y') : '';
@@ -1760,10 +1775,10 @@ class PlanController extends Controller
            })->get();
 
           foreach ($rows as $row) {
-            $row4 = str_replace(",", "", $row[5]);
-            $date = \DateTime::createFromFormat('d/m/Y',$row[4]);
+            $row5 = str_replace(",", "", $row[5]);
+            $date = \DateTime::createFromFormat('d/m/Y',$row[8]);
                DB::table('powos')->insert(
-               ['item_number'=> $row[1], 'reference' => $row[0], 'rawmaterial' => $row[2], 'due_date'=> $date, 'quantity_ordered'=> '-'.$row4, 'status'=>'WO' ]);
+               ['item_number'=> $row[1], 'reference' => $row[0], 'rawmaterial' => $row[2], 'due_date'=> $date, 'quantity_ordered'=> '-'.$row5, 'status'=>'WO', 'wo_id' => $row[3], 'job' => $row[9] ]);
            }
        }
            return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Work Order is saved.');
@@ -1771,6 +1786,7 @@ class PlanController extends Controller
 
    public function importpo (Request $request)
    {
+       ini_set('max_execution_time', 300);
      $powos = Powo::where('status','=', 'PO')->forceDelete();
        if(Input::hasFile('import_po')){
          $path = Input::file('import_po')->getRealPath();
@@ -1813,8 +1829,8 @@ class PlanController extends Controller
                return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
              })
          ->editColumn('id', function ($softcover) {
-             // wan change FROM: route('frontend.plan.softcoverpreview', $softcover->id) TO: route('frontend.plan.softcoverpreview', $softcover->sales_id)
-              return '<a href="'. route('frontend.plan.softcoverpreview', $softcover->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+
+              return '<a href="'. route('frontend.plan.softcoverpreview', $softcover->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
                ';
          })
          ->escapeColumns([])
@@ -1838,7 +1854,7 @@ class PlanController extends Controller
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($softcoverbw) {
-           return '<a href="'. route('frontend.plan.softcoverbwpreview', $softcoverbw->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.softcoverbwpreview', $softcoverbw->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
@@ -1862,7 +1878,7 @@ class PlanController extends Controller
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($overseasfb) {
-           return '<a href="'. route('frontend.plan.softcoveroverseaspreview', $overseasfb->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.softcoveroverseaspreview', $overseasfb->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
@@ -1886,7 +1902,7 @@ class PlanController extends Controller
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($overseaswt) {
-           return '<a href="'. route('frontend.plan.softcoveroverseaswtpreview', $overseaswt->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.softcoveroverseaswtpreview', $overseaswt->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
@@ -1910,7 +1926,7 @@ class PlanController extends Controller
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($boxes) {
-           return '<a href="'. route('frontend.plan.boxespreview', $boxes->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.boxespreview', $boxes->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
@@ -1934,7 +1950,7 @@ class PlanController extends Controller
             return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
           })
       ->editColumn('id', function ($planning) {
-           return '<a href="'. route('frontend.plan.planningpreview', $planning->sales_id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
+           return '<a href="'. route('frontend.plan.planningpreview', $planning->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View</a>
             ';
       })
          ->escapeColumns([])
