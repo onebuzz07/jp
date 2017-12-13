@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-  <h1>Plan Department</h1>
+  <h1>Planning Department</h1>
 @include('frontend.plan.includes.nav')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
   <div class="page-header">
@@ -63,9 +63,7 @@
                                       d.partNo = '{!! $sales->items->partNo !!}';
                                       d._token = '{{ csrf_token() }}';
                                  }
-
                             },
-
                       });
                   });
                   </script>
@@ -98,18 +96,14 @@
                       serverSide: true,
                       method:"POST",
                       ajax: {
-                             url: '{!! route('frontend.plan.viewstocktable') !!}',
+                             url: '{!! route('frontend.plan.viewstocktableplan') !!}',
                              data: function(d) {
                                   d.id = {!! $sales->id !!};
                                   d._token = '{{ csrf_token() }}';
                              }
-
                         },
-
                   });
               });
-
-
               //Being injected from FrontendController
               // console.log(test);
               </script>
@@ -138,13 +132,13 @@
 
                   <tr id="Add">
                     {{-- <td></td> --}}
-                    <td>{!! Form::text('idNum', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('POQuantity', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('stock_taken', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('adj', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('balance', $stock, array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('receiveDate', \Carbon\Carbon::now()->format('d/m/Y'), array('id'=>'datepicker', 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::text('remarkStock', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
+                    <td>{!! Form::text('idNum', '', array( 'class'=>'form-control')) !!}</td>
+                    <td>{!! Form::number('POQuantity', '', array( 'class'=>'form-control')) !!}</td>
+                    <td>{!! Form::number('stock_taken', '', array( 'class'=>'form-control')) !!}</td>
+                    <td>{!! Form::number('adj', '', array( 'class'=>'form-control')) !!}</td>
+                    <td>{!! Form::number('balance','', array( 'class'=>'form-control')) !!}</td>
+                    <td>{!! Form::text('receiveDate', \Carbon\Carbon::now()->format('d/m/Y'), array('id'=>'datepicker', 'class'=>'form-control')) !!}</td>
+                    <td>{!! Form::text('remarkStock', '', array( 'class'=>'form-control')) !!}</td>
                   </tr>
                 {{-- @endfor --}}
                 </tbody>
@@ -155,16 +149,12 @@
               </div>
             {{-- </form> --}}
               {!!form::close()!!}
-
           </div>
-
         </div>
-
-      	<div class="col-md-6">
-      </div> {{-- row --}}
+    	<div class="col-md-6">
+    </div> {{-- row --}}
 </div> {{-- container-fluid --}}
 
-{{-- <script src="//code.jquery.com/jquery-1.10.2.js"></script> --}}
 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 <script>
   $( function() {

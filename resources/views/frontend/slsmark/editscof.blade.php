@@ -13,16 +13,31 @@
     <div class="col-lg-12">
 
             {!! Form::model($sales, array('route' => array('frontend.slsmark.updatescof', $sales->id), 'method' => 'PUT', 'files'=>true)) !!}
-
-            <div class="form-group row ">
-              {!! Form::label('salesline', 'Sales Order-Line ', array('class' => 'col-md-2')) !!}
-              <div class="col-md-10">{!! Form::text('salesline', $sales->salesline, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-            </div>
-
+            {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!}
             <div class="form-group row ">
               {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
-              <div class="col-md-10">{!! Form::checkbox('approval', 1, $sales->approval, array('class' => 'field')) !!}</div>
+              <div class="col-md-10">{!! Form::checkbox('approval', 1, $sales->approval, array('class' => 'field', 'disabled'=>'disabled')) !!}</div>
             </div>
+
+            <div class="form-group row ">
+              {!! Form::label('workorder', 'Work Order ', array('class' => 'col-md-2')) !!}
+              <div class="col-md-10">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+            </div>
+
+            <div class="form-group row ">
+              {!! Form::label('wid', 'ID', array('class' => 'col-md-2')) !!}
+              <div class="col-md-10">{!! Form::text('wid', $sales->wid, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+            </div>
+
+                <div class="form-group row ">
+                  {!! Form::label('salesorder', 'Sales Order ', array('class' => 'col-md-2')) !!}
+                  <div class="col-md-10">{!! Form::text('salesorder', $sales->salesorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+                </div>
+
+                <div class="form-group row ">
+                  {!! Form::label('line', 'Line', array('class' => 'col-md-2')) !!}
+                  <div class="col-md-10">{!! Form::text('line', $sales->line, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+                </div>
 
             <div class="form-group row">
               {!! Form::label('datetime', 'Date', ['class' => 'col-md-2']) !!}
@@ -99,9 +114,20 @@
               {!! Form::label('remark', 'Remarks', ['class' => 'col-md-2']) !!}
               <div class="col-md-10">{!! Form::textarea('remark', $sales->remark, array('class' => 'form-control', 'id'=>'1')) !!}</div>
             </div>
+
+            <div class="form-group row">
+              {!! Form::label('confirmBy', 'Confirmed By(Sales Marketing)', ['class' => 'col-md-2']) !!}
+              <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy, array('class' => 'form-control' , 'readonly'=>true)) !!}</div>
+            </div>
+
               <div class="form-group row">
                 {!! Form::label('remark2', 'Remarks (for Planning department)', ['class' => 'col-md-2']) !!}
                 <div class="col-md-10">{!! Form::textarea('remark2', $sales->remark2, array('class' => 'form-control', 'id'=>'2')) !!}</div>
+              </div>
+
+              <div class="form-group row">
+                {!! Form::label('confirmBy', 'Confirmed By(Planning)', ['class' => 'col-md-2']) !!}
+                <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy2, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
               </div>
 
               <div class="form-group row">
@@ -109,9 +135,19 @@
                 <div class="col-md-10">{!! Form::textarea('remark3', $sales->remark3, array('class' => 'form-control', 'id'=>'3')) !!}</div>
               </div>
 
+              <div class="form-group row">
+                {!! Form::label('confirmBy', 'Confirmed By(CTP)', ['class' => 'col-md-2']) !!}
+                <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy3, array('class' => 'form-control' , 'readonly'=>true)) !!}</div>
+              </div>
+
               <div class="form-group row ">
                 {!! Form::label('remark4', 'Remarks (for Printing department)', ['class' => 'col-md-2']) !!}
                 <div class="col-md-10">{!! Form::textarea('remark4', $sales->remark4, array('class' => 'form-control' , 'id'=>'4')) !!}</div>
+              </div>
+
+              <div class="form-group row">
+                {!! Form::label('confirmBy', 'Confirmed By(Printing)', ['class' => 'col-md-2']) !!}
+                <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy4, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
               </div>
 
               <div class="form-group row">
@@ -128,10 +164,6 @@
                   </div>
               </div>
 
-              <div class="form-group row">
-                {!! Form::label('confirmBy', 'Confirmed By', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy, array('class' => 'form-control')) !!}</div>
-              </div>
               <div class="form-group row">
               <button type="submit" class="btn btn-success btn-block" value="SAVE"> SAVE </button>
             </div>

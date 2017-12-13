@@ -85,11 +85,11 @@ class CtpController extends Controller
     if (access()->hasPermissions(['planning']))
     {
         $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
+        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat','sales.created_at', 'sales.id']);
 
         return Datatables::of($sales)
           ->editColumn('id', function ($sales) {
-                    return '<a href="'. route('frontend.ctp.edit', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View </a>
+                    return '<a href="'. route('frontend.ctp.edit', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
                     ';
                 })
           ->editColumn('created_at', function ($date) {
@@ -106,7 +106,7 @@ class CtpController extends Controller
       else
       {
         $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
+        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat','sales.created_at', 'sales.id']);
         return Datatables::of($sales)
           ->editColumn('id', function ($sales) {
                     return '';
@@ -122,8 +122,6 @@ class CtpController extends Controller
         ->make();
       }
   }
-
-
 
   public function repeatEdit($id)
   {

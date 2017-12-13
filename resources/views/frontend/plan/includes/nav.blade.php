@@ -13,6 +13,12 @@
             <li class="{!! Request::is('plan/liststock') ? 'active' : '' !!} dropdown">
                 <a href="{!! route('frontend.plan.liststock')!!}">Forecast Stock</a>
             </li>
+            <li class="{!! Request::is('plan/listsales') ? 'active' : '' !!} dropdown">
+                <a href="{!! route('frontend.plan.listsales')!!}">Production</a>
+            </li>
+            <li class="{!! Request::is('plan/listbalance') ? 'active' : '' !!} dropdown">
+                <a href="{!! route('frontend.plan.listbalance')!!}">Sheeting</a>
+            </li>
         </ul>
     </div>
 </nav>

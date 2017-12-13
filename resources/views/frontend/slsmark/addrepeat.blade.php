@@ -16,12 +16,27 @@
           <div class="col-lg-12">
             {!! Form::model($sales, array('route' => array('frontend.slsmark.repeatstore', $sales->id), 'method' => 'POST', 'files'=>true)) !!}
               {!! Form::hidden('sco_number', $sales->sco_number )!!}
-              {!! Form::hidden('salesline', $sales->salesline )!!}
               {!! Form::hidden('purchaseOrder', $sales->purchaseOrder )!!}
               @if (access()->hasPermissions(['sales-marketing']))
+                {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!}
                 <div class="form-group row ">
                   {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
                   <div class="col-md-10">{!! Form::checkbox('approval', 1, '', array('class' => 'field')) !!}</div>
+                </div>
+
+                <div class="form-group row ">
+                  {!! Form::label('salesorder', 'Sales Order ', array('class' => 'col-md-2')) !!}
+                  <div class="col-md-10">{!! Form::text('salesorder', $sales->salesorder, array('class' => 'form-control')) !!}</div>
+                </div>
+
+                <div class="form-group row ">
+                  {!! Form::label('line', 'Line', array('class' => 'col-md-2')) !!}
+                  <div class="col-md-10">{!! Form::text('line', $sales->line, array('class' => 'form-control')) !!}</div>
+                </div>
+
+                <div class="form-group row ">
+                  {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-2')) !!}
+                  <div class="col-md-10">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control')) !!}</div>
                 </div>
 
               <div class="form-group row {{ $errors->has('datetime') ? 'has-error' : '' }}">
@@ -44,13 +59,13 @@
 
               <div class="form-group row {{ $errors->has('partDesc') ? 'has-error' : '' }}">
                 {!! Form::label('partDesc', 'Part Description', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::text('partDesc', $sales->items->partDesc , array('placeholder'=>'Part Description', 'class'=>'form-control', 'readonly'=>true)) !!}</div>
+                <div class="col-md-10">{!! Form::text('partDesc', $sales->items->partDesc , array('placeholder'=>'Part Description', 'class'=>'form-control')) !!}</div>
                 <span class="text-danger">{{ $errors->first('partDesc') }}</span>
               </div>
 
               <div class="form-group row {{ $errors->has('partNo') ? 'has-error' : '' }}">
                 {!! Form::label('partNo', 'Part Number', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::text('partNo', $sales->items->partNo , array('placeholder'=>'Part Number', 'class'=>'form-control', 'readonly'=>true)) !!}</div>
+                <div class="col-md-10">{!! Form::text('partNo', $sales->items->partNo , array('placeholder'=>'Part Number', 'class'=>'form-control')) !!}</div>
                 <span class="text-danger">{{ $errors->first('partNo') }}</span>
               </div>
 

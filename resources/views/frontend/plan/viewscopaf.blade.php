@@ -1,16 +1,16 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-  <h1>Sales Marketing Department</h1>
-@include('frontend.slsmark.includes.nav')
+  <h1>Planning Department</h1>
+@include('frontend.plan.includes.nav')
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
-      <h3 class="box-title"> {{ trans('SALES CONFIRMATION') }} </h3>
+      <h3 class="box-title"> {{ trans('SALES CONFIRMATION ORDER') }} <small> (For Product Amendment Form)</small></h3>
   <div class="row" id="app">
     <div class="col-lg-12">
       <p class="text-right">No:   {{$sales->sco_number}}  </p>
     </div>
     <div class="col-lg-12">
-            {!! Form::model($sales, array('route' => array('frontend.printing.index'), 'method' => 'PUT')) !!}
+            {!! Form::model($sales, array('route' => array('frontend.slsmark.index'), 'method' => 'PUT')) !!}
             {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!}
             <div class="form-group row ">
               {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
@@ -122,51 +122,24 @@
               {!! Form::label('remark', 'Remarks', ['class' => 'col-md-2']) !!}
               <div class="col-md-10">{!! Form::textarea('remark', $sales->remark, array('class' => 'form-control','id'=>'1', 'readonly'=>true)) !!}</div>
             </div>
+
             <div class="form-group row">
-              {!! Form::label('confirmBy', 'Confirmed By(Sales Marketing)', ['class' => 'col-md-2']) !!}
-              <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy, array('class' => 'form-control' , 'readonly'=>true)) !!}</div>
+              {!! Form::label('confirmBy', 'Confirm By', ['class' => 'col-md-2']) !!}
+              <div class="col-md-10">{!! Form::text('confirmBy', $sales->confirmBy, array('class' => 'form-control', 'disabled'=>'disabled')) !!}</div>
             </div>
-
-              <div class="form-group row">
+              {{-- <div class="form-group row">
                 {!! Form::label('remark2', 'Remarks (for Planning department)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::textarea('remark2', $sales->remark2, array('class' => 'form-control', 'id'=>'2')) !!}</div>
-              </div>
-
-              <div class="form-group row">
-                {!! Form::label('confirmBy', 'Confirmed By(Planning)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy2, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+                <div class="col-md-10">{!! Form::textarea('remark2', $sales->remark2, array('class' => 'form-control','id'=>'2', 'readonly'=>true)) !!}</div>
               </div>
 
               <div class="form-group row">
                 {!! Form::label('remark3', 'Remarks (for CTP department)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::textarea('remark3', $sales->remark3, array('class' => 'form-control', 'id'=>'3')) !!}</div>
+                <div class="col-md-10">{!! Form::textarea('remark3', $sales->remark3, array('class' => 'form-control','id'=>'3', 'readonly'=>true)) !!}</div>
               </div>
-
-              <div class="form-group row">
-                {!! Form::label('confirmBy', 'Confirmed By(CTP)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy3, array('class' => 'form-control' , 'readonly'=>true)) !!}</div>
-              </div>
-
               <div class="form-group row ">
                 {!! Form::label('remark4', 'Remarks (for Printing department)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::textarea('remark4', $sales->remark4, array('class' => 'form-control' , 'id'=>'4')) !!}</div>
-              </div>
-
-              <div class="form-group row">
-                {!! Form::label('confirmBy', 'Confirmed By(Printing)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::text('confirmBy',$sales->confirmBy4, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-              </div>
-
-              <div class="form-group row">
-                  
-                  {!! Form::label('images', 'Files uploaded', array('class' => 'control-label col-md-2')) !!}
-                  <div class="col-md-10">
-                    @foreach($sales->fileupload as $file)
-                      <a href="{!! "/uploaded/$file->filename" !!}" download="{!! $file->filename !!}">{!! $file->filename !!}</a>
-                          {!! '&nbsp;'!!}
-                    @endforeach
-                  </div>
-              </div>
+                <div class="col-md-10">{!! Form::textarea('remark4', $sales->remark4, array('class' => 'form-control' ,'id'=>'4', 'readonly'=>true)) !!}</div>
+              </div> --}}
 
               <div class="form-group row">
               <input type="button" class="btn btn-success btn-block" value="BACK" onclick="history.go(-1)">  </input>

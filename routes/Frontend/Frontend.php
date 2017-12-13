@@ -88,6 +88,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('wotable', 'SalesController@wotable')->name('slsmark.wotable');
         Route::get('wosotable', 'SalesController@wosotable')->name('slsmark.wosotable');
         Route::get('destroyreq/{id}', 'SalesController@destroyreq')->name('slsmark.destroyreq');
+        Route::get('sco_paf/{id}', 'SalesController@sco_paf')->name('slsmark.sco_paf');
+        Route::post('storesco/{id}', 'SalesController@storesco')->name('slsmark.storesco');
+        Route::get('viewscopaf/{id}', 'SalesController@viewscopaf')->name('slsmark.viewscopaf');
 
 
     });
@@ -125,7 +128,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('stock/{id}', 'PlanController@stock')->name('plan.stock');
         Route::post('storestock/{id}', 'PlanController@storestock')->name('plan.storestock');
         Route::get('viewstock/{id}', 'PlanController@viewstock')->name('plan.viewstock');
-        Route::get('viewstocktable/($id)', 'PlanController@viewstocktable')->name('plan.viewstocktable');
+        Route::get('viewstocktableplan/(id)', 'PlanController@viewstocktableplan')->name('plan.viewstocktableplan');
         Route::post('imported2', 'PlanController@imported2')->name('plan.imported2');
         Route::post('importso', 'PlanController@importso')->name('plan.importso');
         Route::get('listTable', 'PlanController@listTable')->name('plan.listTable');
@@ -161,7 +164,23 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('selectpn', 'PlanController@selectpn')->name('plan.selectpn');
         Route::get('selectpntable', 'PlanController@selectpntable')->name('plan.selectpntable');
         Route::get('select/{id}', 'PlanController@select')->name('plan.select');
-        // Route::post('planningstore/{id}', 'PlanController@planningstore')->name('plan.planningstore');
+        Route::get('viewscopaf/{id}', 'PlanController@viewscopaf')->name('plan.viewscopaf');
+        Route::get('production/{id}', 'PlanController@production')->name('plan.production');
+        Route::get('listsales', 'PlanController@listsales')->name('plan.listsales');
+        Route::get('prodtable', 'PlanController@prodtable')->name('plan.prodtable');
+        Route::post('storeproduction/{id}', 'PlanController@storeproduction')->name('plan.storeproduction');
+        Route::get('productiontable', 'PlanController@productiontable')->name('plan.productiontable');
+        Route::get('viewproduction/{id}', 'PlanController@viewproduction')->name('plan.viewproduction');
+        Route::get('listbalance', 'PlanController@listbalance')->name('plan.listbalance');
+        Route::get('tablelist', 'PlanController@tablelist')->name('plan.tablelist');
+        Route::get('stockbalance/{id}', 'PlanController@stockbalance')->name('plan.stockbalance');
+        Route::post('balancestore/{id}', 'PlanController@balancestore')->name('plan.balancestore');
+        Route::get('tablebalance', 'PlanController@tablebalance')->name('plan.tablebalance');
+        Route::get('delete/{id}', 'PlanController@delete')->name('plan.delete');
+        Route::get('sheeting/{id}', 'PlanController@sheeting')->name('plan.sheeting');
+        Route::post('sheetingstore/{id}', 'PlanController@sheetingstore')->name('plan.sheetingstore');
+        Route::get('viewstock/{id}', 'PlanController@viewstock')->name('plan.viewstock');
+
     });
 
     Route::group(['prefix' => 'ctp', 'namespace' => 'ctp', 'middleware' => 'auth',], function () {

@@ -12,10 +12,13 @@
             <div class="col-lg-12">
               <div class="col-lg-12">
                 {!! Form::model($sales, array('route' => array('frontend.slsmark.storeProd', $sales->id), 'method' => 'POST', 'files'=>true)) !!}
+                {!!Form::hidden('salesline', $sales->salesline)!!}{!!Form::hidden('salesorder', $sales->salesorder)!!}
+                {!!Form::hidden('line', $sales->line)!!}{!!Form::hidden('purchaseOrder', $sales->purchaseOrder)!!}
+                {!!Form::hidden('remark', $sales->remark)!!}
 
                 <div class="form-group row ">
                   {!! Form::label('remarkbig', 'Remarks ', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::textarea('remarkbig',null, array('class' => 'form-control', 'id'=>'summernote')) !!}</div>
+                  <div class="col-md-10">{!! Form::textarea('remarkbig','<br>', array('class' => 'form-control', 'id'=>'summernote')) !!}</div>
                 </div>
 
                   <div class="form-group row ">
@@ -30,17 +33,21 @@
                     </div>
                     <div class="form-group row">
                       {!! Form::label('partDesc', 'Description', ['class' => 'col-md-2']) !!}
-                      <div class="col-md-10">{!! Form::text('partDesc', $sales->items->partDesc, array('disabled'=>'disabled' , 'class' => 'form-control ')) !!}</div>
+                      <div class="col-md-10">{!! Form::text('partDesc', $sales->items->partDesc, array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
                     </div>
                     <div class="form-group row">
                       {!! Form::label('partNo', 'Part Number', ['class' => 'col-md-2']) !!}
-                      <div class="col-md-10">{!! Form::text('partNo', $sales->items->partNo , array('disabled'=>'disabled' , 'class' => 'form-control ')) !!}</div>
+                      <div class="col-md-10">{!! Form::text('partNo', $sales->items->partNo , array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group row">
+                      {!! Form::label('deliverDate', 'Deliver Date(from SCO)', ['class' => 'col-md-2']) !!}
+                      <div class="col-md-10">{!! Form::text('deliverDate',$sales->deliverDate->format('d/m/Y'), array('id'=>'datepicker22', 'class' => 'form-control ')) !!}</div>
+                    </div>
+                    <div class="form-group row">
                       {!! Form::label('custName', 'Customer', ['class' => 'col-md-2']) !!}
-                      <div class="col-md-10">{!! Form::text('custName', $sales->custName, array('disabled'=>'disabled' , 'class' => 'form-control ')) !!}</div>
+                      <div class="col-md-10">{!! Form::text('custName', $sales->custName, array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
                     </div>
                   </div>
 
@@ -524,6 +531,12 @@
 
     $( function() {
       $( "#datepicker2" ).datepicker({
+      dateFormat: "dd/mm/yy"
+      });
+    } );
+
+    $( function() {
+      $( "#datepicker22" ).datepicker({
       dateFormat: "dd/mm/yy"
       });
     } );

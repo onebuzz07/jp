@@ -2,7 +2,7 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-    <h1>Plan Department</h1>
+    <h1>Planning Department</h1>
 
     @include('frontend.plan.includes.nav')
     <div style="padding:5px" class="row col-md-12">

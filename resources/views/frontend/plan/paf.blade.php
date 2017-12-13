@@ -12,7 +12,6 @@
             <th>Customer Name</th>
             <th>Part Number</th>
             <th>Part Description</th>
-            <th>Revision</th>
             <th>Actions</th>
           </tr>
       </thead>

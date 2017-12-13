@@ -1,9 +1,9 @@
 @extends('frontend.layouts.app')
-
+<link rel="stylesheet" href="{{ URL::asset('css/planning.css') }}" />
 @section('content')
   <h1>Planning Department</h1>
 @include('frontend.plan.includes.nav')
-    <h3>Soft Cover v1.5</h3><small>(For colour and black & white)</small>
+    <h3>Soft Cover v1.5 <small>(For colour and black & white)</small></h3>
 <div class="row col-md-12" id="app">
 {!! Form::model($sales, array('route' => array('frontend.plan.softcoverStore', $sales->id), 'method' => 'POST')) !!}
   <table class="table table-bordered" id="users-table">

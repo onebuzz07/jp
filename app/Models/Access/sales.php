@@ -60,6 +60,28 @@ class sales extends Model implements AuditableContract
         return $this->hasMany('App\Models\Access\FileUpload', 'doc_id', 'sco_number');
     }
 
+    public function product()
+    {
+        return $this->hasOne('App\Models\Access\Product');
+    }
+
+    public function productions()
+    {
+        return $this->hasMany('App\Models\Access\Production');
+    }
+
+    public function balances()
+    {
+        return $this->hasMany('App\Models\Access\Balance');
+    }
+
+    public function sheeting()
+    {
+        return $this->hasMany('App\Models\Access\Sheeting');
+    }
+
+
+
     // public function requisites()
     // {
     //     return $this->hasMany('App\Models\Access\Requisite');

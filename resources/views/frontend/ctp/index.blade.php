@@ -13,7 +13,7 @@
               <th>Customer Name</th>
               <th>Part Number</th>
               <th>Part Description</th>
-              <th>Repeat from?</th>
+              <th>Repeat?</th>
               <th>Created at</th>
               <th>Actions</th>
             </tr>

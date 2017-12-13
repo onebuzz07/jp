@@ -19,6 +19,11 @@ class product extends Model implements AuditableContract
         return $this->belongsTo('App\Models\Access\item');
     }
 
+  public function sales()
+    {
+        return $this->belongsTo('App\Models\Access\sales');
+    }
+
     public function fileupload()
     {
         return $this->hasMany('App\Models\Access\FileUpload', 'doc_id', 'paf_number');

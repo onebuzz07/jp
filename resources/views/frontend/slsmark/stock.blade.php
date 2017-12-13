@@ -62,13 +62,9 @@
                                       d.partNo = '{!! $sales->items->partNo !!}';
                                       d._token = '{{ csrf_token() }}';
                                  }
-
                             },
-
                       });
                   });
-
-
                   //Being injected from FrontendController
                   // console.log(test);
                   </script>
@@ -113,13 +109,9 @@
                                   d.id = {!! $sales->id !!};
                                   d._token = '{{ csrf_token() }}';
                              }
-
                         },
-
                   });
               });
-
-
               //Being injected from FrontendController
               // console.log(test);
               </script>
@@ -155,7 +147,7 @@
                     <td>{!! Form::number('POQuantity', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::number('stock_taken', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::number('adj', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
-                    <td>{!! Form::number('balance',$stock, array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
+                    <td>{!! Form::number('balance','', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::text('receiveDate', \Carbon\Carbon::now()->format('d/m/Y'), array('id'=>'datepicker', 'class'=>'form-control', 'required'=>'required')) !!}</td>
                     <td>{!! Form::text('remarkStock', '', array( 'class'=>'form-control', 'required'=>'required')) !!}</td>
                   </tr>

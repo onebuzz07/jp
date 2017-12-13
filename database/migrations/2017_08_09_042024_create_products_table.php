@@ -75,6 +75,7 @@ class CreateProductsTable extends Migration
           $table->string('issueBy')->nullable();
           $table->string('status')->nullable();
           $table->string('rev')->nullable();
+          $table->string('sco_number')->nullable();
 
           $table->SoftDeletes();
           $table->timestamps();

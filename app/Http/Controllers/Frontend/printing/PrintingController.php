@@ -32,14 +32,6 @@ class PrintingController extends Controller
       return view('frontend.printing.index')->with('sales',$sales);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-
-
     public function edit($id)
     {
         // get the sales
@@ -99,12 +91,12 @@ class PrintingController extends Controller
       if (access()->hasPermissions(['planning']))
       {
           $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
+          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat','sales.created_at', 'sales.id']);
 
 
           return Datatables::of($sales)
             ->editColumn('id', function ($sales) {
-                      return '<a href="'. route('frontend.printing.edit', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search"></i> View </a>
+                      return '<a href="'. route('frontend.printing.edit', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open"></i></a>
                       ';
                   })
                   ->editColumn('created_at', function ($date) {
@@ -120,7 +112,7 @@ class PrintingController extends Controller
         else
         {
           $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
+          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat','sales.created_at', 'sales.id']);
 
 
           return Datatables::of($sales)

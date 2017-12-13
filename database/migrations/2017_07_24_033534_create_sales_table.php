@@ -19,13 +19,15 @@ class CreateSalesTable extends Migration
             $table->string('sco_number')->nullable();
             $table->string('salesline')->nullable();
             $table->string('salesorder')->nullable();
+            $table->string('workorder')->nullable();
+            $table->string('wid')->nullable();
             $table->string('line')->nullable();
             $table->date('datetime')->nullable();
             $table->string('custName')->nullable();
             $table->string('purchaseOrder')->nullable();
             $table->boolean('approval')->nullable();
             $table->date('deliverDate')->nullable();
-            $table->text('remark')->nullable();
+
             $table->string('lot')->nullable();
             $table->string('mfgDate')->nullable();
             $table->string('expiryDate')->nullable();
@@ -40,16 +42,21 @@ class CreateSalesTable extends Migration
             $table->boolean('rawcheck')->nullable();
             $table->boolean('batchcheck')->nullable();
 
+            $table->text('remark')->nullable();
             $table->text('remark2')->nullable();
             $table->text('remark3')->nullable();
             $table->text('remark4')->nullable();
             $table->string('status')->nullable();
+
             $table->string('confirmBy')->nullable();
             $table->string('confirmBy2')->nullable();
             $table->string('confirmBy3')->nullable();
             $table->string('confirmBy4')->nullable();
+
             $table->string('repeat_from')->nullable();
             $table->string('repeat')->nullable();
+            $table->string('paf_number')->nullable();
+
 
             $table->SoftDeletes();
             $table->timestamps();
