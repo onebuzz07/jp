@@ -12,41 +12,41 @@
       <div class="col-md-3">
 
         <div class="form-group row ">
-          {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-2')) !!}
-          <div class="col-md-10">{!! Form::label('workorder', $sales->workorder, array('class' => 'col-md-10')) !!}</div>
+          {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-3')) !!}
+          <div class="col-md-9">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
         </div>
         <div class="form-group row ">
-          {!! Form::label('workorderid', 'ID', array('class' => 'col-md-2')) !!}
-          <div class="col-md-10">{!! Form::label('workorderid', $sales->workorder, array('class' => 'col-md-10')) !!}</div>
+          {!! Form::label('workorderid', 'ID', array('class' => 'col-md-3')) !!}
+          <div class="col-md-9">{!! Form::text('workorderid', $sales->workorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
         </div>
         <div class="form-group row ">
-          {!! Form::label('batchbar', 'Batch', array('class' => 'col-md-2')) !!}
-          <div class="col-md-10">{!! Form::label('batchbar', $sales->batchbar, array('class' => 'col-md-10')) !!}</div>
+          {!! Form::label('batchbar', 'Batch', array('class' => 'col-md-3')) !!}
+          <div class="col-md-9">{!! Form::text('batchbar', $sales->batchbar, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
         </div>
         <div class="form-group row ">
-          {!! Form::label('partNo', 'Item Number', array('class' => 'col-md-2')) !!}
-          <div class="col-md-10">{!! Form::label('partNo', $sales->items->partNo, array('class' => 'col-md-10')) !!}</div>
+          {!! Form::label('partNo', 'Item Number', array('class' => 'col-md-3')) !!}
+          <div class="col-md-9">{!! Form::text('partNo', $sales->items->partNo, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
         </div>
 
       </div>
         <div class="col-md-5">
 
           <div class="form-group row ">
-            {!! Form::label('partDesc', 'Description ', array('class' => 'col-md-2')) !!}
-            <div class="col-md-10">{!! Form::label('partDesc', $sales->items->partDesc, array('class' => 'col-md-10')) !!}</div>
+            {!! Form::label('partDesc', 'Description  ', array('class' => 'col-md-3')) !!}
+            <div class="col-md-9">{!! Form::text('partDesc', $sales->items->partDesc, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
           </div>
 
           <div class="form-group row ">
             {!! Form::label('quantity', 'Quantity Ordered', array('class' => 'col-md-2')) !!}
-            <div class="col-md-10">{!! Form::label('quantity', $sales->items->quantity, array('class' => 'col-md-10')) !!}</div>
+            <div class="col-md-10">{!! Form::text('quantity', $sales->items->quantity, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
           </div>
           <div class="form-group row ">
             {!! Form::label('custName', 'Customer Name', array('class' => 'col-md-2')) !!}
-            <div class="col-md-10">{!! Form::label('custName', $sales->custName, array('class' => 'col-md-10')) !!}</div>
+            <div class="col-md-10">{!! Form::text('custName', $sales->custName, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
           </div>
           <div class="form-group row ">
             {!! Form::label('salesorder', 'Sales/Job', array('class' => 'col-md-2')) !!}
-            <div class="col-md-10">{!! Form::label('salesorder', $sales->salesorder, array('class' => 'col-md-10')) !!}</div>
+            <div class="col-md-10">{!! Form::text('salesorder', $sales->salesorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
           </div>
         </div>
 
