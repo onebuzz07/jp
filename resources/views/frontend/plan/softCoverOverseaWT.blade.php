@@ -1,12 +1,12 @@
 @extends('frontend.layouts.app')
-
+<link rel="stylesheet" href="{{ URL::asset('css/planning.css') }}" />
 @section('content')
   <h1>Planning Department</h1>
 @include('frontend.plan.includes.nav')
-    <h3>Soft Cover of Overseas(W&Turn)</h3><small>(For colour and flexi job)</small>
+    <h3>Soft Cover of Overseas(W and Turn)</h3><small>(For colour and flexi job)</small>
 <div class="row col-md-12 " id="app">
   {!! Form::model($sales, array('route' => array('frontend.plan.softcoveroverseawtStore', $sales->id), 'method' => 'POST')) !!}
-  <div class="col-md-10 col-md-offset-1">
+  <div class="col-md-8">
     <table class="table table-bordered" id="users-table">
       <thead>
           <tr>
@@ -280,7 +280,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-md-6">
+  <div class="row col-md-4">
     <table class="table table-bordered">
         <tr>
           <td colspan="3">Paper+wastage qty </td>
@@ -298,10 +298,10 @@
         </tr>
         <tr>
           <td>Flexi</td>
-          <td>{!! Form::text('bwcover', '', array('class' => 'form-control', 'id'=>'n3003', 'v-model'=>"n3003", 'readonly'=>true)) !!}</td>
+          <td>{!! Form::text('flexicover', '', array('class' => 'form-control', 'id'=>'n3003', 'v-model'=>"n3003", 'readonly'=>true)) !!}</td>
           <td>Flexi Job</td>
-          <td>{!! Form::text('bwcoverready', '', array('class' => 'form-control', 'id'=>'n3004', 'v-model'=>"n3004", 'readonly'=>true)) !!}</td>
-          <td>{!! Form::text('bwcoverwaste', '', array('class' => 'form-control', 'id'=>'n3005', 'v-model'=>"n3005", 'readonly'=>true)) !!}</td>
+          <td>{!! Form::text('flexicoverready', '', array('class' => 'form-control', 'id'=>'n3004', 'v-model'=>"n3004", 'readonly'=>true)) !!}</td>
+          <td>{!! Form::text('flexicoverwaste', '', array('class' => 'form-control', 'id'=>'n3005', 'v-model'=>"n3005", 'readonly'=>true)) !!}</td>
         </tr>
 
         <tr>
@@ -386,7 +386,7 @@
       </tr>
     </table>
     </div>
-    <div class="col-md-6">
+    <div class="row col-md-4">
       <table class="table table-bordered">
         <tr>
           <td colspan="2">(COL) Make ready per color - Front </td>
@@ -462,8 +462,10 @@
         </tr>
       </table>
     </div>
-    <div class="col-md-12">
-      <div class="col-md-5">
+
+    {{-- flexi --}}
+    <div class="row col-md-12">
+      <div class="row col-md-3">
         <table class="table table-bordered" >
           <tbody>
               <tr>
@@ -539,7 +541,7 @@
           </tbody>
         </table>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-3">
             <table class="table table-bordered">
               <thead>
                   <tr>
@@ -592,9 +594,9 @@
           {{-- <div class="col-md-4">
             <table></table>
           </div> --}}
-        </div>
-        <div class="col-md-12">
-          <div class="col-md-6">
+        {{-- </div> --}}
+        {{-- <div class="col-md-12"> --}}
+          <div class="row col-md-4">
             <table class="table table-bordered">
                 <tr>
                   <td colspan="3">Paper+wastage qty </td>
@@ -701,7 +703,7 @@
               </tr>
             </table>
             </div>
-            <div class="col-md-6">
+            <div class="row col-md-3">
               <table class="table table-bordered">
                 <tr>
                   <td colspan="2">(COL) Make ready per color - Front </td>

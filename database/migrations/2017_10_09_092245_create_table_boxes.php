@@ -16,7 +16,7 @@ class CreateTableBoxes extends Migration
         Schema::create('boxes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer("sales_id")->nullable();
-            $table->integer("user_id")->nullable();
+            $table->integer("user")->nullable();
 
             $table->integer('order1')->nullable();
             $table->integer('order2')->nullable();

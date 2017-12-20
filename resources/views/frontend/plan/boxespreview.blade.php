@@ -1,11 +1,12 @@
 @extends('frontend.layouts.app')
+<link rel="stylesheet" href="{{ URL::asset('css/planning.css') }}" />
 @section('content')
 <h1>Planning Department</h1>
 @include('frontend.plan.includes.nav')
   <h3 class="box-title"> Boxes V1.3 </h3>
   {{-- <small>10/06/15 - ALL BOXES INCLUDING TOP GLOVE 432mm X 838mm</small>  --}}
     <div class="row" id="app">
-      {!! Form::model($boxes, array('route' => array('frontend.plan.boxesupdate', $boxes->id), 'method' => 'PUT')) !!}
+      {!! Form::model($boxes, array( 'method' => 'PUT')) !!}
       <div class="col-md-6">
       <table class="table table-bordered">
           <thead>
@@ -309,7 +310,7 @@
               <tr>
                 <td colspan="2">Packing</td>
                 <td>{!! Form::text('PackMake', $boxes->PackMake, array('class' => 'form-control', 'readonly'=>true,  'id'=>'n221', 'v-model'=>"n221")) !!}</td>
-                <td>{!! Form::text('PackWaste', $boxes->PackWaste, array('class' => 'form-control', 'readonly'=>true,  'step'=>"any", 'id'=>'n222', 'v-model'=>"n222")) !!}</td>
+                <td>{!! Form::text('packWaste', $boxes->packWaste, array('class' => 'form-control', 'readonly'=>true,  'step'=>"any", 'id'=>'n222', 'v-model'=>"n222")) !!}</td>
               </tr>
 
           </table>

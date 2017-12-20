@@ -15,6 +15,7 @@ class CreateTableSoftCoverBws extends Migration
     {
         Schema::create('softcoverbws', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer("user")->nullable();
             $table->decimal('half')->nullable();
             $table->integer("sales_id")->nullable();
             $table->decimal('none1')->nullable();

@@ -15,6 +15,7 @@ class CreateTableOverseaswts extends Migration
     {
         Schema::create('overseaswts', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer("user")->nullable();
             $table->integer("sales_id")->nullable();
 
             $table->decimal('none1')->nullable();

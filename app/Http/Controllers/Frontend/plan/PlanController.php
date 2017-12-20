@@ -541,11 +541,12 @@ class PlanController extends Controller
      $softcover->bwsticker  = $request->input('bwsticker');
      $softcover->bwstickerready  = $request->input('bwstickerready');
      $softcover->bwstickerwaste  = $request->input('bwstickerwaste');
+     $softcover->user = Auth::user()->id;
 
      $softcover->save();
 
      // redirect
-     return redirect()->route('frontend.plan.planningmaster')->withFlashSuccess('The data is saved.');
+     return redirect()->route('frontend.plan.softcoverview')->withFlashSuccess('The data is saved.');
    }
 
    public function softCoverBW($id)
@@ -741,11 +742,12 @@ class PlanController extends Controller
      $softcoverbw->bwsticker  = $request->input('bwsticker');
      $softcoverbw->bwstickerready  = $request->input('bwstickerready');
      $softcoverbw->bwstickerwaste  = $request->input('bwstickerwaste');
+     $softcoverbw->user = Auth::user()->id;
 
      $softcoverbw->save();
 
      // redirect
-     return redirect()->route('frontend.plan.planningmaster')->withFlashSuccess('The data is saved.');
+     return redirect()->route('frontend.plan.softcoverbwview')->withFlashSuccess('The data is saved.');
    }
 
    public function softCoverOverseaWT($id)
@@ -1048,11 +1050,12 @@ class PlanController extends Controller
     //  $overseaswt->blaMake5  = $request->input('blaMake5');
     //  $overseaswt->blaWaste5  = $request->input('blaWaste5');
     $overseaswt->colMakeFrontcovback1  = $request->input('colMakeFrontcovback1');
+    $overseaswt->user = Auth::user()->id;
 
      $overseaswt->save();
 
      // redirect
-     return redirect()->route('frontend.plan.planningmaster')->withFlashSuccess('The data is saved.');
+     return redirect()->route('frontend.plan.softcoveroverseaswtview')->withFlashSuccess('The data is saved.');
    }
 
    public function softCoverOverseas($id)
@@ -1301,7 +1304,6 @@ class PlanController extends Controller
      $overseasfb->flexiSewC2  = $request->input('flexiSewC2');
      $overseasfb->flexiBindC2  = $request->input('flexiBindC2');
      $overseasfb->flexi3C2  = $request->input('flexi3C2');
-
      $overseasfb->flexiPrintC3  = $request->input('flexiPrintC3');
      $overseasfb->flexiSurfC3  = $request->input('flexiSurfC3');
      $overseasfb->flexiTrimC3  = $request->input('flexiTrimC3');
@@ -1312,11 +1314,9 @@ class PlanController extends Controller
      $overseasfb->flexiBindC3  = $request->input('flexiBindC3');
      $overseasfb->flexi3C3  = $request->input('flexi3C3');
      $overseasfb->flexiPackC3  = $request->input('flexiPackC3');
-
      $overseasfb->flexicover1  = $request->input('flexicover1');
      $overseasfb->flexicoverready1  = $request->input('flexicoverready1');
      $overseasfb->flexicoverwaste1  = $request->input('flexicoverwaste1');
-
      $overseasfb->surfMake1  = $request->input('surfMake1');
      $overseasfb->surfWaste1  = $request->input('surfWaste1');
      $overseasfb->trimMake1  = $request->input('trimMake1');
@@ -1328,10 +1328,10 @@ class PlanController extends Controller
      $overseasfb->foldMake1  = $request->input('foldMake1');
      $overseasfb->foldWaste1  = $request->input('foldWaste1');
      //wan commented this
-     //$overseasfb->sewMake1  = $request->input('sewMake1');
-     //$overseasfb->sewWaste1  = $request->input('sewWaste1');
-     //$overseasfb->bindMake1  = $request->input('bindMake1');
-     //$overseasfb->bindWaste1  = $request->input('bindWaste1');
+     $overseasfb->sewMake1  = $request->input('sewMake1');
+     $overseasfb->sewWaste1  = $request->input('sewWaste1');
+     $overseasfb->bindMake1  = $request->input('bindMake1');
+     $overseasfb->bindWaste1  = $request->input('bindWaste1');
      $overseasfb->threeMake1  = $request->input('threeMake1');
      $overseasfb->threeWaste1  = $request->input('threeWaste1');
      $overseasfb->PackMake1  = $request->input('PackMake1');
@@ -1352,13 +1352,14 @@ class PlanController extends Controller
      $overseasfb->colMakeFront5  = $request->input('colMakeFront5');
      $overseasfb->colMakeBack5  = $request->input('colMakeBack5');
      $overseasfb->colWaste5  = $request->input('colWaste5');
+     $overseasfb->user = Auth::user()->id;
     //  $overseasfb->blaMake5  = $request->input('blaMake5');
     //  $overseasfb->blaWaste5  = $request->input('blaWaste5');
 
      $overseasfb->save();
 
      // redirect
-     return redirect()->route('frontend.plan.planningmaster')->withFlashSuccess('The data is saved.');
+     return redirect()->route('frontend.plan.softcoveroverseasview')->withFlashSuccess('The data is saved.');
    }
 
    public function boxes ($id)
@@ -1373,7 +1374,7 @@ class PlanController extends Controller
      $boxes = Boxes::where('sales_id',$sales->id)->first();
      $boxes = new Boxes;
      $boxes->sales_id = $sales->id;
-     $boxes->user_id = Auth::user()->id;
+     // $boxes->user_id = Auth::user()->id;
      $boxes->order1  = $request->input('order1');
      $boxes->order2  = $request->input('order2');
      $boxes->order3  = $request->input('order3');
@@ -1485,10 +1486,11 @@ class PlanController extends Controller
      $boxes->gluewaste  = $request->input('gluewaste');
      $boxes->PackMake  = $request->input('PackMake');
      $boxes->packWaste  = $request->input('packWaste');
+     $overseasfb->user = Auth::user()->id;
      $boxes->save();
 
      // redirect
-     return redirect()->route('frontend.plan.planningmaster')->withFlashSuccess('The data is saved.');
+     return redirect()->route('frontend.plan.boxesview')->withFlashSuccess('The data is saved.');
    }
 
    public function planning ($id)
@@ -1503,7 +1505,7 @@ class PlanController extends Controller
      $plannings = Planning::where('sales_id',$sales->id)->first();
      $plannings = new Planning;
      $plannings->sales_id = $sales->id;
-     $plannings->user_id = Auth::user()->id;
+     // $plannings->user_id = Auth::user()->id;
      $plannings->aread  = $request->input('aread');
      $plannings->incharead  = $request->input('incharead');
      $plannings->areaw  = $request->input('areaw');
@@ -1529,10 +1531,11 @@ class PlanController extends Controller
      $plannings->permt  = $request->input('permt');
      $plannings->mt  = $request->input('mt');
      $plannings->sh  = $request->input('sh');
+     $plannings->user = Auth::user()->id;
 
      $plannings->save();
 
-     return redirect()->route('frontend.plan.planningmaster')->withFlashSuccess('The data is saved.');
+     return redirect()->route('frontend.plan.planningview')->withFlashSuccess('The data is saved.');
    }
 
    public function softcoverpreview($id)
@@ -1568,7 +1571,7 @@ class PlanController extends Controller
    {
      // $sales = Sales::find($id);
      // $overseaswt = Overseaswt::where('sales_id',$sales->id)->first();
-        $oveseaswt = Overseaswt::find($id);
+        $overseaswt = Overseaswt::find($id);
         $sales = Sales::find($overseaswt->sales_id);
      return view('frontend.plan.softcoveroverseaswtpreview')->with('sales', $sales)->with('overseaswt', $overseaswt);
    }
@@ -1682,7 +1685,7 @@ class PlanController extends Controller
         $production->sco_number = $sales->sco_number;
         $production->so_number = $sales->salesorder;
         $production->wo_number = $sales->workorder;
-        $production->keyproduction = $sales->sco_number.$sales->salesorders;
+        $production->keyproduction = $sales->salesorders.$sales->workorder.$sales->salesorder;
 
         $production->save();
 
@@ -1692,6 +1695,7 @@ class PlanController extends Controller
         $remarks = $request->input('remarks');
         $sco_number = $request->input('sco_number');
         $jobid =  $request->input('job_id');
+        $okay = $request->input('operationkey');
         $i=0;
 
       foreach ($station as $stat) {
@@ -1700,6 +1704,7 @@ class PlanController extends Controller
         $stat->remarks = $remarks[$i];
         $stat->job_id =  $jobid[$i];
         $stat->sco_number =  $sco_number;
+        $stat->code =  $okay[$i].$sales->workorder.$jobid[$i];
         $stat->save();
         $i++;
       }
@@ -1853,7 +1858,8 @@ class PlanController extends Controller
    {
          $softcover = Softcover::leftJoin('sales', 'soft_covers.sales_id', '=', 'sales.id')
           ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-          ->select(['sales.custName','items.partNo','items.partDesc', 'soft_covers.created_at', 'soft_covers.id', 'soft_covers.sales_id' ]);
+          ->leftJoin('users', 'soft_covers.user', '=', 'users.id')
+          ->select(['sales.custName','items.partNo','items.partDesc', 'soft_covers.created_at','users.first_name', 'soft_covers.id', 'soft_covers.sales_id' ]);
 
          return Datatables::of($softcover)
           ->editColumn('created_at', function ($date) {
@@ -1864,6 +1870,9 @@ class PlanController extends Controller
               return '<a href="'. route('frontend.plan.softcoverpreview', $softcover->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="View"></i></a>
                ';
          })
+         ->order(function ($softcover) {
+                         $softcover->orderBy('created_at', 'desc');
+                     })
          ->escapeColumns([])
          ->make();
    }
@@ -1878,7 +1887,8 @@ class PlanController extends Controller
    {
      $softcoverbw = Softcoverbw::leftJoin('sales', 'softcoverbws.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'softcoverbws.created_at', 'softcoverbws.id', 'softcoverbws.sales_id' ]);
+      ->leftJoin('users', 'softcoverbws.user', '=', 'users.id')
+      ->select(['sales.custName','items.partNo','items.partDesc', 'softcoverbws.created_at', 'users.first_name','softcoverbws.id', 'softcoverbws.sales_id' ]);
 
       return Datatables::of($softcoverbw)
        ->editColumn('created_at', function ($date) {
@@ -1888,6 +1898,9 @@ class PlanController extends Controller
            return '<a href="'. route('frontend.plan.softcoverbwpreview', $softcoverbw->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="View"></i></a>
             ';
       })
+      ->order(function ($softcoverbw) {
+                      $softcoverbw->orderBy('created_at', 'desc');
+                  })
          ->escapeColumns([])
          ->make();
    }
@@ -1902,7 +1915,8 @@ class PlanController extends Controller
    {
      $overseasfb = Overseasfb::leftJoin('sales', 'overseasfbs.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'overseasfbs.created_at', 'overseasfbs.id', 'overseasfbs.sales_id' ]);
+      ->leftJoin('users', 'overseasfbs.user', '=', 'users.id')
+      ->select(['sales.custName','items.partNo','items.partDesc', 'overseasfbs.created_at','users.first_name', 'overseasfbs.id', 'overseasfbs.sales_id' ]);
 
       return Datatables::of($overseasfb)
        ->editColumn('created_at', function ($date) {
@@ -1912,6 +1926,9 @@ class PlanController extends Controller
            return '<a href="'. route('frontend.plan.softcoveroverseaspreview', $overseasfb->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="View"></i></a>
             ';
       })
+      ->order(function ($overseasfb) {
+                      $overseasfb->orderBy('created_at', 'desc');
+                  })
          ->escapeColumns([])
          ->make();
     }
@@ -1926,7 +1943,8 @@ class PlanController extends Controller
    {
      $overseaswt = Overseaswt::leftJoin('sales', 'overseaswts.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'overseaswts.created_at', 'overseaswts.id', 'overseaswts.sales_id' ]);
+      ->leftJoin('users', 'overseaswts.user', '=', 'users.id')
+      ->select(['sales.custName','items.partNo','items.partDesc', 'overseaswts.created_at','users.first_name', 'overseaswts.id', 'overseaswts.sales_id' ]);
 
       return Datatables::of($overseaswt)
        ->editColumn('created_at', function ($date) {
@@ -1936,6 +1954,10 @@ class PlanController extends Controller
            return '<a href="'. route('frontend.plan.softcoveroverseaswtpreview', $overseaswt->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="View"></i></a>
             ';
       })
+
+      ->order(function ($overseaswt) {
+                      $overseaswt->orderBy('created_at', 'desc');
+                  })
          ->escapeColumns([])
          ->make();
    }
@@ -1950,7 +1972,8 @@ class PlanController extends Controller
    {
      $boxes = Boxes::leftJoin('sales', 'boxes.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'boxes.created_at', 'boxes.id', 'boxes.sales_id' ]);
+      ->leftJoin('users', 'boxes.user', '=', 'users.id')
+      ->select(['sales.custName','items.partNo','items.partDesc', 'boxes.created_at','users.first_name', 'boxes.id', 'boxes.sales_id' ]);
 
       return Datatables::of($boxes)
        ->editColumn('created_at', function ($date) {
@@ -1960,6 +1983,9 @@ class PlanController extends Controller
            return '<a href="'. route('frontend.plan.boxespreview', $boxes->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="View"></i></a>
             ';
       })
+      ->order(function ($boxes) {
+                      $boxes->orderBy('created_at', 'desc');
+                  })
          ->escapeColumns([])
          ->make();
    }
@@ -1968,31 +1994,6 @@ class PlanController extends Controller
    {
      $planning = Planning::all();
      return view('frontend.plan.planningview')->with('planning', $planning);
-   }
-
-   public function planningstable()
-   {
-     $planning = Planning::leftJoin('sales', 'plannings.sales_id', '=', 'sales.id')
-      ->leftJoin('items', 'sales.items_id', '=', 'items.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'plannings.created_at', 'plannings.id', 'plannings.sales_id' ]);
-
-      return Datatables::of($planning)
-       ->editColumn('created_at', function ($date) {
-            return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
-          })
-      ->editColumn('id', function ($planning) {
-           return '<a href="'. route('frontend.plan.planningpreview', $planning->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="View" ></i></a>
-            ';
-      })
-         ->escapeColumns([])
-         ->make();
-   }
-
-   public function selectpn ()
-   {
-     $sales = Sales::all();
-     $items = Item::all();
-     return view('frontend.plan.selectpn')->with('sales', $sales)->with('items',$items);
    }
 
    public function selectpntable()
@@ -2011,6 +2012,37 @@ class PlanController extends Controller
          ->escapeColumns([])
          ->make();
    }
+
+
+   public function planningstable()
+   {
+     $planning = Planning::leftJoin('sales', 'plannings.sales_id', '=', 'sales.id')
+      ->leftJoin('items', 'sales.items_id', '=', 'items.id')
+      ->leftJoin('users', 'plannings.user', '=', 'users.id')
+      ->select(['sales.custName','items.partNo','items.partDesc', 'plannings.created_at','users.first_name', 'plannings.id', 'plannings.sales_id' ]);
+
+      return Datatables::of($planning)
+       ->editColumn('created_at', function ($date) {
+            return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
+          })
+      ->editColumn('id', function ($planning) {
+           return '<a href="'. route('frontend.plan.planningpreview', $planning->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="View" ></i></a>
+            ';
+      })
+      ->order(function ($planning) {
+                      $planning->orderBy('created_at', 'desc');
+                  })
+         ->escapeColumns([])
+         ->make();
+   }
+
+   public function selectpn ()
+   {
+     $sales = Sales::all();
+     $items = Item::all();
+     return view('frontend.plan.selectpn')->with('sales', $sales)->with('items',$items);
+   }
+
 
    public function select ($id)
    {
@@ -2113,7 +2145,7 @@ class PlanController extends Controller
      $sheeting = Sheeting::where('sco_number', $sales->sco_number)->first();
 
        return view ('frontend.plan.stockbalance')->with('sales', $sales)->with('sheeting', $sheeting);
-    
+
    }
 
    public function balancestore($id, Request $request)
@@ -2151,7 +2183,9 @@ class PlanController extends Controller
    public function sheeting($id)
    {
      $sales= Sales::find($id);
-     return view ('frontend.plan.sheeting')->with('sales', $sales);
+     $sheetings = Sheeting::where('sco_number', $sales->sco_number)->first();
+
+     return view ('frontend.plan.sheeting')->with('sales', $sales)->with('sheetings', $sheetings);
    }
 
    public function sheetingstore($id, Request $request)
@@ -2171,13 +2205,34 @@ class PlanController extends Controller
 
       $sheetings->save();
 
-      return redirect()->route('frontend.plan.listbalance')->withFlashSuccess('The data is  saved.');
+      return redirect()->route('frontend.plan.listbalance', $sales->id)->withFlashSuccess('The data is  saved.');
+   }
+
+   public function sheettable(Request $request)
+   {
+     $sheetings = Sheeting::select(['salesorder', 'supplier', 'item_number', 'desc', 'qty','customerid', 'partNo', 'id'])
+     ->where('sco_number','=', $request->input('sco_number'));
+
+     return Datatables::of($sheetings)
+       ->editColumn('id', function ($sheetings) {
+                 return '<a href="'. route('frontend.plan.deletesheet',$sheetings->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>
+                 ';
+             })
+     ->escapeColumns([])
+     ->make();
    }
 
    public function delete($id)
    {
      $balances = Balance::findOrFail($id)->forceDelete();
      return redirect()->route('frontend.plan.listbalance')->withFlashSuccess('The data is deleted.');
+   }
+
+   public function deletesheet($id)
+   {
+     $sheetings = Sheeting::findOrFail($id)->forceDelete();
+     $sales = Sales::where('sco_number', $sheetings->sco_number)->where('salesorder', $sheetings->salesorder)->first();
+     return redirect()->route('frontend.plan.sheeting', $sales->id)->withFlashSuccess('The data is deleted.');
    }
 
 }

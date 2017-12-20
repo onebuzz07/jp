@@ -22,8 +22,10 @@
 
             <div class="form-group row ">
               {!!Form::hidden('job_id[]', $pro->job_id)!!}
+
               <div class="col-md-2">{!! Form::text('station[]', $pro->station, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-              <div class="col-md-5">{!! Form::textarea('remarksQAD[]',$pro->remarksQAD, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+              <div class="col-md-1">{!! Form::hidden('operationkey[]',$pro->operationkey, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+              <div class="col-md-4">{!! Form::textarea('remarksQAD[]',$pro->remarksQAD, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
               <div class="col-md-5">{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->job_id)) !!}</div>
             </div>
 

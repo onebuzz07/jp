@@ -1,0 +1,17 @@
+th{
+  font-size: 12px;
+}
+td{
+  font-size: 12px;
+}
+tr{
+  font-size: 12px;
+}
+input[type="text"]
+{
+    font-size:9px;
+}
+input[type="number"]
+{
+    font-size:9px;
+}

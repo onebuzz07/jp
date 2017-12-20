@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+<link rel="stylesheet" href="{{ URL::asset('css/planning.css') }}" />
 @section('content')
 <h1>Planning Department</h1>
 @include('frontend.plan.includes.nav')
@@ -179,6 +180,25 @@
         data : {
           n1: 0, n3: 0, n5: 0, n6: 0, n7: 0, n8: 0, n9: 0, n18: 0, n19: 0, n20: 0, n21: 0, n24: 0
         },
+        methods: {
+            f1: function(value){
+                if(isNaN(value))
+                {
+                    return 0;
+                }
+                else
+                {
+                  if(isFinite(value))
+                  {
+                      return value.toFixed(0) ||0;
+                  }
+                  else
+                  {
+                    return 0;
+                  }
+                }
+            },
+        },
         computed: {
           n2: function() {
             return (this.n1 / 25.4) || 0;
@@ -187,16 +207,20 @@
             return (this.n3 / 25.4) || 0;
           },
           n10:function() {
-            return (this.n9 * 1550054260 / (this.n2 * this.n4 * this.n5)).toFixed(0) ||0;
+            var n141a =  (parseFloat(this.n9) * 1550054260 / parseFloat(this.n2) * parseFloat(this.n4) * parseFloat(this.n5));
+            return this.f1(n141a);
           },
           n11: function() {
-            return (this.n2 * this.n4 * this.n5 * this.n7 / 1550054260).toFixed(3) ||0;
+            var n141a =  (parseFloat(this.n2) * parseFloat(this.n4) * parseFloat(this.n5) * parseFloat(this.n7) / 1550054260);
+            return this.f1(n141a);
           },
           n12: function() {
-            return (0.0000011 * this.n2 * this.n4 * this.n7 * this.n8 / 100 / this.n6) ||0;
+            var n141a =  (0.0000011 * parseFloat(this.n2) * parseFloat(this.n4) * parseFloat(this.n7) * parseFloat(this.n8) / 100 / parseFloat(this.n6));
+            return this.f1(n141a);
           },
           n13: function() {
-            return ( 0.0000015 * this.n2 * this.n4 * this.n7 * this.n8 /100 / this.n6) ||0;
+            var n141a =  (0.0000015 * parseFloat(this.n2) * parseFloat(this.n4) * parseFloat(this.n7) * parseFloat(this.n8) / 100/ parseFloat(this.n6));
+            return this.f1(n141a);
           },
           n14: function() {
             return this.n12 ||0;
@@ -205,19 +229,28 @@
             return this.n13 ||0;
           },
           n16: function() {
+            var n141a =  (parseFloat(this.n14) / parseFloat(this.n7));
+            return this.f1(n141a);
+
             return (this.n14 / this.n7) ||0;
           },
           n17: function() {
+            var n141a =  (parseFloat(this.n15) / parseFloat(this.n7));
+            return this.f1(n141a);
             return (this.n15 / this.n7) ||0;
           },
           n22: function() {
-            return (this.n18 * this.n19 * this.n20 * this.n21 * 0.00000000000105) ||0;
+            var n141a =  (parseFloat(this.n18) * parseFloat(this.n19) * parseFloat(this.n20) * parseFloat(this.n21) *0.00000000000105);
+            return this.f1(n141a);
           },
           n23:function() {
+            var n141a =  (parseFloat(this.n21) / parseFloat(this.n22));
+            return this.f1(n141a);
             return parseInt(this.n21 / this.n22) ||0;
           },
           n25:function() {
-            return (this.n23 * this.n24).toFixed(0)||0;
+            var n141a =  (parseFloat(this.n23) / parseFloat(this.n24));
+            return this.f1(n141a);
           },
         }
     });

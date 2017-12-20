@@ -15,7 +15,7 @@ class CreateTablePlannings extends Migration
     {
         Schema::create('plannings', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->nullable();
+            $table->integer("user")->nullable();
             $table->integer('sales_id')->nullable();
             $table->integer('aread')->nullable();
             $table->double('incharead')->nullable();
@@ -26,7 +26,7 @@ class CreateTablePlannings extends Migration
             $table->double('qty')->nullable();
             $table->double('ink')->nullable();
             $table->integer('total')->nullable();
-            $table->integer('calcsheet')->nullable();
+            $table->bigInteger('calcsheet')->nullable();
             $table->double('calcmt')->nullable();
             $table->double('paperink')->nullable();
             $table->double('duplexink')->nullable();
@@ -39,7 +39,7 @@ class CreateTablePlannings extends Migration
             $table->integer('weight')->nullable();
             $table->integer('paperqty')->nullable();
             $table->double('calcinmt')->nullable();
-            $table->integer('permt')->nullable();
+            $table->bigInteger('permt')->nullable();
             $table->double('mt')->nullable();
             $table->integer('sh')->nullable();
 

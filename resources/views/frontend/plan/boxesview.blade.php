@@ -13,6 +13,7 @@
               <th>Part Number</th>
               <th>Part Description</th>
               <th>Created at</th>
+              <th>Created by</th>
               <th>Actions</th>
             </tr>
         </thead>

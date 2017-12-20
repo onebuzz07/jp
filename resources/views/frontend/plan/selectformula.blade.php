@@ -54,7 +54,7 @@
             {!! Form::model($sales, array('route' => array('frontend.plan.selectformula', $sales->id), 'method' => 'GET', 'class' => 'form-horizontal')) !!}
                 <fieldset>
                   <!-- Form Name -->
-                    <legend>Type of formula</legend>
+                    <legend>Choose one of the formula:</legend>
 
                     <!-- Multiple Radios -->
                     <div class="form-group">

@@ -1,5 +1,5 @@
 @extends('frontend.layouts.app')
-
+<link rel="stylesheet" href="{{ URL::asset('css/planning.css') }}" />
 @section('content')
   <h1>Planning Department</h1>
 @include('frontend.plan.includes.nav')

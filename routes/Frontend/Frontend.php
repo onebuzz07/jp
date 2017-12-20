@@ -180,6 +180,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('sheeting/{id}', 'PlanController@sheeting')->name('plan.sheeting');
         Route::post('sheetingstore/{id}', 'PlanController@sheetingstore')->name('plan.sheetingstore');
         Route::get('viewstock/{id}', 'PlanController@viewstock')->name('plan.viewstock');
+        Route::get('sheettable', 'PlanController@sheettable')->name('plan.sheettable');
+        Route::get('deletesheet/{id}', 'PlanController@deletesheet')->name('plan.deletesheet');
 
     });
 
@@ -203,5 +205,61 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('repeatEdit/{id}', 'PrintingController@repeatEdit')->name('printing.repeatEdit');
         Route::put('repeatUpdate/{id}', 'PrintingController@repeatUpdate')->name('printing.repeatUpdate');
         Route::get('destroy/{id}', 'PrintingController@destroy')->name('printing.destroy');
+    });
+
+    Route::group(['prefix' => 'production', 'namespace' => 'production', 'middleware' => 'auth',], function () {
+        Route::get('index', 'ProductionController@index')->name('production.index');
+        Route::get('anyData', 'ProductionController@anyData')->name('production.anyData');
+
+        Route::get('diecut', 'ProductionController@diecut')->name('production.diecut');
+        Route::get('viewdiecut/{id}', 'ProductionController@viewdiecut')->name('production.viewdiecut');
+        Route::get('dietable', 'ProductionController@dietable')->name('production.dietable');
+        Route::post('storedie/{id}', 'ProductionController@storedie')->name('production.storedie');
+
+        Route::get('print', 'ProductionController@print')->name('production.print');
+        Route::get('viewprint/{id}', 'ProductionController@viewprint')->name('production.viewprint');
+        Route::get('printtable', 'ProductionController@printtable')->name('production.printtable');
+        Route::post('storeprint/{id}', 'ProductionController@storeprint')->name('production.storeprint');
+
+        Route::get('trim', 'ProductionController@trim')->name('production.trim');
+        Route::get('viewtrim/{id}', 'ProductionController@viewtrim')->name('production.viewtrim');
+        Route::get('trimtable', 'ProductionController@trimtable')->name('production.trimtable');
+        Route::post('storetrim/{id}', 'ProductionController@storetrim')->name('production.storetrim');
+
+        Route::get('stripping', 'ProductionController@stripping')->name('production.stripping');
+        Route::get('viewstrip/{id}', 'ProductionController@viewstrip')->name('production.viewstrip');
+        Route::get('striptable', 'ProductionController@striptable')->name('production.striptable');
+        Route::post('storestrip/{id}', 'ProductionController@storestrip')->name('production.storestrip');
+
+        Route::get('folding', 'ProductionController@folding')->name('production.folding');
+        Route::get('viewfold/{id}', 'ProductionController@viewfold')->name('production.viewfold');
+        Route::get('foldtable', 'ProductionController@foldtable')->name('production.foldtable');
+        Route::post('storefold/{id}', 'ProductionController@storefold')->name('production.storefold');
+
+        Route::get('sewing', 'ProductionController@sewing')->name('production.sewing');
+        Route::get('viewsew/{id}', 'ProductionController@viewsew')->name('production.viewsew');
+        Route::get('sewtable', 'ProductionController@sewtable')->name('production.sewtable');
+        Route::post('storesew/{id}', 'ProductionController@storesew')->name('production.storesew');
+
+        Route::get('binding', 'ProductionController@binding')->name('production.binding');
+        Route::get('viewbind/{id}', 'ProductionController@viewbind')->name('production.viewbind');
+        Route::get('bindtable', 'ProductionController@bindtable')->name('production.bindtable');
+        Route::post('storebind/{id}', 'ProductionController@storebind')->name('production.storebind');
+
+        Route::get('threeknifetrim', 'ProductionController@threeknifetrim')->name('production.threeknifetrim');
+        Route::get('viewthreeknife/{id}', 'ProductionController@viewthreeknife')->name('production.viewthreeknife');
+        Route::get('threetable', 'ProductionController@threetable')->name('production.threetable');
+        Route::post('storethree/{id}', 'ProductionController@storethree')->name('production.storethree');
+
+        Route::get('packing', 'ProductionController@packing')->name('production.packing');
+        Route::get('viewpack/{id}', 'ProductionController@viewpack')->name('production.viewpack');
+        Route::get('packtable', 'ProductionController@packtable')->name('production.packtable');
+        Route::post('storepack/{id}', 'ProductionController@storepack')->name('production.storepack');
+
+        Route::get('surfacefinishing', 'ProductionController@surfacefinishing')->name('production.surfacefinishing');
+        Route::get('viewsurface/{id}', 'ProductionController@viewsurface')->name('production.viewsurface');
+        Route::get('surfacetable', 'ProductionController@surfacetable')->name('production.surfacetable');
+        Route::post('storesurf/{id}', 'ProductionController@storesurf')->name('production.storesurf');
+
     });
 });

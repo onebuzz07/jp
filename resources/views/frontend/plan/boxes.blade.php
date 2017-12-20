@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+<link rel="stylesheet" href="{{ URL::asset('css/planning.css') }}" />
 @section('content')
 <h1>Planning Department</h1>
 @include('frontend.plan.includes.nav')
@@ -309,7 +310,7 @@
               <tr>
                 <td colspan="2">Packing</td>
                 <td>{!! Form::number('PackMake', '', array('class' => 'form-control', 'id'=>'n221', 'v-model'=>"n221")) !!}</td>
-                <td>{!! Form::number('PackWaste', '', array('class' => 'form-control', 'step'=>"any", 'id'=>'n222', 'v-model'=>"n222")) !!}</td>
+                <td>{!! Form::number('packWaste', '', array('class' => 'form-control', 'step'=>"any", 'id'=>'n222', 'v-model'=>"n222")) !!}</td>
               </tr>
 
           </table>
