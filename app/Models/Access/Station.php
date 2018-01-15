@@ -10,4 +10,9 @@ class Station extends Model
   {
       return $this->belongsTo('App\Models\Access\Production');
   }
+  public function sales()
+  {
+      return $this->belongsTo('App\Models\Access\sales', 'sales_id');
+  }
+
 }

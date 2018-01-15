@@ -183,6 +183,28 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('sheettable', 'PlanController@sheettable')->name('plan.sheettable');
         Route::get('deletesheet/{id}', 'PlanController@deletesheet')->name('plan.deletesheet');
 
+        Route::get('deletes1/{id}', 'PlanController@deletes1')->name('plan.deletes1');
+        Route::get('deletes2/{id}', 'PlanController@deletes2')->name('plan.deletes2');
+        Route::get('deletes3/{id}', 'PlanController@deletes3')->name('plan.deletes3');
+        Route::get('deletes4/{id}', 'PlanController@deletes4')->name('plan.deletes4');
+        Route::get('deletes5/{id}', 'PlanController@deletes5')->name('plan.deletes5');
+        Route::get('deletes6/{id}', 'PlanController@deletes6')->name('plan.deletes6');
+
+        Route::get('softcoveredit/{id}', 'PlanController@softcoveredit')->name('plan.softcoveredit');
+        Route::post('softcoverupdate/{id}', 'PlanController@softcoverupdate')->name('plan.softcoverupdate');
+        Route::get('softcoverbwedit/{id}', 'PlanController@softcoverbwedit')->name('plan.softcoverbwedit');
+        Route::post('softcoverbwupdate/{id}', 'PlanController@softcoverbwupdate')->name('plan.softcoverbwupdate');
+        Route::get('softcoveroverseawtedit/{id}', 'PlanController@softcoveroverseawtedit')->name('plan.softcoveroverseawtedit');
+        Route::post('softcoveroverseawtupdate/{id}', 'PlanController@softcoveroverseawtupdate')->name('plan.softcoveroverseawtupdate');
+        Route::get('softcoveroverseafbedit/{id}', 'PlanController@softcoveroverseafbedit')->name('plan.softcoveroverseafbedit');
+        Route::post('softcoveroverseafbupdate/{id}', 'PlanController@softcoveroverseafbupdate')->name('plan.softcoveroverseafbupdate');
+        Route::get('boxesedit/{id}', 'PlanController@boxesedit')->name('plan.boxesedit');
+        Route::post('boxesupdate/{id}', 'PlanController@boxesupdate')->name('plan.boxesupdate');
+        Route::get('planningedit/{id}', 'PlanController@planningedit')->name('plan.planningedit');
+        Route::post('planningupdate/{id}', 'PlanController@planningupdate')->name('plan.planningupdate');
+
+        Route::post('importedprod', 'PlanController@importedprod')->name('plan.importedprod');
+
     });
 
     Route::group(['prefix' => 'ctp', 'namespace' => 'ctp', 'middleware' => 'auth',], function () {
@@ -261,5 +283,49 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('surfacetable', 'ProductionController@surfacetable')->name('production.surfacetable');
         Route::post('storesurf/{id}', 'ProductionController@storesurf')->name('production.storesurf');
 
+        Route::get('flute', 'ProductionController@flute')->name('production.flute');
+        Route::get('viewflute/{id}', 'ProductionController@viewflute')->name('production.viewflute');
+        Route::get('flutetable', 'ProductionController@flutetable')->name('production.flutetable');
+        Route::post('storeflute/{id}', 'ProductionController@storeflute')->name('production.storeflute');
+
+        Route::get('window', 'ProductionController@window')->name('production.window');
+        Route::get('viewwindow/{id}', 'ProductionController@viewwindow')->name('production.viewwindow');
+        Route::get('windowtable', 'ProductionController@windowtable')->name('production.windowtable');
+        Route::post('storewindow/{id}', 'ProductionController@storewindow')->name('production.storewindow');
+
+        Route::get('glue', 'ProductionController@glue')->name('production.glue');
+        Route::get('viewglue/{id}', 'ProductionController@viewglue')->name('production.viewglue');
+        Route::get('gluetable', 'ProductionController@gluetable')->name('production.gluetable');
+        Route::post('storeglue/{id}', 'ProductionController@storeglue')->name('production.storeglue');
+
+        Route::get('cut', 'ProductionController@cut')->name('production.cut');
+        Route::get('viewcut/{id}', 'ProductionController@viewcut')->name('production.viewcut');
+        Route::get('cuttable', 'ProductionController@cuttable')->name('production.cuttable');
+        Route::post('storecut/{id}', 'ProductionController@storecut')->name('production.storecut');
+
+        Route::get('ai', 'ProductionController@ai')->name('production.ai');
+        Route::get('viewai/{id}', 'ProductionController@viewai')->name('production.viewai');
+        Route::get('aitable', 'ProductionController@aitable')->name('production.aitable');
+        Route::post('storeai/{id}', 'ProductionController@storeai')->name('production.storeai');
+
+        Route::get('varnish', 'ProductionController@varnish')->name('production.varnish');
+        Route::get('viewvarnish/{id}', 'ProductionController@viewvarnish')->name('production.viewvarnish');
+        Route::get('varnishtable', 'ProductionController@varnishtable')->name('production.varnishtable');
+        Route::post('storevarnish/{id}', 'ProductionController@storevarnish')->name('production.storevarnish');
+
     });
+
+    Route::group(['prefix' => 'report', 'namespace' => 'report', 'middleware' => 'auth',], function () {
+        Route::get('index', 'ReportController@index')->name('report.index');
+        Route::get('indexresult', 'ReportController@indexresult')->name('report.indexresult');
+        Route::post('indexpdf', 'ReportController@indexpdf')->name('report.indexpdf');
+        Route::post('reportsearch', 'ReportController@reportsearch')->name('report.reportsearch');
+        Route::get('reporttable', 'ReportController@reporttable')->name('report.reporttable');
+        Route::get('viewslsmark', 'ReportController@viewslsmark')->name('report.viewslsmark');
+        Route::get('slsmarktable', 'ReportController@slsmarktable')->name('report.slsmarktable');
+        Route::get('viewplanning', 'ReportController@viewplanning')->name('report.viewplanning');
+        Route::get('edit/{id}', 'ReportController@edit')->name('report.edit');
+        Route::get('destroy/{id}', 'ReportController@destroy')->name('report.destroy');
+    });
+
 });

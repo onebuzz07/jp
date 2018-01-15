@@ -49,11 +49,9 @@ class SalesController extends Controller
 
     public function create()
     {
-        $sales =  new Sales;
-        $salesqad= new Salesqad;
-        return view('frontend.slsmark.create')
-        ->with('sales',$sales)
-        ->with('Salesqad', $salesqad);
+        $sales =  Sales::all();
+        $salesqad= Salesqad::all();
+        return view('frontend.slsmark.create')->with('sales',$sales)->with('Salesqad', $salesqad);
     }
 
     public function createSales()
@@ -61,8 +59,15 @@ class SalesController extends Controller
         $salesqad = Salesqad::select(['sales_order', 'purchase_order','line', 'name', 'item_number', 'description', 'description_1','quantity_ordered', 'order_date','due_date','status', 'id']);
         return Datatables::of($salesqad)
             ->editColumn('id', function ($salesqad) {
-            //return $sales->action_buttons;
-                return '<a href="'. route('frontend.slsmark.createsco', $salesqad->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Add SCO"></i></a>';
+            if ($salesqad->status == null)
+            {
+              return '<a href="'. route('frontend.slsmark.createsco', $salesqad->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Add SCO"></i></a>';
+            }
+            else
+            {
+              return '';
+            }
+
         })
         ->order(function ($salesqad) {
                         $salesqad->orderBy('sales_order', 'desc');
@@ -74,14 +79,13 @@ class SalesController extends Controller
       public function createsco($id)
       {
           $salesqad = Salesqad::find($id);
-          return view('frontend.slsmark.createsco')
-          ->with('salesqad', $salesqad);
+          return view('frontend.slsmark.createsco')->with('salesqad', $salesqad);
       }
 
     public function store (Request $request, $id)
     {
         $salesqad = Salesqad::find($id);
-        $salesqad->status = 'SCO';
+        $salesqad->status = 'y';
         $salesqad->save();
 
         $sales = new Sales;
@@ -157,8 +161,19 @@ class SalesController extends Controller
         $items->finishing = $request->input('finishing');
         $items->save();
 
+        $workorder = new Workorder;
+        $workorder->sales_id = $sales->id;
+        $workorder->wo_number = $request->input('workorder');
+        $workorder->wid = $request->input('wid');
+        $dt =  \DateTime::createFromFormat('d/m/Y', $request->input("datetime"));
+        $workorder->due_date = $dt;
+        $workorder->save();
+
         $sales->items_id = $items->id;
+        $sales->workorders_id = $workorder->id;
         $sales->save();
+
+
 
         // START file upload save
         $picture = '';
@@ -188,8 +203,7 @@ class SalesController extends Controller
     // bakal dibuang
     public function importedsales (Request $request)
     {
-          DB::table('salesqads')->truncate();
-          if(Input::hasFile('import_file_sales')){
+      if(Input::hasFile('import_file_sales')){
             $path = Input::file('import_file_sales')->getRealPath();
             $rows = Excel::load($path, function($reader) {
                   $reader->toArray();
@@ -197,24 +211,35 @@ class SalesController extends Controller
               })->get();
 
              foreach ($rows as $row) {
-               $row8 = str_replace(",", "", $row[8]);
-                     $item = array([
-                      'Sales_Order' => $row[0],
-                      'Purchase_Order' => $row[1],
-                      'Sold_To' => $row[2],
-                      'Name' => $row[3],
-                      'Line' => $row[4],
-                      'Item_Number' => $row[5],
-                      'Description' => $row[6],
-                      'Description_1' => $row[7],
-                      'Quantity_Ordered' => $row8,
-                      'Order_Date' => $row[9],
-                      'Due_Date' => $row[10],
-                  ]);
-                  DB::table('salesqads')->insert($item );
+               $salesqad = Salesqad::where('Sales_Order', $row[0])
+                ->where('Line', $row[4])
+                ->first();
+
+              if ($salesqad)
+              {
+                 continue;
+              }
+              else
+              {
+                $row8 = str_replace(",", "", $row[8]);
+                      $item = array([
+                       'Sales_Order' => $row[0],
+                       'Purchase_Order' => $row[1],
+                       'Sold_To' => $row[2],
+                       'Name' => $row[3],
+                       'Line' => $row[4],
+                       'Item_Number' => $row[5],
+                       'Description' => $row[6],
+                       'Description_1' => $row[7],
+                       'Quantity_Ordered' => $row8,
+                       'Order_Date' => $row[9],
+                       'Due_Date' => $row[10],
+                   ]);
+                   DB::table('salesqads')->insert($item );
               }
             }
-            return redirect()->route('frontend.slsmark.index')->withFlashSuccess('The sales data is imported.');
+          }
+        return redirect()->route('frontend.slsmark.index')->withFlashSuccess('The sales data is imported.');
     }
 
     public function anyData()
@@ -254,16 +279,16 @@ class SalesController extends Controller
       {
         $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
         ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc' , 'sales.status','sales.created_at', 'sales.id'])
-        ->where('sales.status', '=', 'Approved')
-        ->orWhere('sales.status', '=', 'Planning Dept')
-        ->orWhere('sales.status', '=', 'CTP Dept')
-        ->orWhere('sales.status', '=', 'Printing Dept');
+        ->where('sales.status', '=', 'Approved');
+        // ->orWhere('sales.status', '=', 'Planning Dept')
+        // ->orWhere('sales.status', '=', 'CTP Dept')
+        // ->orWhere('sales.status', '=', 'Printing Dept');
         return Datatables::of($sales)
 
         ->editColumn('id', function ($sales) {
             //return $sales->action_buttons;
             return '
-            <a href="'. route('frontend.slsmark.show', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-check"></i> View </a>
+            <a href="'. route('frontend.slsmark.show', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View SCO"></i></a>
             ';
               })
         ->editColumn('created_at', function ($date) {
@@ -291,7 +316,7 @@ class SalesController extends Controller
       {
           $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
                               ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
-                              ->select(['products.paf_number', 'sales.custName','items.partNo','items.partDesc', 'products.id' ]);
+                              ->select(['products.paf_number','sales.salesline', 'sales.custName','items.partNo','items.partDesc','products.rev', 'products.id' ]);
 
           return Datatables::of($product)
             ->editColumn('id', function ($product) {
@@ -311,11 +336,11 @@ class SalesController extends Controller
         {
           $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
                               ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
-                              ->select(['products.paf_number', 'sales.custName','items.partNo','items.partDesc', 'products.id' ]);
+                              ->select(['products.paf_number','sales.salesline', 'sales.custName','items.partNo','items.partDesc', 'products.id' ]);
 
           return Datatables::of($product)
             ->editColumn('id', function ($product) {
-            return '<a href="'. route('frontend.slsmark.editform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit </a>
+            return '<a href="'. route('frontend.slsmark.editform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit PAF"></i></a>
             ';
           })
           ->escapeColumns([])
@@ -325,7 +350,7 @@ class SalesController extends Controller
         {
           $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
                               ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
-                              ->select(['products.paf_number', 'sales.custName','items.partNo','items.partDesc', 'products.id' ]);
+                              ->select(['products.paf_number','sales.salesline', 'sales.custName','items.partNo','items.partDesc', 'products.id' ]);
 
           return Datatables::of($product)
             ->editColumn('id', function ($product) {
@@ -374,7 +399,7 @@ class SalesController extends Controller
       $sales->datetime = $dt ;
       $sales->custName = $request->input('custName');
       $sales->purchaseOrder = $request->input('purchaseOrder');
-      $sales->salesline = $request->input('salesline');
+      $sales->salesline = $request->input('salesorder').'-'.$request->input('line');
       $dte  = \DateTime::createFromFormat('d/m/Y',$request->input('deliverDate'));
       $sales->deliverDate = $dte;
       $sales->remark = $request->input('remark');
@@ -389,7 +414,7 @@ class SalesController extends Controller
       $sales->expiryDate =  $request->input('expiryDate');
       $sales->dateFacNo =  $request->input('dateFacNo');
       $sales->packerID =  $request->input('packerID');
-      $sales->status = 'PAF';
+      $sales->status = 'PAF(cont)';
       $sales->confirmBy = $request->input('confirmBy');
       $remark=$request->input('remark');
       $dom = new \DomDocument();
@@ -436,11 +461,19 @@ class SalesController extends Controller
       $items->rawcheck = $request->input('rawcheck');
       $items->save();
 
+      $workorder = new Workorder;
+      $workorder->sales_id = $sales->id;
+      $workorder->wo_number = $request->input('workorder');
+      $workorder->wid = $request->input('wid');
+      $dt =  \DateTime::createFromFormat('d/m/Y', $request->input("datetime"));
+      $workorder->due_date = $dt;
+      $workorder->save();
+
       $sales->items_id = $items->id;
+      $sales->workorders_id = $workorder->id;
       $sales->save();
 
       return redirect()->route('frontend.slsmark.edit', $sales->id);
-
     }
 
     public function edit ($id)
@@ -449,13 +482,13 @@ class SalesController extends Controller
       $items = Item::find($sales->items->id);
       $product = product::where('items_id', $items->id)->first();
       return view('frontend.slsmark.edit')->with('sales', $sales)->with('product', $product);
-
     }
 
     public function storeProd (Request  $request, $id)
     {
       $sales= Sales::find($id);
       $items = Item::find($sales->items->id);
+      $sales->status = 'PAF';
       $sales->lot = $request->input('lot');
       $sales->mfgDate = $request->input('mfgDate');
       $sales->expiryDate = $request->input('expiryDate');
@@ -599,17 +632,18 @@ class SalesController extends Controller
       {
             $sales= Sales::find($id);
             $items = Item::find($sales->items->id);
-            $product = new Product;
-            $product->items_id = $items->id;
-            $latestproduct = Product::orderBy('created_at', 'desc')->first();
-            if ($latestproduct === null){
-                $product->paf_number = 'PAF-' . Carbon::now()->format('y') . '-00001';
-            }
-            else{
-                $number = (int) substr($latestproduct->paf_number,-5,5);
-                $number ++;
-                $product->paf_number = 'PAF-' . Carbon::now()->format('y') .'-'. str_pad($number,5,'0',STR_PAD_LEFT );
-            }
+            $product = Product::where('sco_number', $sales->sco_number)->first();
+
+            // $product->items_id = $items->id;
+            // $latestproduct = Product::orderBy('created_at', 'desc')->first();
+            // if ($latestproduct === null){
+            //     $product->paf_number = 'PAF-' . Carbon::now()->format('y') . '-00001';
+            // }
+            // else{
+            //     $number = (int) substr($latestproduct->paf_number,-5,5);
+            //     $number ++;
+            //     $product->paf_number = 'PAF-' . Carbon::now()->format('y') .'-'. str_pad($number,5,'0',STR_PAD_LEFT );
+            // }
 
             $latestrevision = Product::orderby('created_at', 'desc')->first();
             if ($latestrevision === null){
@@ -781,8 +815,11 @@ class SalesController extends Controller
             $number ++;
             $sales->sco_number = 'SC-' . Carbon::now()->format('y') .'-'.str_pad($number,5,'0',STR_PAD_LEFT );
         }
+
+        $sales->workorder = $request->input('workorder');
+        $sales->wid = $request->input('wid');
         $sales->repeat_from = $request->input('sco_number');
-        $sales->salesline = $request->input('salesline');
+        $sales->salesline = $request->input('salesorder').'-'.$request->input('line');
         $sales->salesorder = $request->input('salesorder');
         $sales->line = $request->input('line');
         $sales->purchaseOrder = $request->input('purchaseOrder');
@@ -839,7 +876,7 @@ class SalesController extends Controller
         $items->partNo = $request->input('partNo');
         $items->size = $request->input('size');
         $items->quantity = $request->input('quantity');
-        $items->qtyOnHand = $request->input('qtyOnHand');
+        // $items->qtyOnHand = $request->input('qtyOnHand');
         $items->rawMaterial = $request->input('rawMaterial');
         $items->noPages = $request->input('noPages');
         $items->colour = $request->input('colour');
@@ -1158,7 +1195,7 @@ class SalesController extends Controller
 
        public function requisition()
        {
-           $requisite = Requisite::select(['customerName', 'partNumberSRO', 'partDescSRO','revSRO', 'id']);
+           $requisite = Requisite::select(['salesline', 'customerName', 'partNumberSRO', 'partDescSRO','revSRO', 'id']);
 
            return Datatables::of($requisite)
            ->escapeColumns([])
@@ -1196,7 +1233,7 @@ class SalesController extends Controller
 
      public function storeeditreq ($id, Request $request)
      {
-         $requisite = new Requisite;
+         $requisite = Requisite::find($id);
          $latestrequisite = Requisite::orderBy('created_at', 'desc')->first();
          if ($latestrequisite === null){
              $requisite->SRO_number = 'SRO-' . Carbon::now()->format('y') . '-00001';
@@ -1333,6 +1370,9 @@ class SalesController extends Controller
               $number ++;
               $requisite->SRO_number = 'SRO-' . Carbon::now()->format('y') .'-'.str_pad($number,5,'0',STR_PAD_LEFT );
           }
+          $requisite->salesorder = $request->input('salesorder');
+          $requisite->line = $request->input('line');
+          $requisite->salesline = $request->input('salesline');
           $dtsro = \DateTime::createFromFormat('d/m/Y', $request->input("dateSRO"));
           $requisite->dateSRO = $dtsro;
           $requisite->release = $request->input('release');

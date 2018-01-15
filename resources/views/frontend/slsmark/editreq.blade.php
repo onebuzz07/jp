@@ -12,6 +12,9 @@
 
             {!! Form::model($requisite, array('route' => array('frontend.slsmark.storeeditreq', $requisite->id), 'method' => ' PUT', 'files'=> true)) !!}
             {{ Form::hidden('requisites_id', $requisite->id)}}
+            {!!Form::hidden('salesorder', $requisite->salesorder)!!}
+            {!!Form::hidden('line', $requisite->line)!!}
+            {!! Form::hidden('salesline', $requisite->salesorder.'-'.$requisite->line) !!}
             <div class="form-group row ">
               {!! Form::label('release', 'Release? ', array('class' => 'col-md-2')) !!}
               <div class="col-md-10">{!! Form::checkbox('release', 1, $requisite->release, array('class' => 'field')) !!}</div>

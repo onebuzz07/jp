@@ -15,7 +15,10 @@ class CreateRequisitesTable extends Migration
     {
         Schema::create('requisites', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('SRO_number');
+            $table->string('salesorder')->nullable();
+            $table->string('line')->nullable();
+            $table->string('salesline')->nullable();
+            $table->string('SRO_number')->nullable();
             $table->date('dateSRO')->nullable();
             $table->boolean('release')->nullable();
             $table->string('customerName')->nullable();
@@ -25,8 +28,6 @@ class CreateRequisitesTable extends Migration
             $table->string('quantitySRO')->nullable();
             $table->string('sizeSRO')->nullable();
             $table->string('materialSRO')->nullable();
-            // $table->string('other_sub')->nullable();
-            // $table->string('other_data')->nullable();
             $table->text('remarksSRO')->nullable();
             $table->date('requiredDate')->nullable();
             $table->string('requestedBy')->nullable();

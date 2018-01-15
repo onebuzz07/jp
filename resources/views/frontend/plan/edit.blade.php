@@ -13,8 +13,18 @@
             {!! Form::model($sales, array('route' => array('frontend.plan.update', $sales->id), 'method' => 'PUT')) !!}
             {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!}
             <div class="form-group row ">
-              {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-2')) !!}
+              {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
+              <div class="col-md-10">{!! Form::checkbox('approval', 1, $sales->approval, array('class' => 'field', 'disabled'=>'disabled')) !!}</div>
+            </div>
+
+            <div class="form-group row ">
+              {!! Form::label('workorder', 'Work Order(Change if needed)', array('class' => 'col-md-2')) !!}
               <div class="col-md-10">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control')) !!}</div>
+            </div>
+
+            <div class="form-group row ">
+              {!! Form::label('wid', 'ID', array('class' => 'col-md-2')) !!}
+              <div class="col-md-10">{!! Form::text('wid', $sales->wid, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
             </div>
 
                 <div class="form-group row ">
@@ -26,11 +36,6 @@
                   {!! Form::label('line', 'Line', array('class' => 'col-md-2')) !!}
                   <div class="col-md-10">{!! Form::text('line', $sales->line, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
                 </div>
-
-            <div class="form-group row ">
-              {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
-              <div class="col-md-10">{!! Form::checkbox('approval', 1, $sales->approval, array('class' => 'field', 'disabled'=>'disabled')) !!}</div>
-            </div>
 
             <div class="form-group row">
               {!! Form::label('datetime', 'Date', ['class' => 'col-md-2']) !!}

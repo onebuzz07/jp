@@ -15,9 +15,10 @@ class CreateTableOverseaswts extends Migration
     {
         Schema::create('overseaswts', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('typeofformula')->nullable();
             $table->integer("user")->nullable();
             $table->integer("sales_id")->nullable();
-
+            $table->integer("workorders_id")->nullable();
             $table->decimal('none1')->nullable();
             $table->decimal('none2')->nullable();
             $table->integer('covOrderC')->nullable();
@@ -305,6 +306,9 @@ class CreateTableOverseaswts extends Migration
             // $table->integer('blaMake5')->nullable();
             // $table->decimal('blaWaste5')->nullable();
             $table->integer('colMakeFrontcovback1')->nullable();
+
+            $table->integer('totalqtyc')->nullable();
+            $table->integer('totalpaperc')->nullable();
 
             $table->timestamps();
         });

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
-        <ul class="nav navbar-nav">
+        <ul style="font-size: 9px;" class="nav navbar-nav">
             <li class="{!! Request::is('production/print') ? 'active' : '' !!}">
                 <a href="{!! route('frontend.production.print')!!}">Printing</a>
             </li>
@@ -8,7 +8,7 @@
                 <a href="{!! route('frontend.production.surfacefinishing')!!}">Surface Finishing</a>
             </li>
             <li class="{!! Request::is('production/trim') ? 'active' : '' !!}">
-                <a href="{!! route('frontend.production.trim')!!}">Trimming/Cutting</a>
+                <a href="{!! route('frontend.production.trim')!!}">Trimming</a>
             </li>
             <li class="{!! Request::is('production/diecut') ? 'active' : '' !!}">
                 <a href="{!! route('frontend.production.diecut')!!}">Die-cut</a>
@@ -31,6 +31,25 @@
             <li class="{!! Request::is('production/packing') ? 'active' : '' !!}">
                 <a href="{!! route('frontend.production.packing')!!}">Packing</a>
             </li>
+
+            <li class="{!! Request::is('production/flute') ? 'active' : '' !!}">
+                <a href="{!! route('frontend.production.flute')!!}">Flute Laminating</a>
+            </li>
+
+            <li class="{!! Request::is('production/window') ? 'active' : '' !!}">
+                <a href="{!! route('frontend.production.window')!!}">Window Patch</a>
+            </li>
+
+            <li class="{!! Request::is('production/ai') ? 'active' : '' !!}">
+                <a href="{!! route('frontend.production.ai')!!}">Auto Inspection</a>
+            </li>
+
+            <li class="{!! Request::is('production/cut') ? 'active' : '' !!}">
+                <a href="{!! route('frontend.production.cut')!!}">Cutting</a>
+            </li>
+
+
+
         </ul>
     </div>
 </nav>

@@ -50,9 +50,11 @@
           </div>
         </div>
 
+
         <div class="col-md-3">
             {!! Form::model($sales, array('route' => array('frontend.plan.selectformula', $sales->id), 'method' => 'GET', 'class' => 'form-horizontal')) !!}
                 <fieldset>
+                  @if ($workorder->wotypes_id == null)
                   <!-- Form Name -->
                     <legend>Choose one of the formula:</legend>
 
@@ -112,6 +114,14 @@
                         <button type="submit"  class="btn btn-primary">Continue</button>
                         </div>
                     </div>
+
+                  @else
+                    <div class="form-group">
+
+                          <p> You already pick formula </p>
+                    </div>
+
+                  @endif
 
                 </fieldset>
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models\Access;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sheeting extends Model
+class Prodqads extends Model
 {
     //
 }

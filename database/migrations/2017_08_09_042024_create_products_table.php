@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
           $table->increments('id');
           $table->integer("items_id")->nullable();
           $table->string('paf_number')->nullable();
-          $table->text('remarkbig')->nullable();
+          $table->longtext('remarkbig')->nullable();
           $table->date('datetime')->nullable();
           $table->boolean('approval')->nullable();
           $table->boolean('material')->nullable();

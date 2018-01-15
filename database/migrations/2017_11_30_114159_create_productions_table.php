@@ -20,7 +20,7 @@ class CreateProductionsTable extends Migration
             $table->string('sco_number')->nullable();
             $table->string('so_number')->nullable();
             $table->string('wo_number')->nullable();
-            // $table->string('job_id')->nullable();
+            $table->string('wid')->nullable();
 
             $table->longText('keyproduction')->nullable();
 

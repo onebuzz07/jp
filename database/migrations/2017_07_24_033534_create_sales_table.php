@@ -16,6 +16,7 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
             $table->integer("items_id")->nullable();
+            $table->integer("workorders_id")->nullable();
             $table->string('sco_number')->nullable();
             $table->string('salesline')->nullable();
             $table->string('salesorder')->nullable();
@@ -42,20 +43,21 @@ class CreateSalesTable extends Migration
             $table->boolean('rawcheck')->nullable();
             $table->boolean('batchcheck')->nullable();
 
-            $table->text('remark')->nullable();
-            $table->text('remark2')->nullable();
-            $table->text('remark3')->nullable();
-            $table->text('remark4')->nullable();
+            $table->longtext('remark')->nullable();
+            $table->longtext('remark2')->nullable();
+            $table->longtext('remark3')->nullable();
+            $table->longtext('remark4')->nullable();
             $table->string('status')->nullable();
 
             $table->string('confirmBy')->nullable();
             $table->string('confirmBy2')->nullable();
             $table->string('confirmBy3')->nullable();
             $table->string('confirmBy4')->nullable();
-
+            
             $table->string('repeat_from')->nullable();
             $table->string('repeat')->nullable();
             $table->string('paf_number')->nullable();
+            $table->string('prodremark')->nullable();
 
 
             $table->SoftDeletes();

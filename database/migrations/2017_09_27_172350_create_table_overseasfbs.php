@@ -15,8 +15,10 @@ class CreateTableOverseasfbs extends Migration
     {
         Schema::create('overseasfbs', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('typeofformula')->nullable();
             $table->integer("user")->nullable();
             $table->integer("sales_id")->nullable();
+            $table->integer("workorders_id")->nullable();
             $table->decimal('none1')->nullable();
             $table->decimal('none2')->nullable();
 
@@ -303,6 +305,10 @@ class CreateTableOverseasfbs extends Migration
             $table->decimal('colWaste5')->nullable();
             // $table->integer('blaMake5')->nullable();
             // $table->decimal('blaWaste5')->nullable();
+
+            $table->integer('totalqtyc')->nullable();
+            $table->integer('totalpaperc')->nullable();
+
 
             $table->timestamps();
         });

@@ -52,6 +52,15 @@
                       </center>
                   </a>
               </div>
+              <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 5px 0;
+              padding:2px; background:lavender; display:table-cell">
+                  <a href="{{route('frontend.production.glue')}}" >
+                      {{--<i class="glyphicon glyphicon-transfer fa-5x"></i><br/>--}}
+                      <center>
+                         <h2>Gluing</h2>
+                      </center>
+                  </a>
+              </div>
         </div>
         <div class="row">
           <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 5px 0;
@@ -95,7 +104,54 @@
                     <a href="{{route('frontend.production.trim')}}" >
                         {{--<i class="glyphicon glyphicon-transfer fa-5x"></i><br/>--}}
                         <center>
-                           <h2>Trimming<br>/Cutting</h2>
+                           <h2>Trimming</h2>
+                        </center>
+                    </a>
+                </div>
+                <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 5px 0;
+                padding:2px; background:lavender; display:table-cell">
+                    <a href="{{route('frontend.production.flute')}}" >
+                        {{--<i class="glyphicon glyphicon-transfer fa-5x"></i><br/>--}}
+                        <center>
+                           <h2>Flute<br>Laminating</h2>
+                        </center>
+                    </a>
+                </div>
+                <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 5px 0;
+                padding:2px; background:lavender; display:table-cell">
+                    <a href="{{route('frontend.production.window')}}" >
+                        {{--<i class="glyphicon glyphicon-transfer fa-5x"></i><br/>--}}
+                        <center>
+                           <h2>Windows<br>Patching</h2>
+                        </center>
+                    </a>
+                </div>
+                <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 5px 0;
+                padding:2px; background:lavender; display:table-cell">
+                    <a href="{{route('frontend.production.cut')}}" >
+                        {{--<i class="glyphicon glyphicon-transfer fa-5x"></i><br/>--}}
+                        <center>
+                           <h2>Cutting</h2>
+                        </center>
+                    </a>
+                </div>
+
+                <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 5px 0;
+                padding:2px; background:lavender; display:table-cell">
+                    <a href="{{route('frontend.production.ai')}}" >
+                        {{--<i class="glyphicon glyphicon-transfer fa-5x"></i><br/>--}}
+                        <center>
+                           <h2>Auto Inspection</h2>
+                        </center>
+                    </a>
+                </div>
+
+                <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 5px 0;
+                padding:2px; background:lavender; display:table-cell">
+                    <a href="{{route('frontend.production.varnish')}}" >
+                        {{--<i class="glyphicon glyphicon-transfer fa-5x"></i><br/>--}}
+                        <center>
+                           <h2>Varnish</h2>
                         </center>
                     </a>
                 </div>

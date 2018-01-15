@@ -18,6 +18,7 @@
           <table class="table table-bordered" id="users-table2">
               <thead>
                   <tr>
+                      <th>Sales-line</th>
                       <th>Customer Name</th>
                       <th>Part Number</th>
                       <th>Part Description</th>

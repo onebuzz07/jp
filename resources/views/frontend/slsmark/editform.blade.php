@@ -20,29 +20,33 @@
 
               <div class="form-group row ">
                 {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
-                <div class="col-md-10">{!! Form::checkbox('approval', 1, $sales->approval, ['class' => 'field']) !!}</div>
+                <div class="col-md-10">{!! Form::checkbox('approval', 1, $product->approval, ['class' => 'field']) !!}</div>
               </div>
 
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    {!! Form::label('datetime', 'Date', ['class' => 'col-md-2']) !!}
-                    <div class="col-md-10">{!! Form::text('datetime', \Carbon\carbon::now()->format('d/m/Y'), array('id'=>'datepicker2' , 'class' => 'form-control ')) !!}</div>
-                  </div>
-                  <div class="form-group row">
-                    {!! Form::label('partDesc', 'Description', ['class' => 'col-md-2']) !!}
-                    <div class="col-md-10">{!! Form::text('partDesc', $sales->items->partDesc, array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
-                  </div>
-                  <div class="form-group row">
-                    {!! Form::label('partNo', 'Part Number', ['class' => 'col-md-2']) !!}
-                    <div class="col-md-10">{!! Form::text('partNo', $sales->items->partNo , array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
-                  </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  {!! Form::label('datetime', 'Date', ['class' => 'col-md-2']) !!}
+                  <div class="col-md-10">{!! Form::text('datetime',\Carbon\carbon::now()->format('d/m/Y'), array('id'=>'datepicker2', 'class' => 'form-control ')) !!}</div>
                 </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    {!! Form::label('custName', 'Customer', ['class' => 'col-md-2']) !!}
-                    <div class="col-md-10">{!! Form::text('custName', $sales->custName, array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
-                  </div>
+                <div class="form-group row">
+                  {!! Form::label('partDesc', 'Description', ['class' => 'col-md-2']) !!}
+                  <div class="col-md-10">{!! Form::text('partDesc', $sales->items->partDesc, array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
                 </div>
+                <div class="form-group row">
+                  {!! Form::label('partNo', 'Part Number', ['class' => 'col-md-2']) !!}
+                  <div class="col-md-10">{!! Form::text('partNo', $sales->items->partNo , array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  {!! Form::label('deliverDate', 'Deliver Date(from SCO)', ['class' => 'col-md-2']) !!}
+                  <div class="col-md-10">{!! Form::text('deliverDate',$sales->deliverDate->format('d/m/Y'), array('id'=>'datepicker22', 'class' => 'form-control ')) !!}</div>
+                </div>
+                <div class="form-group row">
+                  {!! Form::label('custName', 'Customer', ['class' => 'col-md-2']) !!}
+                  <div class="col-md-10">{!! Form::text('custName', $sales->custName, array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
+                </div>
+              </div>
 
                 @if (access()->hasPermissions(['sales-marketing']))
 

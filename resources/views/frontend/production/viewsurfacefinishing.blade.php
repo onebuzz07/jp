@@ -11,9 +11,9 @@
   @foreach ($station as $pro)
 
       <div class="form-group row ">
-        {!!Form::hidden('job_id[]', $pro->job_id)!!}
+        {!!Form::hidden('operation[]', $pro->job_operationid)!!}
         <div class="col-md-5">{!! Form::textarea('remarksQAD[]',$pro->remarksQAD, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-        <div class="col-md-5">{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->job_id)) !!}</div>
+        <div class="col-md-5">{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->operation)) !!}</div>
       </div>
 
   @endforeach
@@ -29,7 +29,7 @@
   @foreach ($station as $pro)
 
     $(document).ready(function() {
-        $('#{!!$pro->job_id!!}').summernote({
+        $('#{!!$pro->operation!!}').summernote({
           toolbar: [
              ['style', ['bold', 'italic', 'underline', 'clear']],
              ['fontsize', ['fontsize']],

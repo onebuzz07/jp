@@ -20,12 +20,25 @@
         <br><br>
         @foreach ($stations as $pro)
 
-            <div class="form-group row ">
-              {!!Form::hidden('job_id[]', $pro->job_id)!!}
-              <div class="col-md-2">{!! Form::text('station[]', $pro->station, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-              <div class="col-md-5">{!! Form::textarea('remarksQAD[]',$pro->remarksQAD, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-              <div class="col-md-5">{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->job_id)) !!}</div>
-            </div>
+          <div class="form-group row ">
+            {!!Form::hidden('salesjob[]', $pro->salesjob)!!}
+            {!! Form::hidden('operation[]',$pro->operation, array('class' => 'form-control', 'readonly'=>true)) !!}
+            <table class="table ">
+              <tr>
+                <th>Station</th>
+                <th>Remarks(qad)</th>
+                <th>Description</th>
+                <th>Remarks</th>
+              </tr>
+              <tr>
+
+                <td>{!! Form::text('station[]', $pro->station, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
+                <td>{!! Form::text('remarksQAD[]',$pro->remarksQAD, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
+                <td>{!! Form::textarea('desc[]', $pro->desc, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
+                <td>{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->operation)) !!}</td>
+              </tr>
+            </table>
+          </div>
 
         @endforeach
 
@@ -43,7 +56,7 @@
     @foreach ($stations as $pro)
 
     $(document).ready(function() {
-        $('#{!!$pro->job_id!!}').summernote('disable',
+        $('#{!!$pro->operation!!}').summernote('disable',
         {
           toolbar: [
              ['style', ['bold', 'italic', 'underline', 'clear']],

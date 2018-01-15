@@ -11,6 +11,9 @@
     <div class="col-lg-12">
 
             {!! Form::model($sales, array('route' => array('frontend.slsmark.storereq', $sales->id), 'method' => ' PUT', 'files'=> true)) !!}
+            {!!Form::hidden('salesorder', $sales->salesorder)!!}
+            {!!Form::hidden('line', $sales->line)!!}
+            {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!}
 
             <div class="form-group row ">
               {!! Form::label('release', 'Release? ', array('class' => 'col-md-2')) !!}

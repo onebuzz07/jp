@@ -35,6 +35,7 @@ class UserTableSeeder extends Seeder
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ],
+
             [
                 'first_name'        => 'Backend',
                 'last_name'         => 'User',
@@ -100,6 +101,16 @@ class UserTableSeeder extends Seeder
                 'last_name'         => 'Only',
                 'email'             => 'test@test.com',
                 'password'          => bcrypt('1234'),
+                'confirmation_code' => md5(uniqid(mt_rand(), true)),
+                'confirmed'         => true,
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
+            ],
+            [
+                'first_name'        => 'Synersion',
+                'last_name'         => 'Test',
+                'email'             => 'synersion@test.com',
+                'password'          => bcrypt('synersion1234'),
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
                 'confirmed'         => true,
                 'created_at'        => Carbon::now(),

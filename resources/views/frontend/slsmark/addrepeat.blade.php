@@ -18,10 +18,21 @@
               {!! Form::hidden('sco_number', $sales->sco_number )!!}
               {!! Form::hidden('purchaseOrder', $sales->purchaseOrder )!!}
               @if (access()->hasPermissions(['sales-marketing']))
-                {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!}
+                {{-- {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!} --}}
+
                 <div class="form-group row ">
                   {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::checkbox('approval', 1, '', array('class' => 'field')) !!}</div>
+                  <div class="col-md-10">{!! Form::checkbox('approval', 1, true, array('class' => 'field')) !!}</div>
+                </div>
+
+                <div class="form-group row ">
+                  {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-2')) !!}
+                  <div class="col-md-10">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control')) !!}</div>
+                </div>
+
+                <div class="form-group row ">
+                  {!! Form::label('wid', 'ID', array('class' => 'col-md-2')) !!}
+                  <div class="col-md-10">{!! Form::text('wid', $sales->wid, array('class' => 'form-control')) !!}</div>
                 </div>
 
                 <div class="form-group row ">
@@ -34,10 +45,7 @@
                   <div class="col-md-10">{!! Form::text('line', $sales->line, array('class' => 'form-control')) !!}</div>
                 </div>
 
-                <div class="form-group row ">
-                  {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control')) !!}</div>
-                </div>
+
 
               <div class="form-group row {{ $errors->has('datetime') ? 'has-error' : '' }}">
                 {!! Form::label('datetime', 'Date', ['class' => 'col-md-2']) !!}
@@ -81,11 +89,11 @@
                 <span class="text-danger">{{ $errors->first('quantity') }}</span>
               </div>
 
-              <div class="form-group row {{ $errors->has('qtyOnHand') ? 'has-error' : '' }}">
+              {{-- <div class="form-group row {{ $errors->has('qtyOnHand') ? 'has-error' : '' }}">
                 {!! Form::label('qtyOnHand', 'Quantity on Hand', ['class' => 'col-md-2']) !!}
                 <div class="col-md-10">{!! Form::text('qtyOnHand', $sales->items->qtyOnHand , array('placeholder'=>'Quantity on Hand', 'class'=>'form-control')) !!}</div>
                 <span class="text-danger">{{ $errors->first('qtyOnHand') }}</span>
-              </div>
+              </div> --}}
 
               <div class="form-group row {{ $errors->has('rawMaterial') ? 'has-error' : '' }}">
                 {!! Form::label('rawMaterial', 'Raw Material', ['class' => 'col-md-2']) !!}

@@ -56,16 +56,16 @@ class ProductionController extends Controller
     public function viewdiecut($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Die-Cut')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station','like','%diecut%')->get();
       return view('frontend.production.viewdiecut')->with('production',$production)->with('station', $station);
     }
 
     public function dietable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Die-Cut');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['productions.so_number', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%diecut%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -80,7 +80,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Die-cut')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%diecut%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -106,16 +106,16 @@ class ProductionController extends Controller
     public function viewsurface($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Surface Finishing')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station','like','%surf%')->get();
       return view('frontend.production.viewsurface')->with('production',$production)->with('station', $station);
     }
 
     public function surfacetable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Surface Finishing');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%surf%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -130,7 +130,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Surface Finishing')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station','like','%surf%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -156,20 +156,20 @@ class ProductionController extends Controller
     public function viewprint($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Printing')->get();
+      $station= Station::where('productions_id', $production->id)->where('operation', '=', 'PRINTING')->get();
       return view('frontend.production.viewprint')->with('production',$production)->with('station', $station);
     }
 
     public function printtable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Printing');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station', 'like','%print%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
-                      return '<a href="'. route('frontend.production.viewprint', $production->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View Die-cut"></i></a>
+                      return '<a href="'. route('frontend.production.viewprint', $production->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View"></i></a>
                       ';
                   })
           ->escapeColumns([])
@@ -180,7 +180,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Printing')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station','like','%print%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -206,16 +206,16 @@ class ProductionController extends Controller
     public function viewtrim($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Trimming')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station','like','%trimming%')->get();
       return view('frontend.production.viewtrim')->with('production',$production)->with('station', $station);
     }
 
     public function trimtable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Trimming');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%trimming%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -230,7 +230,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Trimming/Cutting')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%trimming%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -242,7 +242,57 @@ class ProductionController extends Controller
         $station->timeout = Carbon::now()->toDateTimeString();
         $station->save();
       }
-      return redirect()->route('frontend.production.viewdiecut', $production->id)->withFlashSuccess('The data is saved');
+      return redirect()->route('frontend.production.viewtrim', $production->id)->withFlashSuccess('The data is saved');
+
+    }
+
+    public function cut()
+    {
+      $production=Production::all();
+      $station= Station::all();
+      return view('frontend.production.cut')->with('production',$production)->with('station', $station);
+    }
+
+    public function viewcut($id)
+    {
+      $production=Production::find($id);
+      $station= Station::where('sales_id', $production->sales_id)->where('station', 'like', '%cut-%')->first();
+      return view('frontend.production.viewcut')->with('production',$production)->with('station', $station);
+    }
+
+    public function cuttable()
+    {
+          $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like', '%cut-%');
+
+          return Datatables::of($production)
+            ->editColumn('id', function ($production) {
+                      return '<a href="'. route('frontend.production.viewcut', $production->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View Die-cut"></i></a>
+                      ';
+                  })
+          ->escapeColumns([])
+          ->make();
+    }
+
+    public function storecut(Request $request, $id)
+    {
+
+      $production = Production::find($id);
+      $station = Station::where('sales_id', $production->sales_id)->where('station','like', '%cut-%')->first();
+      if ($station->timein == null)
+      {
+        $station->check ='yes';
+        $station->timein = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      else
+      {
+        $station->timeout = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      return redirect()->route('frontend.production.viewcut', $production->id)->withFlashSuccess('The data is saved');
 
     }
 
@@ -256,16 +306,16 @@ class ProductionController extends Controller
     public function viewstrip($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Stripping')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station', 'like','%strip%')->get();
       return view('frontend.production.viewstrip')->with('production',$production)->with('station', $station);
     }
 
     public function striptable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Stripping');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station', 'like','%strip%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -280,7 +330,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Stripping')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%strip%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -306,16 +356,16 @@ class ProductionController extends Controller
     public function viewfold($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Folding')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station', 'like','%fold%')->get();
       return view('frontend.production.viewfold')->with('production',$production)->with('station', $station);
     }
 
     public function foldtable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Folding');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%fold%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -330,7 +380,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Folding')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%fold%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -356,16 +406,16 @@ class ProductionController extends Controller
     public function viewsew($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Sewing')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station','like','%sew%')->get();
       return view('frontend.production.viewsew')->with('production',$production)->with('station', $station);
     }
 
     public function sewtable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Sewing');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station', 'like','%sew%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -380,7 +430,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Sewing')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station','like','%sew%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -406,16 +456,16 @@ class ProductionController extends Controller
     public function viewbind($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Binding')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station', 'like','%bind%')->get();
       return view('frontend.production.viewbind')->with('production',$production)->with('station', $station);
     }
 
     public function bindtable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Binding');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station', 'like','%bind%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -430,7 +480,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Binding')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%bind%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -456,16 +506,16 @@ class ProductionController extends Controller
     public function viewthreeknife($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', '3 Knife Trim')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station','like','%knife%')->get();
       return view('frontend.production.viewthreeknife')->with('production',$production)->with('station', $station);
     }
 
     public function threetable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', '3 Knife Trim');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station', 'like','%knife%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -480,7 +530,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', '3 Knife Trim')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%knife%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -506,16 +556,16 @@ class ProductionController extends Controller
     public function viewpack($id)
     {
       $production=Production::find($id);
-      $station= Station::where('sco_number', $production->sco_number)->where('station', '=', 'Packing')->get();
+      $station= Station::where('sales_id', $production->sales_id)->where('station', 'like','%pack%')->get();
       return view('frontend.production.viewpack')->with('production',$production)->with('station', $station);
     }
 
     public function packtable()
     {
           $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
-          ->leftJoin('stations', 'productions.sco_number', '=', 'stations.sco_number')
-          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'sales.id'])
-          ->where('stations.station', '=', 'Packing');
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['sales.salesline', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%pack%');
 
           return Datatables::of($production)
             ->editColumn('id', function ($production) {
@@ -530,7 +580,7 @@ class ProductionController extends Controller
     {
 
       $production = Production::find($id);
-      $station = Station::where('sco_number', $production->sco_number)->where('station', '=', 'Packing')->first();
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%pack%')->first();
       if ($station->timein == null)
       {
         $station->check ='yes';
@@ -545,5 +595,257 @@ class ProductionController extends Controller
       return redirect()->route('frontend.production.viewdiecut', $production->id)->withFlashSuccess('The data is saved');
 
     }
+
+    public function flute()
+    {
+      $production=Production::all();
+      $station= Station::all();
+      return view('frontend.production.flute')->with('production',$production)->with('station', $station);
+    }
+
+    public function viewflute($id)
+    {
+      $production=Production::find($id);
+      $station= Station::where('sales_id', $production->sales_id)->where('station', 'like','%flute%')->get();
+      return view('frontend.production.viewflute')->with('production',$production)->with('station', $station);
+    }
+
+    public function flutetable()
+    {
+          $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['productions.so_number', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%flute%');
+
+          return Datatables::of($production)
+            ->editColumn('id', function ($production) {
+                      return '<a href="'. route('frontend.production.viewflute', $production->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View Die-cut"></i></a>
+                      ';
+                  })
+          ->escapeColumns([])
+          ->make();
+    }
+
+    public function storeflute(Request $request, $id)
+    {
+
+      $production = Production::find($id);
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%flute%')->first();
+      if ($station->timein == null)
+      {
+        $station->check ='yes';
+        $station->timein = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      else
+      {
+        $station->timeout = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      return redirect()->route('frontend.production.viewflute', $production->id)->withFlashSuccess('The data is saved');
+
+    }
+
+    public function window()
+    {
+      $production=Production::all();
+      $station= Station::all();
+      return view('frontend.production.window')->with('production',$production)->with('station', $station);
+    }
+
+    public function viewwindow($id)
+    {
+      $production=Production::find($id);
+      $station= Station::where('sales_id', $production->sales_id)->where('station', 'like','%window%')->get();
+      return view('frontend.production.viewwindow')->with('production',$production)->with('station', $station);
+    }
+
+    public function windowtable()
+    {
+          $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['productions.so_number', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%window%');
+
+          return Datatables::of($production)
+            ->editColumn('id', function ($production) {
+                      return '<a href="'. route('frontend.production.viewwindow', $production->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View Die-cut"></i></a>
+                      ';
+                  })
+          ->escapeColumns([])
+          ->make();
+    }
+
+    public function storewindow(Request $request, $id)
+    {
+
+      $production = Production::find($id);
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%window%')->first();
+      if ($station->timein == null)
+      {
+        $station->check ='yes';
+        $station->timein = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      else
+      {
+        $station->timeout = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      return redirect()->route('frontend.production.viewwindow', $production->id)->withFlashSuccess('The data is saved');
+
+    }
+
+    public function glue()
+    {
+      $production=Production::all();
+      $station= Station::all();
+      return view('frontend.production.diecut')->with('production',$production)->with('station', $station);
+    }
+
+    public function viewglue($id)
+    {
+      $production=Production::find($id);
+      $station= Station::where('sales_id', $production->sales_id)->where('station','like','%gluing%')->get();
+      return view('frontend.production.viewglue')->with('production',$production)->with('station', $station);
+    }
+
+    public function gluetable()
+    {
+          $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['productions.so_number', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%gluing%');
+
+          return Datatables::of($production)
+            ->editColumn('id', function ($production) {
+                      return '<a href="'. route('frontend.production.viewglue', $production->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View Die-cut"></i></a>
+                      ';
+                  })
+          ->escapeColumns([])
+          ->make();
+    }
+
+    public function storeglue(Request $request, $id)
+    {
+
+      $production = Production::find($id);
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%gluing%')->first();
+      if ($station->timein == null)
+      {
+        $station->check ='yes';
+        $station->timein = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      else
+      {
+        $station->timeout = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      return redirect()->route('frontend.production.viewglue', $production->id)->withFlashSuccess('The data is saved');
+
+    }
+
+    public function varnish()
+    {
+      $production=Production::all();
+      $station= Station::all();
+      return view('frontend.production.varnish')->with('production',$production)->with('station', $station);
+    }
+
+    public function viewvarnish($id)
+    {
+      $production=Production::find($id);
+      $station= Station::where('sales_id', $production->sales_id)->where('station','like','%varnish%')->get();
+      return view('frontend.production.viewvarnish')->with('production',$production)->with('station', $station);
+    }
+
+    public function varnishtable()
+    {
+          $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['productions.so_number', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','like','%varnish%');
+
+          return Datatables::of($production)
+            ->editColumn('id', function ($production) {
+                      return '<a href="'. route('frontend.production.viewvarnish', $production->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View Die-cut"></i></a>
+                      ';
+                  })
+          ->escapeColumns([])
+          ->make();
+    }
+
+    public function storevarnish(Request $request, $id)
+    {
+
+      $production = Production::find($id);
+      $station = Station::where('sales_id', $production->sales_id)->where('station', 'like','%varnish%')->first();
+      if ($station->timein == null)
+      {
+        $station->check ='yes';
+        $station->timein = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      else
+      {
+        $station->timeout = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      return redirect()->route('frontend.production.viewvarnish', $production->id)->withFlashSuccess('The data is saved');
+
+    }
+
+    public function ai()
+    {
+      $production=Production::all();
+      $station= Station::all();
+      return view('frontend.production.ai')->with('production',$production)->with('station', $station);
+    }
+
+    public function viewai($id)
+    {
+      $production=Production::find($id);
+      $station= Station::where('sales_id', $production->sales_id)->where('station','=','ai')->get();
+      return view('frontend.production.viewai')->with('production',$production)->with('station', $station);
+    }
+
+    public function aitable()
+    {
+          $production = Production::leftJoin('sales', 'productions.sales_id', '=', 'sales.id' )
+          ->leftJoin('stations', 'productions.sales_id', '=', 'stations.sales_id')
+          ->select(['productions.so_number', 'productions.wo_number', 'sales.custName', 'productions.id'])
+          ->where('stations.station','=', 'ai');
+
+          return Datatables::of($production)
+            ->editColumn('id', function ($production) {
+                      return '<a href="'. route('frontend.production.viewai', $production->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View Die-cut"></i></a>
+                      ';
+                  })
+          ->escapeColumns([])
+          ->make();
+    }
+
+    public function storeai(Request $request, $id)
+    {
+
+      $production = Production::find($id);
+      $station = Station::where('sales_id', $production->sales_id)->where('station', '=','ai')->first();
+      if ($station->timein == null)
+      {
+        $station->check ='yes';
+        $station->timein = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      else
+      {
+        $station->timeout = Carbon::now()->toDateTimeString();
+        $station->save();
+      }
+      return redirect()->route('frontend.production.viewai', $production->id)->withFlashSuccess('The data is saved');
+
+    }
+
+
 
 }

@@ -15,8 +15,10 @@ class CreateTablePlannings extends Migration
     {
         Schema::create('plannings', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('typeofformula')->nullable();
             $table->integer("user")->nullable();
             $table->integer('sales_id')->nullable();
+            $table->integer("workorders_id")->nullable();
             $table->integer('aread')->nullable();
             $table->double('incharead')->nullable();
             $table->integer('areaw')->nullable();

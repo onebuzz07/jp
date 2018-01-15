@@ -15,8 +15,10 @@ class CreateTableSoftCovers extends Migration
     {
         Schema::create('soft_covers', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('typeofformula')->nullable();
             $table->integer("user")->nullable();
             $table->integer("sales_id")->nullable();
+            $table->integer("workorders_id")->nullable();
             $table->decimal('half')->nullable();
             $table->integer('covOrderC')->nullable();
             $table->integer('t1OrderC')->nullable();
@@ -296,6 +298,7 @@ class CreateTableSoftCovers extends Migration
             $table->integer('PackMake')->nullable();
             $table->decimal('packWaste')->nullable();
 
+
             $table->integer('ccover')->nullable();
             $table->integer('ccoverready')->nullable();
             $table->integer('ccoverwaste')->nullable();
@@ -326,6 +329,11 @@ class CreateTableSoftCovers extends Migration
             $table->integer('bwsticker')->nullable();
             $table->integer('bwstickerready')->nullable();
             $table->integer('bwstickerwaste')->nullable();
+
+            $table->integer('totalqtyc')->nullable();
+            $table->integer('totalpaperc')->nullable();
+            $table->integer('totalqtyb')->nullable();
+            $table->integer('totalpaperb')->nullable();
 
             $table->timestamps();
         });

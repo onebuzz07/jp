@@ -15,9 +15,10 @@ class CreateTableBoxes extends Migration
     {
         Schema::create('boxes', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('typeofformula')->nullable();
             $table->integer("sales_id")->nullable();
             $table->integer("user")->nullable();
-
+            $table->integer("workorders_id")->nullable();
             $table->integer('order1')->nullable();
             $table->integer('order2')->nullable();
             $table->integer('order3')->nullable();
@@ -129,6 +130,10 @@ class CreateTableBoxes extends Migration
             $table->decimal('gluewaste')->nullable();
             $table->integer('PackMake')->nullable();
             $table->decimal('packWaste')->nullable();
+
+            $table->integer('totalqty')->nullable();
+            $table->integer('totalpaper')->nullable();
+
             $table->timestamps();
         });
     }

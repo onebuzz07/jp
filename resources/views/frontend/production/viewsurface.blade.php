@@ -10,7 +10,7 @@
       {!! Form::model($production, array( 'method' => 'PUT')) !!}
       @foreach ($station as $pro)
           <div class="form-group row ">
-            {!!Form::hidden('job_id[]', $pro->job_id)!!}
+            {!!Form::hidden('operation[]', $pro->operation)!!}
             <table class="table ">
               <tr>
                 <th>Remarks (QAD)</th>
@@ -18,7 +18,7 @@
               </tr>
               <tr>
                 <td>{!! Form::textarea('remarksQAD[]',$pro->remarksQAD, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
-                <td>{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->job_id)) !!}</td>
+                <td>{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->operation)) !!}</td>
               </tr>
             </table>
             </div>
@@ -44,7 +44,7 @@
   @foreach ($station as $pro)
 
     $(document).ready(function() {
-        $('#{!!$pro->job_id!!}').summernote({
+        $('#{!!$pro->operation!!}').summernote({
           toolbar: [
              ['style', ['bold', 'italic', 'underline', 'clear']],
              ['fontsize', ['fontsize']],

@@ -80,10 +80,13 @@ class sales extends Model implements AuditableContract
         return $this->hasMany('App\Models\Access\Sheeting');
     }
 
+    public function station()
+    {
+        return $this->hasMany('App\Models\Access\Station');
+    }
 
-
-    // public function requisites()
-    // {
-    //     return $this->hasMany('App\Models\Access\Requisite');
-    // }
+    public function workorder()
+    {
+        return $this->hasOne('App\Models\Access\Workorder');
+    }
 }
