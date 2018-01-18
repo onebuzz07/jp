@@ -15,7 +15,7 @@
         {{ Html::style(mix('css/frontend.css')) }}
 
         {{-- {{ Html::style(elixir('css/frontend.css')) }} --}}
-        {{-- <link rel="stylesheet" href="{{ public_path('css/myCustom.css') }}" /> --}}
+        <link rel="stylesheet" href="{{ public_path('css/myCustom.css') }}" />
 
         @yield('after-styles-end')
         {!! Html::script(mix('js/frontend.js')) !!}

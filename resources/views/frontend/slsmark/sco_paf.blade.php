@@ -13,33 +13,35 @@
         {{-- {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!} --}}
             <div class="form-group row ">
               {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
-              <div class="col-md-10">{!! Form::checkbox('approval', 1, $sales->approval, array('class' => 'field')) !!}</div>
+              <div class="col-md-10">{!! Form::checkbox('approval', 1, '', array('class' => 'field')) !!}</div>
             </div>
 
-            <div class="form-group row ">
+            <div class="form-group row {{ $errors->has('workorder') ? 'has-error' : '' }}">
               {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-2')) !!}
-              <div class="col-md-10">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control')) !!}</div>
+              <div class="col-md-10">{!! Form::text('workorder', '', array('class' => 'form-control')) !!}</div>
+              <span class="text-danger">{{ $errors->first('workorder') }}</span>
             </div>
 
-            <div class="form-group row ">
+            <div class="form-group row {{ $errors->has('wid') ? 'has-error' : '' }}">
               {!! Form::label('wid', 'ID', array('class' => 'col-md-2')) !!}
-              <div class="col-md-10">{!! Form::text('wid', $sales->wid, array('class' => 'form-control')) !!}</div>
+              <div class="col-md-10">{!! Form::text('wid', '', array('class' => 'form-control')) !!}</div>
+              <span class="text-danger">{{ $errors->first('wid') }}</span>
             </div>
 
-            <div class="form-group row ">
+            <div class="form-group row {{ $errors->has('salesorder') ? 'has-error' : '' }}">
               {!! Form::label('salesorder', 'Sales Order ', array('class' => 'col-md-2')) !!}
-              <div class="col-md-10">{!! Form::text('salesorder', $sales->salesorder, array('class' => 'form-control')) !!}</div>
+              <div class="col-md-10">{!! Form::text('salesorder', '', array('class' => 'form-control')) !!}</div>
+              <span class="text-danger">{{ $errors->first('salesorder') }}</span>
             </div>
 
             <div class="form-group row ">
               {!! Form::label('line', 'Line', array('class' => 'col-md-2')) !!}
-              <div class="col-md-10">{!! Form::text('line', $sales->line, array('class' => 'form-control')) !!}</div>
+              <div class="col-md-10">{!! Form::text('line', '', array('class' => 'form-control')) !!}</div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row ">
               {!! Form::label('datetime', 'Date', ['class' => 'col-md-2']) !!}
               <div class="col-md-10">{{ Form::text('datetime',\Carbon\Carbon::now()->format('d/m/Y'), array('id' => 'datepicker','class' => 'form-control')) }}</div>
-              <span class="text-danger">{{ $errors->first('datetime') }}</span>
             </div>
 
             <div class="form-group row {{ $errors->has('custName') ? 'has-error' : '' }}">
@@ -110,7 +112,7 @@
 
             <div class="form-group row ">
               {!! Form::label('deliverDate', 'Deliver Date', ['class' => 'col-md-2']) !!}
-              <div class="col-md-10">{!! Form::text('deliverDate',$sales->deliverDate->format('d/m/Y'), array('id'=>'datepicker2','class' => 'form-control')) !!}</div>
+              <div class="col-md-10">{!! Form::text('deliverDate', \Carbon\Carbon::now()->format('d/m/Y'), array('id'=>'datepicker2','class' => 'form-control')) !!}</div>
             </div>
 
             <div class="form-group row">

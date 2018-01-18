@@ -21,28 +21,33 @@
                 {{-- {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!} --}}
 
                 <div class="form-group row ">
+                  {!! Form::label('repeat_from', 'Repeat From? ', array('class' => 'col-md-2')) !!}
+                  <div class="col-md-10">{!! Form::text('repeat_from', $sales->salesorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+                </div>
+
+                <div class="form-group row ">
                   {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
                   <div class="col-md-10">{!! Form::checkbox('approval', 1, true, array('class' => 'field')) !!}</div>
                 </div>
 
                 <div class="form-group row ">
                   {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control')) !!}</div>
+                  <div class="col-md-10">{!! Form::text('workorder', '', array('class' => 'form-control')) !!}</div>
                 </div>
 
                 <div class="form-group row ">
                   {!! Form::label('wid', 'ID', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('wid', $sales->wid, array('class' => 'form-control')) !!}</div>
+                  <div class="col-md-10">{!! Form::text('wid', '', array('class' => 'form-control')) !!}</div>
                 </div>
 
                 <div class="form-group row ">
                   {!! Form::label('salesorder', 'Sales Order ', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('salesorder', $sales->salesorder, array('class' => 'form-control')) !!}</div>
+                  <div class="col-md-10">{!! Form::text('salesorder', '', array('class' => 'form-control')) !!}</div>
                 </div>
 
                 <div class="form-group row ">
                   {!! Form::label('line', 'Line', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('line', $sales->line, array('class' => 'form-control')) !!}</div>
+                  <div class="col-md-10">{!! Form::text('line', '', array('class' => 'form-control')) !!}</div>
                 </div>
 
 

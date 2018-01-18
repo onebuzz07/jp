@@ -1,5 +1,6 @@
 @extends('frontend.report.includes.layout')
 
+
 @section('content')
 
   <div class="col-xs-12 row">
@@ -74,14 +75,14 @@
   </div>
 
       <div class="row col-md-12">
-        <table class="table table-bordered">
+        <table class="table row group table-bordered">
           <thead>
             <tr style="background-color: #f47373;">
-              <th>Operation Number</th>
-              <th>Station</th>
-              <th>Remarks (QAD)</th>
-              <th>Description</th>
-              <th>Remarks</th>
+              <th class="col-sm-1">Operation Number</th>
+              <th class="col-sm-1">Station</th>
+              <th class="col-sm-1">Remarks (QAD)</th>
+              <th class="col-sm-2">Description</th>
+              <th class="col-sm-3">Remarks</th>
             </tr>
           </thead>
            @if ($station == null)

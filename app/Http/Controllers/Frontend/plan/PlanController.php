@@ -107,7 +107,7 @@ class PlanController extends Controller
       if (access()->hasPermissions(['planning']))
       {
           $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat','sales.created_at', 'sales.id']);
+          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
 
           return Datatables::of($sales)
             ->editColumn('id', function ($sales) {
@@ -156,7 +156,7 @@ class PlanController extends Controller
    {
      $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
                          ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
-                         ->select(['products.paf_number', 'sales.custName','items.partNo','items.partDesc', 'products.id' ]);
+                         ->select(['products.paf_number', 'sales.salesline', 'sales.custName','items.partNo','items.partDesc','products.rev', 'products.id' ]);
 
      return Datatables::of($product)
              ->editColumn('id', function ($product) {
@@ -3317,10 +3317,10 @@ class PlanController extends Controller
            })->get();
 
           foreach ($rows as $row) {
-            $row5 = str_replace(",", "", $row[5]);
-            $date = \DateTime::createFromFormat('d/m/Y',$row[8]);
+            $row5 = str_replace(",", "", $row[6]);
+            $date = \DateTime::createFromFormat('d/m/Y',$row[7]);
                DB::table('powos')->insert(
-               ['item_number'=> $row[0], 'reference' => $row[2], 'rawmaterial' => $row[0], 'due_date'=> $date, 'quantity_ordered'=> '-'.$row5, 'status'=>'WO', 'wo_id' => $row[3], 'job' => $row[9] ]);
+               ['item_number'=> $row[0], 'reference' => $row[2], 'rawmaterial' => $row[5], 'due_date'=> $date, 'quantity_ordered'=> '-'.$row5, 'status'=>'WO', 'wo_id' => $row[3], 'job' => $row[4] ]);
            }
        }
            return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Work Order is saved.');
@@ -3338,9 +3338,10 @@ class PlanController extends Controller
            })->get();
 
           foreach ($rows as $row) {
-            $row4 = str_replace(",", "", $row[4]);
+            $row4 = str_replace(",", "", $row[2]);
             $date = \DateTime::createFromFormat('d/m/Y', $row[3]);
                DB::table('powos')->insert(
+               // ['item_number'=> $row[1], 'reference' => $row[0], 'due_date'=> $date, 'rawmaterial'=> '-',  'quantity_ordered'=> $row4, 'status'=>'PO' ]);
                ['item_number'=> $row[1], 'reference' => $row[0], 'due_date'=> $date, 'rawmaterial'=> '-',  'quantity_ordered'=> $row4, 'status'=>'PO' ]);
            }
        }

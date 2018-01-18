@@ -376,6 +376,18 @@ class SalesController extends Controller
 
     public function storesco (Request  $request, $id)
     {
+      $this->validate($request,[
+        'workorder' => 'required|min:5|max:35|unique:sales',
+        'salesorder' => 'required|min:5|max:35|unique:sales',
+        'wid' => 'required|min:5|max:35|unique:sales'
+      ],
+      [
+        'workorder.unique' => ' The work order field must be unique.',
+        'salesorder.unique' => ' The sales order field must be unique.',
+        'wid.unique' => ' The WID field must be unique.',
+      ]);
+
+
       $sales= Sales::find($id);
       $items = Item::find($sales->items->id);
 
@@ -1032,7 +1044,7 @@ class SalesController extends Controller
         ->select(['sales.salesline','sales.custName', 'items.partNo','items.partDesc', 'sales.id'])
         ->where('sales.status', '=', 'Approved')
         ->orWhere('sales.status', '=', 'PAF');
-        
+
         return Datatables::of($sales)
           ->editColumn('id', function ($sales)  {
           return '';
@@ -1137,9 +1149,10 @@ class SalesController extends Controller
           })->get();
 
          foreach ($rows as $row) {
-           $row4 = str_replace(",", "", $row[4]);
+           $row4 = str_replace(",", "", $row[2]);
               DB::table('stocks')->insert(
-              ['item_number'=> $row[0], 'reference' => $row[2], 'due_date'=> $row[8], 'quantity_ordered'=> $row4, 'status'=>'WO' ]);
+              // ['item_number'=> $row[0], 'reference' => $row[2], 'due_date'=> $row[8], 'quantity_ordered'=> $row4, 'status'=>'WO' ]);
+              ['item_number'=> $row[0], 'reference' => $row[1], 'due_date'=> $row[3], 'quantity_ordered'=> $row4, 'status'=>'WO' ]);
           }
       }
           return redirect()->route('frontend.slsmark.listStock')->withFlashSuccess('The work order is saved.');
@@ -1158,9 +1171,10 @@ class SalesController extends Controller
           })->get();
 
          foreach ($rows as $row) {
-           $row4 = str_replace(",", "", $row[5]);
+           $row4 = str_replace(",", "", $row[2]);
               DB::table('stocks')->insert(
-              ['item_number'=> $row[0], 'reference' => $row[4], 'due_date'=> $row[2], 'quantity_ordered'=> '-'.$row4, 'status'=>'SO' ]);
+              // ['item_number'=> $row[0], 'reference' => $row[4], 'due_date'=> $row[2], 'quantity_ordered'=> '-'.$row4, 'status'=>'SO' ]);
+              ['item_number'=> $row[0], 'reference' => $row[1], 'due_date'=> $row[3], 'quantity_ordered'=> '-'.$row4, 'status'=>'SO' ]);
           }
       }
         return redirect()->route('frontend.slsmark.listStock')->withFlashSuccess('The sales order is saved.');
