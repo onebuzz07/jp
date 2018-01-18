@@ -1015,7 +1015,9 @@ class SalesController extends Controller
       {
         $sales = Sales::leftJoin('items', 'sales.items_id', '=', 'items.id')
         ->select(['sales.salesline','sales.custName', 'items.partNo','items.partDesc', 'sales.id'])
-        ->where('sales.status', '=', 'Approved');
+        ->where('sales.status', '=', 'Approved')
+        ->orWhere('sales.status', '=', 'PAF');
+
         return Datatables::of($sales)
           ->editColumn('id', function ($sales) {
           return '<a href="'. route('frontend.slsmark.stock', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="Forecast stock"></i></a>
@@ -1028,7 +1030,9 @@ class SalesController extends Controller
       {
         $sales = Sales::leftJoin('items', 'sales.items_id', '=', 'items.id')
         ->select(['sales.salesline','sales.custName', 'items.partNo','items.partDesc', 'sales.id'])
-        ->where('sales.status', '=', 'Approved');
+        ->where('sales.status', '=', 'Approved')
+        ->orWhere('sales.status', '=', 'PAF');
+        
         return Datatables::of($sales)
           ->editColumn('id', function ($sales)  {
           return '';
@@ -1372,7 +1376,7 @@ class SalesController extends Controller
           }
           $requisite->salesorder = $request->input('salesorder');
           $requisite->line = $request->input('line');
-          $requisite->salesline = $request->input('salesline');
+          $requisite->salesline = $request->input('salesorder').'-'.$request->input('line');
           $dtsro = \DateTime::createFromFormat('d/m/Y', $request->input("dateSRO"));
           $requisite->dateSRO = $dtsro;
           $requisite->release = $request->input('release');

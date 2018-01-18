@@ -26,6 +26,7 @@ class CreateStationsTable extends Migration
             $table->longtext('remarksQAD')->nullable();
             $table->string('desc')->nullable();
             $table->string('code')->nullable();
+            $table->string('wo_operation')->nullable();
             $table->string('check')->nullable();
             $table->string('timein')->nullable();
             $table->string('timeout')->nullable();

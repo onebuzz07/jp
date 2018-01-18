@@ -42,6 +42,7 @@ class ReportController extends Controller
 {
     public function index()
     {
+      // $sales = Sales::all();
       $sales = Sales::has('station')->get();
       return  view('frontend.report.index')->with('sales', $sales);
     }
@@ -49,10 +50,16 @@ class ReportController extends Controller
     public function reportsearch(Request $request)
     {
       $wid= $request->input('wid');
+      $custName= $request->input('custName');
 
-      if ($request->has('wid') != null){
+      if ($request->has('wid')  != null){
 
         $sales = Sales::where('wid','like','%'.$wid.'%')->get();
+        return  view('frontend.report.index')->with('sales', $sales);
+      }
+      elseif ($request->has('custName') != null)
+      {
+        $sales = Sales::where('custName','like','%'.$custName.'%')->get();
         return  view('frontend.report.index')->with('sales', $sales);
       }
       else
@@ -65,13 +72,22 @@ class ReportController extends Controller
 
     public function indexpdf(Request $request)
     {
-      $check = $request->input('operation');
-      $wo = $request->input('workorder');
+      $check = $request->input('wo_operation');
 
-        $station = Station::whereIn('operation', $check)->where('workorder', $wo)->get();
-        $workorder = Workorder::where('wo_number', $wo)->first();
-        $wotype = Wotype::where('workorders_id', $workorder->id)->first();
-        $sales = Sales::where('workorder', $wo)->first();
+      $station = collect();
+
+      foreach ($check as $key => $ch) {
+        $c = explode('.', $ch);
+
+        $station_temp = Station::where('operation', $c[0])->where('workorder', $c[1])->first();
+        $workorder = Workorder::where('wo_number', $c[1])->first();
+
+        $station->push($station_temp);
+      }
+
+      $wotype = Wotype::where('workorders_id', $workorder->id)->first();
+      $sales = Sales::where('workorder', $workorder->wo_number)->first();
+
 
           $data = [
             'station' =>$station,
@@ -85,59 +101,23 @@ class ReportController extends Controller
       // return PDF::loadFile('http://www.github.com')->inline('github.pdf');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function anydata (Request $request)
     {
-        //
+      $station = Station::join('sales', 'sales.id', '=', 'stations.sales_id' )
+        ->leftJoin('items', 'items.sales_id', '=', 'sales.id')
+        ->select(['stations.operation','sales.custName', 'items.partNo', 'items.partDesc', 'sales.salesorder', 'stations.workorder', 'sales.wid', 'stations.station'])
+        ;
+
+        return Datatables::of($station)
+        ->editColumn('operation', function ($station) {
+
+              return '<input type="checkbox" value ="'.$station->operation.'.'.$station->workorder.'" name="wo_operation[]" >
+              ';
+          })
+
+        ->escapeColumns([])
+        ->make();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

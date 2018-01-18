@@ -9,11 +9,12 @@
     <table class="table table-bordered" id="users-table">
       <thead>
           <tr>
+            <th>Sales-line</th>
             <th>Customer Name</th>
             <th>Part Number</th>
             <th>Part Description</th>
-            <th>Created at</th>
-            <th>Created by</th>
+            <th>Date</th>
+            <th>By</th>
             <th>Actions</th>
           </tr>
       </thead>

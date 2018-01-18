@@ -4,7 +4,7 @@
     <h1>Report</h1>
   @include('frontend.report.includes.nav')
   <div class="container-fluid">
-    {!! Form::model($sales,  array('route' => array('frontend.report.reportsearch'), 'method' => 'POST', 'files'=>true)) !!}
+    {{-- {!! Form::model($sales,  array('route' => array('frontend.report.reportsearch'), 'method' => 'POST', 'files'=>true)) !!}
 
         <div class="row" id="app">
           <div class="col-md-12">
@@ -21,12 +21,13 @@
               {{ Form::submit( 'Search', ['class' => 'btn btn-default', 'name' => 'search', 'value' => 'search']) }}
           </div>
           <br>
-      {!!Form::close();!!}
+      {!!Form::close();!!} --}}
 
 
     <div class="row">
-        @if (isset($sales))
+
         {!! Form::model($sales,  array('route' => array('frontend.report.indexpdf'), 'method' => 'POST', 'files'=>true)) !!}
+          <label> Search by Work Order ID </label>
             <table class="table table-bordered" id="report">
                 <thead>
                     <tr>
@@ -36,16 +37,33 @@
                         <th>Part Description</th>
                         <th>Sales Order No</th>
                         <th>Work Order No</th>
-                        <th>Work Order ID</th>
+                        <th>ID</th>
                         <th>Operation No.</th>
                     </tr>
                 </thead>
 
+
+                {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
+                {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }}
+
+                <script type="text/javascript">
+                    $(function() {
+                        $('#report').DataTable({
+
+                            processing: true,
+                            serverSide: true,
+                            ajax:'{!! route('frontend.report.anydata') !!}',
+
+                          "order": [[ 0, "desc" ]]
+
+                        });
+                    });
+
+                    </script>
+                                {{-- @if (isset($sales))
                 @foreach($sales as $s)
                   @foreach ($s->station as $station)
                 <tbody>
-
-
                             <tr>
                               <td> {!!form::checkbox('operation[]', $station->operation)!!}</td>
                               <td> {!!$s->custName!!}</td>
@@ -58,8 +76,11 @@
                             </tr>
 
                 </tbody>
-              @endforeach
-            @endforeach
+                  @endforeach
+                @endforeach
+              @endif --}}
+
+
 
             </table>
             <div class=" row">
@@ -67,20 +88,11 @@
             </div>
           {!!Form::close();!!}
 
-        @endif
+
         </div>
       </div>
 
-      {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
-      {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }}
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('#report').DataTable({
-              
-                "order": [[ 0, "desc" ]]
-            });
-        });
-    </script>
+
 
 
 @endsection

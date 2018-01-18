@@ -70,9 +70,9 @@
                   </div>
                   <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 0 0;
                   padding:2px; background:lavender; display:table-cell">
-                      <a href="{{route('frontend.report.index')}}" >
+                      {{-- <a href="{{route('fr ontend.report.index')}}" > --}}
                           <center>
-                             <h2>Report</h2>
+                             {{-- <h2>Report</h2> --}}
                              <h2></h2>
                           </center>
                       </a>

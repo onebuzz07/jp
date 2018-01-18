@@ -1,6 +1,7 @@
 @extends('frontend.report.includes.layout')
 
 @section('content')
+
   <div class="col-xs-12 row">
 
     <div class="col-xs-12 row">
@@ -24,9 +25,11 @@
       <div class="col-xs-6 row">
           {!! "Item Number: " .$sales->items->partNo  !!}
       </div>
+
       <div class="col-xs-5 row">
         {!! "Work Order Due Date: " .$workorder->due_date  !!}
       </div>
+
     </div>
     <div class="col-xs-12 row">
         {!! "Description: " .$sales->items->partDesc !!}
@@ -62,6 +65,7 @@
 
     </div>
 
+
     <div class="col-xs-12 row">
         {!! "Size: " .$sales->items->size !!}
     </div>
@@ -83,14 +87,14 @@
            @if ($station == null)
           @else
 
-            @foreach ($station as $c)
+            @foreach ($station as $s)
               <tbody>
                 <tr>
-                  <td>{!!$c->operation!!}</td>
-                  <td>{!!$c->station!!}</td>
-                  <td>{!!$c->remarksQAD!!}</td>
-                  <td>{!!$c->desc!!}</td>
-                  <td>{!!$c->remarks!!}</td>
+                  <td>{!!$s->operation!!}</td>
+                  <td>{!!$s->station!!}</td>
+                  <td>{!!$s->remarksQAD!!}</td>
+                  <td>{!!$s->desc!!}</td>
+                  <td>{!!$s->remarks!!}</td>
                 </tr>
               </tbody>
             @endforeach

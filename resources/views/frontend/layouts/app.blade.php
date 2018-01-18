@@ -15,6 +15,7 @@
         <!-- Check if the language is set to RTL, so apply the RTL layouts -->
         <!-- Otherwise apply the normal LTR layouts -->
         {{ Html::style(mix('css/frontend.css')) }}
+        <link href="{{ asset('css/backend/plugin/datatables/dataTables.bootstrap.min.css') }}" rel="stylesheet">
         @yield('after-styles')
         <script>
             window.Laravel = <?php echo json_encode([
@@ -38,7 +39,7 @@
                 @include('includes.partials.messages')
                 @yield('content')
             </div><!-- container -->
-        
+
         <!-- Scripts -->
         <script src="https://unpkg.com/vue"></script>
         @yield('before-scripts')

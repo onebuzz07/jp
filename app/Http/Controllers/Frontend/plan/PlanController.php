@@ -3048,7 +3048,8 @@ class PlanController extends Controller
    {
        $sales = Sales::leftJoin('items', 'sales.items_id', '=', 'items.id')
        ->select(['sales.salesline','sales.custName', 'items.partNo','items.partDesc', 'sales.id'])
-       ->where('sales.status', '=', 'Approved');
+       ->where('sales.status', '=', 'Approved')
+       ->orWhere('sales.status', '=', 'PAF');
        return Datatables::of($sales)
          ->editColumn('id', function ($sales) {
          //return $sales->action_buttons;
@@ -3075,10 +3076,11 @@ class PlanController extends Controller
         ->editColumn('id', function ($sales) {
           if ($sales->prodremark == null){
             return '<a href="'. route('frontend.plan.production', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Add New"></i></a>
-               <a href="'. route('frontend.plan.viewproduction', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View (if any)"></i></a>';
+               ';
           }
           else {
-            return '<a href="'. route('frontend.plan.viewproduction', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View (if any)"></i></a>';
+            return '<a href="'. route('frontend.plan.viewproduction', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View"></i></a>
+            <a href="'. route('frontend.plan.editproduction', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit"></i></a>';
           }
       })
       ->escapeColumns([])
@@ -3133,6 +3135,29 @@ class PlanController extends Controller
         }
         return redirect()->route('frontend.plan.listsales')->withFlashSuccess('The Routing file is saved.');
     }
+    public function editproduction ($id)
+    {
+      $sales = Sales::find($id);
+      $production = Production::where('sales_id', $sales->id)->first();
+      $stations = Station::where('sales_id', $sales->id)->get();
+      $prodqads = Prodqads::where('wo_number', $sales->workorder)->where('salesjob', $sales->salesorder)->get();
+      return view('frontend.plan.editproduction')->with('sales', $sales)->with('production', $production)->with('stations', $stations)->with('prodqads', $prodqads);
+    }
+
+    public function updateproduction($id, Request $request)
+    {
+        $sales = Sales::find($id);
+        $stations = Station::where('salesjob', $sales->salesorder)->where('workorder', $sales->workorder)->get();
+        $i=0;
+        foreach($stations as $prod)
+        {
+            $prod->remarks = $request->input("remarks.$i");
+            $prod->save();
+            $i++;
+        }
+
+      return redirect()->route('frontend.plan.listsales')->withFlashSuccess('The data is saved');
+    }
 
     public function production ($id)
     {
@@ -3184,6 +3209,7 @@ class PlanController extends Controller
             $station->desc =  $request->input("desc.$i");
             $station->code = $request->input("operation.$i").$production->wo_number.$request->input("salesjob.$i");
             $station->keyproduction = $production->keyproduction;
+            $station->wo_operation = $request->input("operation.$i").'.'.$production->wo_number;
             $station->save();
             $i++;
           }
@@ -3294,7 +3320,7 @@ class PlanController extends Controller
             $row5 = str_replace(",", "", $row[5]);
             $date = \DateTime::createFromFormat('d/m/Y',$row[8]);
                DB::table('powos')->insert(
-               ['item_number'=> $row[1], 'reference' => $row[0], 'rawmaterial' => $row[2], 'due_date'=> $date, 'quantity_ordered'=> '-'.$row5, 'status'=>'WO', 'wo_id' => $row[3], 'job' => $row[9] ]);
+               ['item_number'=> $row[0], 'reference' => $row[2], 'rawmaterial' => $row[0], 'due_date'=> $date, 'quantity_ordered'=> '-'.$row5, 'status'=>'WO', 'wo_id' => $row[3], 'job' => $row[9] ]);
            }
        }
            return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Work Order is saved.');
@@ -3313,7 +3339,7 @@ class PlanController extends Controller
 
           foreach ($rows as $row) {
             $row4 = str_replace(",", "", $row[4]);
-            $date = \DateTime::createFromFormat('Y-m-d H:i:s', $row[3]);
+            $date = \DateTime::createFromFormat('d/m/Y', $row[3]);
                DB::table('powos')->insert(
                ['item_number'=> $row[1], 'reference' => $row[0], 'due_date'=> $date, 'rawmaterial'=> '-',  'quantity_ordered'=> $row4, 'status'=>'PO' ]);
            }
@@ -3341,7 +3367,7 @@ class PlanController extends Controller
          $softcover = Softcover::leftJoin('sales', 'soft_covers.sales_id', '=', 'sales.id')
           ->leftJoin('items', 'sales.items_id', '=', 'items.id')
           ->leftJoin('users', 'soft_covers.user', '=', 'users.id')
-          ->select(['sales.custName','items.partNo','items.partDesc', 'soft_covers.created_at','users.first_name', 'soft_covers.id', 'soft_covers.sales_id' ]);
+          ->select(['sales.salesline', 'sales.custName','items.partNo','items.partDesc', 'soft_covers.created_at','users.first_name', 'soft_covers.id', 'soft_covers.sales_id' ]);
 
          return Datatables::of($softcover)
           ->editColumn('created_at', function ($date) {
@@ -3373,7 +3399,7 @@ class PlanController extends Controller
      $softcoverbw = Softcoverbw::leftJoin('sales', 'softcoverbws.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'softcoverbws.user', '=', 'users.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'softcoverbws.created_at', 'users.first_name','softcoverbws.id', 'softcoverbws.sales_id' ]);
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'softcoverbws.created_at', 'users.first_name','softcoverbws.id', 'softcoverbws.sales_id' ]);
 
       return Datatables::of($softcoverbw)
        ->editColumn('created_at', function ($date) {
@@ -3403,7 +3429,7 @@ class PlanController extends Controller
      $overseasfb = Overseasfb::leftJoin('sales', 'overseasfbs.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'overseasfbs.user', '=', 'users.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'overseasfbs.created_at','users.first_name', 'overseasfbs.id', 'overseasfbs.sales_id' ]);
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'overseasfbs.created_at','users.first_name', 'overseasfbs.id', 'overseasfbs.sales_id' ]);
 
       return Datatables::of($overseasfb)
        ->editColumn('created_at', function ($date) {
@@ -3433,7 +3459,7 @@ class PlanController extends Controller
      $overseaswt = Overseaswt::leftJoin('sales', 'overseaswts.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'overseaswts.user', '=', 'users.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'overseaswts.created_at','users.first_name', 'overseaswts.id', 'overseaswts.sales_id' ]);
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'overseaswts.created_at','users.first_name', 'overseaswts.id', 'overseaswts.sales_id' ]);
 
       return Datatables::of($overseaswt)
        ->editColumn('created_at', function ($date) {
@@ -3464,7 +3490,7 @@ class PlanController extends Controller
      $boxes = Boxes::leftJoin('sales', 'boxes.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'boxes.user', '=', 'users.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'boxes.created_at','users.first_name', 'boxes.id', 'boxes.sales_id' ]);
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'boxes.created_at','users.first_name', 'boxes.id', 'boxes.sales_id' ]);
 
       return Datatables::of($boxes)
        ->editColumn('created_at', function ($date) {
@@ -3512,7 +3538,7 @@ class PlanController extends Controller
      $planning = Planning::leftJoin('sales', 'plannings.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'plannings.user', '=', 'users.id')
-      ->select(['sales.custName','items.partNo','items.partDesc', 'plannings.created_at','users.first_name', 'plannings.id', 'plannings.sales_id' ]);
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'plannings.created_at','users.first_name', 'plannings.id', 'plannings.sales_id' ]);
 
       return Datatables::of($planning)
        ->editColumn('created_at', function ($date) {
@@ -3613,7 +3639,9 @@ class PlanController extends Controller
    {
      $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
      ->select(['sales.salesline','sales.workorder','sales.custName', 'items.partNo', 'items.partDesc' , 'sales.id'])
-     ->where('sales.status', '=', 'Approved');
+     ->where('sales.status', '=', 'Approved')
+     ->orWhere('sales.status', '=', 'PAF');
+
      return Datatables::of($sales)
          ->editColumn('id', function ($sales) {
 

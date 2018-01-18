@@ -204,6 +204,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('planningupdate/{id}', 'PlanController@planningupdate')->name('plan.planningupdate');
 
         Route::post('importedprod', 'PlanController@importedprod')->name('plan.importedprod');
+        Route::get('editproduction/{id}', 'PlanController@editproduction')->name('plan.editproduction');
+        Route::post('updateproduction/{id}', 'PlanController@updateproduction')->name('plan.updateproduction');
 
     });
 
@@ -320,8 +322,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('indexresult', 'ReportController@indexresult')->name('report.indexresult');
         Route::post('indexpdf', 'ReportController@indexpdf')->name('report.indexpdf');
         Route::post('reportsearch', 'ReportController@reportsearch')->name('report.reportsearch');
-        Route::get('reporttable', 'ReportController@reporttable')->name('report.reporttable');
-        Route::get('viewslsmark', 'ReportController@viewslsmark')->name('report.viewslsmark');
+        Route::get('anydata', 'ReportController@anydata')->name('report.anydata');
+
         Route::get('slsmarktable', 'ReportController@slsmarktable')->name('report.slsmarktable');
         Route::get('viewplanning', 'ReportController@viewplanning')->name('report.viewplanning');
         Route::get('edit/{id}', 'ReportController@edit')->name('report.edit');

@@ -14,7 +14,7 @@ class AddRawmaterialToPowo extends Migration
     public function up()
     {
         Schema::table('powos', function($table) {
-        $table->string('rawmaterial');
+        $table->string('rawmaterial')->nullable();
     });
     }
 
