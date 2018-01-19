@@ -325,8 +325,8 @@ class SalesController extends Controller
             $sales = Sales::where('sco_number', $prod->sco_number)->first();
 
             return '<a href="'. route('frontend.slsmark.editform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit PAF"></i></a>
+                  <a href="'. route('frontend.slsmark.viewscopaf', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View SCO"></i></a>
             <a href="'. route('frontend.slsmark.delete', $product->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>
-            <a href="'. route('frontend.slsmark.viewscopaf', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View SCO"></i></a>
             ';
           })
           ->escapeColumns([])
@@ -1139,44 +1139,77 @@ class SalesController extends Controller
     // bakal dibuang
     public function imported2 (Request $request)
   	{
-      $stocks = Stock::where('status','=', 'WO')->forceDelete();
-
+      // $stocks = Stock::where('status','=', 'WO')->forceDelete();
       if(Input::hasFile('import_file')){
-        $path = Input::file('import_file')->getRealPath();
-        $rows = Excel::load($path, function($reader) {
-              $reader->toArray();
-              $reader->noHeading();
-          })->get();
+            $path = Input::file('import_file')->getRealPath();
+            $rows = Excel::load($path, function($reader) {
+                  $reader->toArray();
+                  $reader->noHeading();
+              })->get();
 
-         foreach ($rows as $row) {
-           $row4 = str_replace(",", "", $row[2]);
-              DB::table('stocks')->insert(
-              // ['item_number'=> $row[0], 'reference' => $row[2], 'due_date'=> $row[8], 'quantity_ordered'=> $row4, 'status'=>'WO' ]);
-              ['item_number'=> $row[0], 'reference' => $row[1], 'due_date'=> $row[3], 'quantity_ordered'=> $row4, 'status'=>'WO' ]);
+             foreach ($rows as $row) {
+               $stock = Stock::where('item_number', $row[0])
+                ->where('reference', $row[1])
+                ->first();
+
+              if ($stock)
+              {
+                 continue;
+              }
+              else
+              {
+                $row8 = str_replace(",", "", $row[3]);
+                $date = \DateTime::createFromFormat('d/m/Y',$row[2]);
+                      $item = array([
+                       'item_number' => $row[0],
+                       'reference' => $row[1],
+                       'due_date' => $date,
+                       'quantity_ordered' => $row8,
+                       'status' => 'WO'
+                   ]);
+                   DB::table('powos')->insert($item );
+              }
+            }
           }
-      }
           return redirect()->route('frontend.slsmark.listStock')->withFlashSuccess('The work order is saved.');
     }
 
     // bakal dibuang
     public function importso (Request $request)
   	{
-      $stocks = Stock::where('status','=', 'SO')->delete();
-
+      // $stocks = Stock::where('status','=', 'SO')->delete();
       if(Input::hasFile('import_so')){
-        $path = Input::file('import_so')->getRealPath();
-        $rows = Excel::load($path, function($reader) {
-              $reader->toArray();
-              $reader->noHeading();
-          })->get();
+            $path = Input::file('import_so')->getRealPath();
+            $rows = Excel::load($path, function($reader) {
+                  $reader->toArray();
+                  $reader->noHeading();
+              })->get();
 
-         foreach ($rows as $row) {
-           $row4 = str_replace(",", "", $row[2]);
-              DB::table('stocks')->insert(
-              // ['item_number'=> $row[0], 'reference' => $row[4], 'due_date'=> $row[2], 'quantity_ordered'=> '-'.$row4, 'status'=>'SO' ]);
-              ['item_number'=> $row[0], 'reference' => $row[1], 'due_date'=> $row[3], 'quantity_ordered'=> '-'.$row4, 'status'=>'SO' ]);
+             foreach ($rows as $row) {
+               $stock = Stock::where('item_number', $row[0])
+                ->where('reference', $row[1])
+                ->first();
+
+              if ($stock)
+              {
+                 continue;
+              }
+              else
+              {
+                $row8 = str_replace(",", "", $row[3]);
+                $date = \DateTime::createFromFormat('d/m/Y',$row[2]);
+                      $item = array([
+                       'item_number' => $row[0],
+                       'reference' => $row[1],
+                       'due_date' => $date,
+                       'quantity_ordered' => $row8,
+                       'status' => 'WO'
+                   ]);
+                   DB::table('powos')->insert($item );
+              }
+            }
           }
-      }
+
         return redirect()->route('frontend.slsmark.listStock')->withFlashSuccess('The sales order is saved.');
     }
 

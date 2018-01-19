@@ -3308,43 +3308,75 @@ class PlanController extends Controller
    //bakal dibuang
    public function importwo (Request $request)
    {
-     $powos = Powo::where('status','=', 'WO')->forceDelete();
-       if(Input::hasFile('import_wo')){
-         $path = Input::file('import_wo')->getRealPath();
-         $rows = Excel::load($path, function($reader) {
-               $reader->toArray();
-               $reader->noHeading();
-           })->get();
 
-          foreach ($rows as $row) {
-            $row5 = str_replace(",", "", $row[6]);
-            $date = \DateTime::createFromFormat('d/m/Y',$row[7]);
-               DB::table('powos')->insert(
-               ['item_number'=> $row[0], 'reference' => $row[2], 'rawmaterial' => $row[5], 'due_date'=> $date, 'quantity_ordered'=> '-'.$row5, 'status'=>'WO', 'wo_id' => $row[3], 'job' => $row[4] ]);
+     if(Input::hasFile('import_wo')){
+           $path = Input::file('import_wo')->getRealPath();
+           $rows = Excel::load($path, function($reader) {
+                 $reader->toArray();
+                 $reader->noHeading();
+             })->get();
+
+            foreach ($rows as $row) {
+              $powos = Powo::where('item_number', $row[0])
+               ->where('reference', $row[2])
+               ->first();
+
+             if ($powos)
+             {
+                continue;
+             }
+             else
+             {
+               $row8 = str_replace(",", "", $row[6]);
+               $date = \DateTime::createFromFormat('d/m/Y',$row[7]);
+                     $item = array([
+                      'item_number' => $row[0],
+                      'reference' => $row[2],
+                      'due_date' => $date,
+                      'quantity_ordered' => $row8,
+                      'status' => 'WO'
+                  ]);
+                  DB::table('powos')->insert($item );
+             }
            }
-       }
-           return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Work Order is saved.');
+         }
+       return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Work Order is saved.');
    }
 
    public function importpo (Request $request)
    {
-       ini_set('max_execution_time', 300);
-     $powos = Powo::where('status','=', 'PO')->forceDelete();
-       if(Input::hasFile('import_po')){
-         $path = Input::file('import_po')->getRealPath();
-         $rows = Excel::load($path, function($reader) {
-               $reader->toArray();
-               $reader->noHeading();
-           })->get();
+     if(Input::hasFile('import_po')){
+           $path = Input::file('import_po')->getRealPath();
+           $rows = Excel::load($path, function($reader) {
+                 $reader->toArray();
+                 $reader->noHeading();
+             })->get();
 
-          foreach ($rows as $row) {
-            $row4 = str_replace(",", "", $row[2]);
-            $date = \DateTime::createFromFormat('d/m/Y', $row[3]);
-               DB::table('powos')->insert(
-               // ['item_number'=> $row[1], 'reference' => $row[0], 'due_date'=> $date, 'rawmaterial'=> '-',  'quantity_ordered'=> $row4, 'status'=>'PO' ]);
-               ['item_number'=> $row[1], 'reference' => $row[0], 'due_date'=> $date, 'rawmaterial'=> '-',  'quantity_ordered'=> $row4, 'status'=>'PO' ]);
+            foreach ($rows as $row) {
+              $powos = Powo::where('item_number', $row[1])
+               ->where('reference', $row[0])
+               ->first();
+
+             if ($powos)
+             {
+                continue;
+             }
+             else
+             {
+               $row8 = str_replace(",", "", $row[2]);
+               $date = \DateTime::createFromFormat('d/m/Y',$row[3]);
+                     $item = array([
+                      'item_number' => $row[1],
+                      'reference' => $row[0],
+                      'due_date' => $date,
+                      'quantity_ordered' => $row8,
+                      'status' => 'PO'
+                  ]);
+                  DB::table('powos')->insert($item );
+             }
            }
-       }
+         }
+
        return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Puchase Order is saved.');
    }
 
