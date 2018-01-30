@@ -63,7 +63,6 @@
             <div class="form-group row">
             {!! Form::label('process', 'Type of Process', ['class' => 'col-md-2']) !!}
               <div class="col-md-10 form-group">
-                {{-- <form name="add_name" id="add_name"> --}}
                               <div class="table-responsive">
                                    <table class="table table-bordered" id="dynamic_field">
                                         <tr>
@@ -72,9 +71,7 @@
                                              <td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>
                                         </tr>
                                    </table>
-                                   {{-- <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />   --}}
                               </div>
-                  {{-- </form> --}}
                </div>
             </div>
 
@@ -101,7 +98,6 @@
             <div class="form-group row">
               {!! Form::label('images[]', 'Files(If any)', array('class' => 'control-label col-md-2')) !!}
               <div class="col-md-10">
-              {{-- {{ Form::fileimages[]', array('multiple' => 'multiple','class' => 'btn btn-default btn-file ')) }} --}}
               <input multiple="multiple" class="btn btn-default btn-file " name="images[]" type="file" id="images[]">
               </div>
             </div>

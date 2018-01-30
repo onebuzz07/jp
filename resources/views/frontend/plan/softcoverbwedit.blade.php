@@ -248,14 +248,7 @@
           <td>Paper Supply</td>
 
         </tr>
-        {{-- <tr>
-          <td>Cover</td>
-          <td>{!! Form::text('ccover', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3000', 'v-model'=>"n3000")) !!}</td>
-          <td>Color Job</td>
-          <td>{!! Form::text('ccoverready', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3001', 'v-model'=>"n3001")) !!}</td>
-          <td>{!! Form::text('ccoverwaste', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3002', 'v-model'=>"n3002")) !!}</td>
 
-        </tr> --}}
         <tr>
           <td>Cover</td>
           <td>{!! Form::text('bwcover', $softcoverbw->bwcover, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3003', 'v-model'=>"n3003")) !!}</td>
@@ -264,13 +257,6 @@
           <td>{!! Form::text('bwcoverwaste', $softcoverbw->bwcoverwaste, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3005', 'v-model'=>"n3005")) !!}</td>
         </tr>
 
-        {{-- <tr>
-          <td>Text 1</td>
-          <td>{!! Form::text('ct1', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3006', 'v-model'=>"n3006")) !!}</td>
-          <td>Color Job</td>
-          <td>{!! Form::text('ct1ready', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3007', 'v-model'=>"n3007")) !!}</td>
-          <td>{!! Form::text('ct1waste', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3008', 'v-model'=>"n3008")) !!}</td>
-        </tr> --}}
         <tr>
           <td>Text 1</td>
           <td>{!! Form::text('bwt1', $softcoverbw->bwt1, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3009', 'v-model'=>"n3009")) !!}</td>
@@ -279,13 +265,6 @@
           <td>{!! Form::text('bwt1waste', $softcoverbw->bwt1waste, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3011', 'v-model'=>"n3011")) !!}</td>
         </tr>
 
-        {{-- <tr>
-          <td>Text 2</td>
-          <td>{!! Form::text('ct2', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3012', 'v-model'=>"n3012")) !!}</td>
-          <td>Color Job</td>
-          <td>{!! Form::text('ct2ready', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3013', 'v-model'=>"n3013")) !!}</td>
-          <td>{!! Form::text('ct2waste', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3014', 'v-model'=>"n3014")) !!}</td>
-        </tr> --}}
         <tr>
           <td>Text 2</td>
           <td>{!! Form::text('bwt2', $softcoverbw->bwt2, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3015', 'v-model'=>"n3015")) !!}</td>
@@ -294,13 +273,6 @@
           <td>{!! Form::text('bwt2waste', $softcoverbw->bwt2waste, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3017', 'v-model'=>"n3017")) !!}</td>
         </tr>
 
-        {{-- <tr>
-          <td>Text 3</td>
-          <td>{!! Form::text('ct3', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3018', 'v-model'=>"n3018")) !!}</td>
-          <td>Color Job</td>
-          <td>{!! Form::text('ct3ready', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3019', 'v-model'=>"n3019")) !!}</td>
-          <td>{!! Form::text('ct3waste', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3020', 'v-model'=>"n3020")) !!}</td>
-        </tr> --}}
         <tr>
           <td>Text 3</td>
           <td>{!! Form::text('bwt3', $softcoverbw->bwt3, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3021', 'v-model'=>"n3021")) !!}</td>
@@ -309,13 +281,6 @@
           <td>{!! Form::text('bwt3waste', $softcoverbw->bwt3waste, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3023', 'v-model'=>"n3023")) !!}</td>
         </tr>
 
-        {{-- <tr>
-          <td>Stickers</td>
-          <td>{!! Form::text('csticker', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3024', 'v-model'=>"n3024")) !!}</td>
-          <td>Color Job</td>
-          <td>{!! Form::text('cstickerready', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3025', 'v-model'=>"n3025")) !!}</td>
-          <td>{!! Form::text('cstickerwaste', $softcoverbw->, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3026', 'v-model'=>"n3026")) !!}</td>
-        </tr> --}}
         <tr>
           <td>Stickers</td>
           <td>{!! Form::text('bwsticker', $softcoverbw->bwsticker, array('class' => 'form-control', 'readonly'=>true, 'id'=>'n3027', 'v-model'=>"n3027")) !!}</td>
@@ -326,19 +291,7 @@
 
     </table>
     <table class="table table-bordered">
-        {{-- <tr>
-          <td colspan="2">(COL) Make ready per color - Front </td>
-          <td>{!! Form::number('colMakeFront', $softcoverbw->, array('class' => 'form-control', 'id'=>'n200', 'v-model'=>"n200")) !!}</td>
 
-        </tr>
-        <tr>
-          <td colspan="2">(COL) Make ready per color - Back </td>
-          <td>{!! Form::number('colMakeBack', $softcoverbw->, array('class' => 'form-control', 'id'=>'n201', 'v-model'=>"n201")) !!}</td>
-        </tr>
-        <tr>
-          <td colspan="2">(COL) Waste % </td>
-          <td>{!! Form::number('colWaste', $softcoverbw->, array('class' => 'form-control', 'step'=>"any", 'id'=>'n202', 'v-model'=>"n202")) !!}</td>
-        </tr> --}}
         <tr>
           <td colspan="2">(BLA) Make ready per side</td>
           <td>{!! Form::number('blaMake', $softcoverbw->blaMake, array('class' => 'form-control', 'id'=>'n203', 'v-model'=>"n203")) !!}</td>

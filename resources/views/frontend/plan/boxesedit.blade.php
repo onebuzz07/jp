@@ -3,8 +3,8 @@
 @section('content')
 <h1>Planning Department</h1>
 @include('frontend.plan.includes.nav')
-  <h3 class="box-title"> Boxes V1.3 </h3>
-  {{-- <small>10/06/15 - ALL BOXES INCLUDING TOP GLOVE 432mm X 838mm</small>  --}}
+  <h3 class="box-title"> Boxes V1.3 <small>10/06/15 - ALL BOXES INCLUDING TOP GLOVE 432mm X 838mm</small> </h3>
+
     <div class="row" id="app">
       {!! Form::model($sales, array('route' => array('frontend.plan.boxesupdate', $sales->id), 'method' => 'POST')) !!}
       <div class="col-md-6">

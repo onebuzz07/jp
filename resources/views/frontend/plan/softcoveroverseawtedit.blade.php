@@ -400,14 +400,6 @@
           <td colspan="2">(COL) Waste % </td>
           <td>{!! Form::number('colWaste', $overseaswt->colWaste, array('class' => 'form-control','step'=>"any", 'id'=>'col3', 'v-model'=>"col3")) !!}</td>
         </tr>
-        {{-- <tr>
-          <td colspan="2">(BLA) Make ready per side</td>
-          <td>{!! Form::number('blaMake', $overseaswt->, array('class' => 'form-control','min'=>'0', 'id'=>'col4', 'v-model'=>"col4")) !!}</td>
-        </tr>
-        <tr>
-          <td colspan="2">(BLA) Waste %</td>
-          <td>{!! Form::number('blaWaste', $overseaswt->, array('class' => 'form-control','step'=>"any", 'id'=>'col5', 'v-model'=>"col5")) !!}</td>
-        </tr> --}}
       </table>
       <table class="table table-bordered">
         <tr>
@@ -422,14 +414,6 @@
           <td colspan="2">(COL) Waste % </td>
           <td>{!! Form::number('colWaste1', $overseaswt->colWaste1, array('class' => 'form-control','step'=>"any", 'id'=>'col8', 'v-model'=>"col8")) !!}</td>
         </tr>
-        {{-- <tr>
-          <td colspan="2">(BLA) Make ready per side</td>
-          <td>{!! Form::number('blaMake1', $overseaswt->, array('class' => 'form-control', 'min'=>'0', 'id'=>'col9', 'v-model'=>"col9")) !!}</td>
-        </tr>
-        <tr>
-          <td colspan="2">(BLA) Waste %</td>
-          <td>{!! Form::number('blaWaste1', $overseaswt->, array('class' => 'form-control','step'=>"any", 'id'=>'col10', 'v-model'=>"col10")) !!}</td>
-        </tr> --}}
       </table>
 
       <table class="table table-bordered">
@@ -445,14 +429,6 @@
           <td colspan="2">(COL) Waste % </td>
           <td>{!! Form::number('colWaste2', $overseaswt->colWaste2, array('class' => 'form-control', 'step'=>"any",'id'=>'col13', 'v-model'=>"col13")) !!}</td>
         </tr>
-        {{-- <tr>
-          <td colspan="2">(BLA) Make ready per side</td>
-          <td>{!! Form::number('blaMake2', $overseaswt->, array('class' => 'form-control','min'=>'0' ,'id'=>'col14', 'v-model'=>"col14")) !!}</td>
-        </tr>
-        <tr>
-          <td colspan="2">(BLA) Waste %</td>
-          <td>{!! Form::number('blaWaste2', $overseaswt->, array('class' => 'form-control', 'step'=>"any",'id'=>'col15', 'v-model'=>"col15")) !!}</td>
-        </tr> --}}
       </table>
       <table class="table table-bordered">
         <p>For Back Colour</p>
@@ -591,11 +567,6 @@
               </tbody>
             </table>
           </div>
-          {{-- <div class="col-md-4">
-            <table></table>
-          </div> --}}
-        {{-- </div> --}}
-        {{-- <div class="col-md-12"> --}}
           <div class="row col-md-4">
             <table class="table table-bordered">
                 <tr>
@@ -604,14 +575,6 @@
                   <td>Paper Supply</td>
 
                 </tr>
-                {{-- <tr>
-                  <td>Cover</td >
-                  <td>{!! Form::number('ccover1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3000', 'v-model'=>"na3000")) !!}</td>
-                  <td>Color Job</td>
-                  <td>{!! Form::number('ccoverwaste1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3001', 'v-model'=>"na3001")) !!}</td>
-                  <td>{!! Form::number('ccoverwaste1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3002', 'v-model'=>"na3002")) !!}</td>
-
-                </tr> --}}
                 <tr>
                   <td>Flexi</td>
                   <td>{!! Form::text('flexicover1', $overseaswt->flexicover1, array('class' => 'form-control', 'id'=>'na3003', 'v-model'=>"na3003", 'readonly'=>true)) !!}</td>
@@ -619,35 +582,6 @@
                   <td>{!! Form::text('flexicoverready1', $overseaswt->flexicoverready1, array('class' => 'form-control', 'id'=>'na3004', 'v-model'=>"na3004", 'readonly'=>true)) !!}</td>
                   <td>{!! Form::text('flexicoverwaste1', $overseaswt->flexicoverwaste1, array('class' => 'form-control', 'id'=>'na3005', 'v-model'=>"na3005", 'readonly'=>true)) !!}</td>
                 </tr>
-
-                {{-- <tr>
-                  <td>Text 1</td>
-                  <td>{!! Form::number('ct11', $overseaswt->, array('class' => 'form-control', 'id'=>'na3006', 'v-model'=>"na3006")) !!}</td>
-                  <td>Color Job</td>
-                  <td>{!! Form::number('ct1ready1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3007', 'v-model'=>"na3007")) !!}</td>
-                  <td>{!! Form::number('ct1waste1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3008', 'v-model'=>"na3008")) !!}</td>
-                </tr>
-                <tr>
-                  <td>Text 2</td>
-                  <td>{!! Form::number('ct21', $overseaswt->, array('class' => 'form-control', 'id'=>'na3009', 'v-model'=>"na3009")) !!}</td>
-                  <td>Color Job</td>
-                  <td>{!! Form::number('ct2ready1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3010', 'v-model'=>"na3010")) !!}</td>
-                  <td>{!! Form::number('ct2waste1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3011', 'v-model'=>"na3011")) !!}</td>
-                </tr>
-                <tr>
-                  <td>Text 3</td>
-                  <td>{!! Form::number('ct31', $overseaswt->, array('class' => 'form-control', 'id'=>'na3012', 'v-model'=>"na3012")) !!}</td>
-                  <td>Color Job</td>
-                  <td>{!! Form::number('ct3ready1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3013', 'v-model'=>"na3013")) !!}</td>
-                  <td>{!! Form::number('ct3waste1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3014', 'v-model'=>"na3014")) !!}</td>
-                </tr>
-                <tr>
-                  <td>Stickers</td>
-                  <td>{!! Form::number('csticker1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3015', 'v-model'=>"na3015")) !!}</td>
-                  <td>Color Job</td>
-                  <td>{!! Form::number('cstickerready1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3016', 'v-model'=>"na3016")) !!}</td>
-                  <td>{!! Form::number('cstickerwaste1', $overseaswt->, array('class' => 'form-control', 'id'=>'na3017', 'v-model'=>"na3017")) !!}</td>
-                </tr> --}}
             </table>
 
             <table class="table table-bordered">
@@ -717,14 +651,6 @@
                   <td colspan="2">(COL) Waste % </td>
                   <td>{!! Form::number('colWaste3', $overseaswt->colWaste3, array('class' => 'form-control','step'=>"any", 'id'=>'col18', 'v-model'=>"col18")) !!}</td>
                 </tr>
-                {{-- <tr>
-                  <td colspan="2">(BLA) Make ready per side</td>
-                  <td>{!! Form::number('blaMake3', $overseaswt->, array('class' => 'form-control', 'id'=>'col19', 'v-model'=>"col19")) !!}</td>
-                </tr>
-                <tr>
-                  <td colspan="2">(BLA) Waste %</td>
-                  <td>{!! Form::number('blaWaste3', $overseaswt->, array('class' => 'form-control','step'=>"any", 'id'=>'col20', 'v-model'=>"col20")) !!}</td>
-                </tr> --}}
               </table>
 
               <table class="table table-bordered">
@@ -740,14 +666,6 @@
                   <td colspan="2">(COL) Waste % </td>
                   <td>{!! Form::number('colWaste4', $overseaswt->colWaste4, array('class' => 'form-control','step'=>"any", 'id'=>'col23', 'v-model'=>"col23")) !!}</td>
                 </tr>
-                {{-- <tr>
-                  <td colspan="2">(BLA) Make ready per side</td>
-                  <td>{!! Form::number('blaMake4', $overseaswt->, array('class' => 'form-control', 'id'=>'col24', 'v-model'=>"col24")) !!}</td>
-                </tr>
-                <tr>
-                  <td colspan="2">(BLA) Waste %</td>
-                  <td>{!! Form::number('blaWaste4', $overseaswt->, array('class' => 'form-control','step'=>"any", 'id'=>'col25', 'v-model'=>"col25")) !!}</td>
-                </tr> --}}
               </table>
 
               <table class="table table-bordered">
@@ -763,14 +681,6 @@
                   <td colspan="2">(COL) Waste % </td>
                   <td>{!! Form::number('colWaste5', $overseaswt->colWaste5, array('class' => 'form-control','step'=>"any", 'id'=>'col28', 'v-model'=>"col28")) !!}</td>
                 </tr>
-                {{-- <tr>
-                  <td colspan="2">(BLA) Make ready per side</td>
-                  <td>{!! Form::number('blaMake5', $overseaswt->, array('class' => 'form-control', 'id'=>'col29', 'v-model'=>"col29")) !!}</td>
-                </tr>
-                <tr>
-                  <td colspan="2">(BLA) Waste %</td>
-                  <td>{!! Form::number('blaWaste5', $overseaswt->, array('class' => 'form-control','step'=>"any", 'id'=>'col30', 'v-model'=>"col30")) !!}</td>
-                </tr> --}}
               </table>
               <table class="table table-bordered">
               <p>For Back Colour</p>

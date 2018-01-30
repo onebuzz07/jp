@@ -103,16 +103,6 @@
             </div>
 
             <div class="form-group row">
-                      {!! Form::label('images', 'Files', array('class' => 'control-label col-md-2')) !!}
-                    <div class="col-md-10">
-                      @foreach($sales->fileupload as $file)
-                          <a href="{!! "/uploaded/$file->filename" !!}" download="{!! $file->filename !!}">{!! $file->filename !!}</a>
-                          {!! '&nbsp;'!!}
-                      @endforeach
-                    </div>
-            </div>
-
-            <div class="form-group row">
 
               {!! Form::label('lot', 'LOT', ['class' => 'col-md-2']) !!}<div class="col-md-10">{!! Form::text('lot', $sales->lot, array('readonly'=>true, 'class'=>'form-control', 'required'=>'required')) !!}</div>
               {!! Form::label('mfgDate', 'MFG Date', ['class' => 'col-md-2']) !!}<div class="col-md-10">{!! Form::text('mfgDate', $sales->mfgDate, array('readonly'=>true, 'class'=>'form-control', 'required'=>'required')) !!}</div>
@@ -158,7 +148,7 @@
               </div>
 
               <div class="form-group row">
-                  
+
                   {!! Form::label('images', 'Files uploaded', array('class' => 'control-label col-md-2')) !!}
                   <div class="col-md-10">
                     @foreach($sales->fileupload as $file)

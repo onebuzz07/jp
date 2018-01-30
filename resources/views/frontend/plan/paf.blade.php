@@ -30,7 +30,5 @@
             "order": [[ 0, "desc" ]]
         });
     });
-    //Being injected from FrontendController
-    console.log(test);
 </script>
 @endsection

@@ -28,6 +28,7 @@ use App\Models\Access\Salesorder;
 use App\Models\Access\Workorder;
 use App\Models\Access\Stock;
 use App\Models\Access\Inventory;
+use App\Models\Access\Delivery;
 
 use Image;
 use Carbon\Carbon;
@@ -56,7 +57,7 @@ class SalesController extends Controller
 
     public function createSales()
     {
-        $salesqad = Salesqad::select(['sales_order', 'purchase_order','line', 'name', 'item_number', 'description', 'description_1','quantity_ordered', 'order_date','due_date','status', 'id']);
+        $salesqad = Salesqad::select(['sales_order', 'purchase_order','line', 'name', 'item_number', 'description', 'description_1','quantity_ordered', 'order_date','due_date', 'id','status']);
         return Datatables::of($salesqad)
             ->editColumn('id', function ($salesqad) {
             if ($salesqad->status == null)
@@ -67,7 +68,6 @@ class SalesController extends Controller
             {
               return '';
             }
-
         })
         ->order(function ($salesqad) {
                         $salesqad->orderBy('sales_order', 'desc');
@@ -173,8 +173,6 @@ class SalesController extends Controller
         $sales->workorders_id = $workorder->id;
         $sales->save();
 
-
-
         // START file upload save
         $picture = '';
 
@@ -247,11 +245,8 @@ class SalesController extends Controller
       if (access()->hasPermissions(['sales-marketing']))
       {
       $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-      ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc' , 'sales.repeat','sales.created_at', 'sales.id'])
+      ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc' , 'sales.repeat', 'sales.id','sales.created_at'])
       ->where('sales.status', '=', 'Approved');
-      // ->orWhere('sales.status', '=', 'Planning Dept')
-      // ->orWhere('sales.status', '=', 'CTP Dept')
-      // ->orWhere('sales.status', '=', 'Printing Dept');
 
       return Datatables::of($sales)
 
@@ -280,14 +275,13 @@ class SalesController extends Controller
         $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
         ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc' , 'sales.status','sales.created_at', 'sales.id'])
         ->where('sales.status', '=', 'Approved');
-        // ->orWhere('sales.status', '=', 'Planning Dept')
-        // ->orWhere('sales.status', '=', 'CTP Dept')
-        // ->orWhere('sales.status', '=', 'Printing Dept');
+
         return Datatables::of($sales)
 
         ->editColumn('id', function ($sales) {
-            //return $sales->action_buttons;
+
             return '
+            <a href="'. route('frontend.slsmark.editscof', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit"></i></a>
             <a href="'. route('frontend.slsmark.show', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View SCO"></i></a>
             ';
               })
@@ -300,7 +294,6 @@ class SalesController extends Controller
         ->escapeColumns([])
         ->make();
       }
-
     }
 
     public function review()
@@ -386,7 +379,6 @@ class SalesController extends Controller
         'salesorder.unique' => ' The sales order field must be unique.',
         'wid.unique' => ' The WID field must be unique.',
       ]);
-
 
       $sales= Sales::find($id);
       $items = Item::find($sales->items->id);
@@ -485,6 +477,27 @@ class SalesController extends Controller
       $sales->workorders_id = $workorder->id;
       $sales->save();
 
+      $picture = '';
+
+      if ($request->hasFile('images')) {
+              $files = $request->file('images');
+              foreach($files as $file){
+              $filename = $file->getClientOriginalName();
+              $extension = $file->getClientOriginalExtension();
+              $picture = $filename;
+              $destinationPath = base_path() . '/public/uploaded';
+
+              $file->move($destinationPath, $picture);
+
+              $fileUpload = new FileUpload;
+              $fileUpload->filename = $filename;
+              $fileUpload->sales_id = $sales->id;
+              $fileUpload->doc_id = $sales->sco_number;
+              $fileUpload->user_id = Auth::user()->id;
+              $fileUpload->save();
+            }
+          }
+
       return redirect()->route('frontend.slsmark.edit', $sales->id);
     }
 
@@ -526,7 +539,6 @@ class SalesController extends Controller
           $number ++;
           $product->paf_number = 'PAF-' . Carbon::now()->format('y') .'-'. str_pad($number,5,'0',STR_PAD_LEFT );
       }
-      // $product->amend_from =  $request->input('revNo');
       $product->sco_number =$sales->sco_number;
       $product->approval = $request->input('approval');
       $product->remarkbig = $request->input('remarkbig');
@@ -645,17 +657,6 @@ class SalesController extends Controller
             $sales= Sales::find($id);
             $items = Item::find($sales->items->id);
             $product = Product::where('sco_number', $sales->sco_number)->first();
-
-            // $product->items_id = $items->id;
-            // $latestproduct = Product::orderBy('created_at', 'desc')->first();
-            // if ($latestproduct === null){
-            //     $product->paf_number = 'PAF-' . Carbon::now()->format('y') . '-00001';
-            // }
-            // else{
-            //     $number = (int) substr($latestproduct->paf_number,-5,5);
-            //     $number ++;
-            //     $product->paf_number = 'PAF-' . Carbon::now()->format('y') .'-'. str_pad($number,5,'0',STR_PAD_LEFT );
-            // }
 
             $latestrevision = Product::orderby('created_at', 'desc')->first();
             if ($latestrevision === null){
@@ -817,6 +818,17 @@ class SalesController extends Controller
 
     public function repeatstore (Request $request)
     {
+      $this->validate($request,[
+        'workorder' => 'required|min:5|max:20|unique:sales',
+        'salesorder' => 'required|min:5|max:20|unique:sales',
+        'wid' => 'required|min:5|max:20|unique:sales'
+      ],
+      [
+        'workorder.unique' => ' The work order field must be unique.',
+        'salesorder.unique' => ' The sales order field must be unique.',
+        'wid.unique' => ' The WID field must be unique.',
+      ]);
+
         $sales = new Sales;
         $latestrepeat = Sales::orderBy('created_at', 'desc')->first();
         if ($latestrepeat === null){
@@ -927,12 +939,16 @@ class SalesController extends Controller
     public function editscof($id)
     {
         $sales = Sales::find($id);
+        $fileUpload = FileUpload::where('sales_id', $sales->id)->get();
         return view('frontend.slsmark.editscof')
-        ->with('sales',$sales);
+        ->with('sales',$sales)
+        ->with('fileUpload', $fileUpload);
     }
 
     public function updatescof ($id,Request $request)
     {
+      if (access()->hasPermissions(['sales-marketing', 'edit-sales']))
+      {
         $sales = Sales::find($id);
         $sales->approval =$request->input('approval');
         $dtsales3 = \DateTime::createFromFormat('d/m/Y', $request->input("datetime"));
@@ -1009,8 +1025,112 @@ class SalesController extends Controller
                 $fileUpload->save();
             }
           }
+      }
 
+      elseif (access()->hasPermissions(['planning', 'edit-plan']))
+      {
+        $sales = Sales::find($id);
+        $sales->workorder =$request->input('workorder');
+        $remark2 =$request->input('remark2');
+        $dom = new \DomDocument();
+        $dom->loadHtml($remark2, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images = $dom->getElementsByTagName('img');
+       // foreach <img> in the submited message
+        foreach($images as $img){
+            $src = $img->getAttribute('src');
 
+            // if the img source is 'data-url'
+            if(preg_match('/data:image/', $src)){
+                // get the mimetype
+                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                $mimetype = $groups['mime'];
+                // Generating a random filename
+
+                $filename = uniqid();
+                $filepath = "/uploaded/$filename.$mimetype";
+                // @see http://image.intervention.io/api/
+                $image = Image::make($src)
+                  // resize if required
+                  /* ->resize(300, 200) */
+                  ->encode($mimetype, 100)  // encode file to the specified mimetype
+                  ->save(public_path($filepath));
+                $new_src = asset($filepath);
+                $img->removeAttribute('src');
+                $img->setAttribute('src', $new_src);
+            } // <!--endif
+        } // <!-
+        $sales->remark2 = $dom->saveHTML();
+        $sales->save();
+      }
+
+      elseif (access()->hasPermissions(['ctp', 'edit-ctp']))
+      {
+        $sales = Sales::find($id);
+        $remark3 =$request->input('remark3');
+        $dom = new \DomDocument();
+        $dom->loadHtml($remark3, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images = $dom->getElementsByTagName('img');
+       // foreach <img> in the submited message
+        foreach($images as $img){
+            $src = $img->getAttribute('src');
+
+            // if the img source is 'data-url'
+            if(preg_match('/data:image/', $src)){
+                // get the mimetype
+                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                $mimetype = $groups['mime'];
+                // Generating a random filename
+
+                $filename = uniqid();
+                $filepath = "/uploaded/$filename.$mimetype";
+                // @see http://image.intervention.io/api/
+                $image = Image::make($src)
+                  // resize if required
+                  /* ->resize(300, 200) */
+                  ->encode($mimetype, 100)  // encode file to the specified mimetype
+                  ->save(public_path($filepath));
+                $new_src = asset($filepath);
+                $img->removeAttribute('src');
+                $img->setAttribute('src', $new_src);
+            } // <!--endif
+        } // <!-
+        $sales->remark3 = $dom->saveHTML();
+        $sales->save();
+        }
+      elseif (access()->hasPermissions(['printing', 'edit-print']))
+      {
+        $sales = Sales::find($id);
+        $remark4 =$request->input('remark4');
+        $dom = new \DomDocument();
+        $dom->loadHtml($remark4, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images = $dom->getElementsByTagName('img');
+       // foreach <img> in the submited message
+        foreach($images as $img){
+            $src = $img->getAttribute('src');
+
+            // if the img source is 'data-url'
+            if(preg_match('/data:image/', $src)){
+                // get the mimetype
+                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                $mimetype = $groups['mime'];
+                // Generating a random filename
+
+                $filename = uniqid();
+                $filepath = "/uploaded/$filename.$mimetype";
+                // @see http://image.intervention.io/api/
+                $image = Image::make($src)
+                  // resize if required
+                  /* ->resize(300, 200) */
+                  ->encode($mimetype, 100)  // encode file to the specified mimetype
+                  ->save(public_path($filepath));
+                $new_src = asset($filepath);
+                $img->removeAttribute('src');
+                $img->setAttribute('src', $new_src);
+            } // <!--endif
+        } // <!-
+        $sales->remark4 = $dom->saveHTML();
+        $sales->save();
+      }
         return redirect()->route('frontend.slsmark.index')->withFlashSuccess('The data is saved and updated.');
     }
 
@@ -1132,6 +1252,9 @@ class SalesController extends Controller
       $stock = Stock::select(['status', 'reference','due_date', 'quantity_ordered'])
       ->where('item_number', '=', $request->input('partNo') );
       return Datatables::of($stock)
+      ->editColumn('due_date', function ($date) {
+              return $date->due_date ? with(new Carbon($date->due_date))->format('d/m/Y') : '';
+          })
       ->escapeColumns([])
       ->make();
     }
@@ -1158,8 +1281,8 @@ class SalesController extends Controller
               }
               else
               {
-                $row8 = str_replace(",", "", $row[3]);
-                $date = \DateTime::createFromFormat('d/m/Y',$row[2]);
+                $row8 = str_replace(",", "", $row[2]);
+                $date = \DateTime::createFromFormat('d/m/Y',$row[3]);
                       $item = array([
                        'item_number' => $row[0],
                        'reference' => $row[1],
@@ -1167,7 +1290,7 @@ class SalesController extends Controller
                        'quantity_ordered' => $row8,
                        'status' => 'WO'
                    ]);
-                   DB::table('powos')->insert($item );
+                   DB::table('stocks')->insert($item );
               }
             }
           }
@@ -1180,8 +1303,9 @@ class SalesController extends Controller
       // $stocks = Stock::where('status','=', 'SO')->delete();
       if(Input::hasFile('import_so')){
             $path = Input::file('import_so')->getRealPath();
-            $rows = Excel::load($path, function($reader) {
-                  $reader->toArray();
+            $rows = Excel::load($path, function($reader)
+            {
+                  // $reader->toArray();
                   $reader->noHeading();
               })->get();
 
@@ -1196,16 +1320,16 @@ class SalesController extends Controller
               }
               else
               {
-                $row8 = str_replace(",", "", $row[3]);
-                $date = \DateTime::createFromFormat('d/m/Y',$row[2]);
+                $row8 = str_replace(",", "", $row[2]);
+                $date = \DateTime::createFromFormat('d/m/Y',$row[3]);
                       $item = array([
                        'item_number' => $row[0],
                        'reference' => $row[1],
                        'due_date' => $date,
-                       'quantity_ordered' => $row8,
-                       'status' => 'WO'
+                       'quantity_ordered' => '-'.$row8,
+                       'status' => 'SO'
                    ]);
-                   DB::table('powos')->insert($item );
+                   DB::table('stocks')->insert($item );
               }
             }
           }
@@ -1267,10 +1391,12 @@ class SalesController extends Controller
     public function editreq($id)
     {
        $requisite = Requisite::find($id);
+       $fileUpload = FileUpload::where('requisites_id', $requisite->id)->get();
        $process = Process::where('requisites_id', $requisite->id)->get();
        return view('frontend.slsmark.editreq')
        ->with('requisite', $requisite)
-       ->with('process', $process);
+       ->with('process', $process)
+       ->with('fileUpload', $fileUpload);
     }
 
     public function viewreq($id)
@@ -1502,6 +1628,129 @@ class SalesController extends Controller
           return redirect()->route('frontend.slsmark.showsales')->withFlashSuccess('The data is  saved ');
       }
 
+
+    public function da()
+    {
+      $item = Item::all();
+      $sales = Sales::all();
+      return view('frontend.slsmark.da')
+      ->with('sales', $sales)
+      ->with('item', $item);
+    }
+
+    public function datable()
+    {
+      $item = Item::leftJoin('sales', 'items.id', '=', 'sales.items_id')
+      ->select(['sales.salesline','items.partNo', 'items.partDesc', 'items.model', 'sales.custName', 'items.id'])
+      ->where('sales.status', '=', 'Approved')
+      ->orWhere('sales.status', '=', 'PAF')
+      ;
+
+      return Datatables::of($item)
+      ->editColumn('id', function ($item) {
+        // return '<a href="'. route('frontend.slsmark.deliveryadvice', $item->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Add New"></i></a>';
+        $delivery = Delivery::where('items_id', $item->id)->first();
+        if (!empty($delivery)){
+        return '<a href="'. route('frontend.slsmark.searchda', $item->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View"></i></a>
+        <a href="'. route('frontend.slsmark.deliveryadvice', $item->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Add New"></i></a>';
+        }
+        else {
+          return '<a href="'. route('frontend.slsmark.deliveryadvice', $item->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Add New"></i></a>';
+        }
+      })
+
+      ->escapeColumns([])
+      ->make();
+    }
+
+    public function deliveryadvice($id)
+    {
+      $item = Item::find($id);
+      $sales = Sales::where('id', $item->sales_id)->first();
+      return view('frontend.slsmark.deliveryadvice')
+      ->with('sales', $sales)
+      ->with('item', $item);
+    }
+
+    public function dastore(Request $request, $id)
+    {
+      $item = Item::find($id);
+
+      $delivery = new Delivery;
+      $delivery->items_id = $item->id;
+      $delivery->item_number = $request->input('item_number');
+      $delivery->po = $request->input('po');
+      $delivery->custCode = $request->input('custCode');
+      $delivery->delDate = $request->input('delDate');
+      $delivery->delQty = $request->input('delQty');
+
+      $delivery->save();
+
+      return redirect()->route('frontend.slsmark.da')->withFlashSuccess('The data is saved.');
+    }
+
+    public function importda()
+    {
+      if(Input::hasFile('import_da')){
+            $path = Input::file('import_da')->getRealPath();
+            $rows = Excel::load($path, function($reader) {
+                  $reader->toArray();
+                  $reader->noHeading();
+              })->get();
+
+             foreach ($rows as $row) {
+               $delivery = Delivery::where('item_number', $row[0])
+                // ->where('reference', $row[2])
+                ->first();
+
+              if ($delivery)
+              {
+                 continue;
+              }
+              else
+              {
+                // $row8 = str_replace(",", "", $row[6]);
+                // $date = \DateTime::createFromFormat('d/m/Y',$row[7]);
+                      $item = array([
+                       'item_number' => $row[0],
+                       'po' => $row[1],
+                       'custCode' => $row[2],
+                       'delDate' => $row[3],
+                       'delQty' => $row[4]
+                       // 'status' => 'WO'
+                   ]);
+                   DB::table('deliveries')->insert($item );
+              }
+            }
+          }
+        return redirect()->route('frontend.slsmark.da')->withFlashSuccess('The delivery advice is saved.');
+
+    }
+
+    public function searchda($id)
+    {
+      $item = Item::find($id);
+      $delivery = Delivery::where('items_id', $item->id)->get();
+      return  view('frontend.slsmark.searchda')->with('item', $item);
+    }
+
+    public function searchdatable(Request $request)
+    {
+      $delivery = Delivery::leftJoin('items', 'items.id', '=', 'deliveries.items_id')
+      ->select(['items.partNo', 'items.partDesc', 'deliveries.po', 'deliveries.custCode', 'deliveries.delDate', 'deliveries.delQty', 'items.id'])
+      ->where('items.id', $request->input('id'))
+
+      ;
+
+      return Datatables::of($delivery)
+      ->editColumn('id', function ($delivery) {
+        // return '<a href="'. route('frontend.slsmark.deliveryadvice', $item->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Add New"></i></a>';
+      })
+
+      ->escapeColumns([])
+      ->make();
+    }
+
     public function destroy($id)
     {
         $sales = Sales::find($id);
@@ -1528,6 +1777,34 @@ class SalesController extends Controller
     {
       $requisite = Requisite::findOrFail($id)->forceDelete();
       return redirect()->route('frontend.slsmark.showsales')->withFlashSuccess('The data is cancelled.');
+    }
+
+    public function deletefile ($id)
+    {
+      $fileUpload = FileUpload::find($id);
+      $sales = Sales::where('id', $fileUpload->sales_id)->first();
+
+      // $fileupload = FileUpload::where('sales_id', $sales->id)->first();
+      $file = $fileUpload->filename;
+      unlink($destinationPath = base_path() . '/public/uploaded/'.$file);
+
+      $files = FileUpload::findOrFail($id)->forceDelete();
+      return redirect()->route('frontend.slsmark.editscof', $sales->id)->withFlashSuccess('The data is cancelled.');
+
+    }
+
+    public function deletereqfile($id)
+    {
+      $fileUpload = FileUpload::find($id);
+      $requisite = Requisite::where('id', $fileUpload->requisites_id)->first();
+
+      // $fileupload = FileUpload::where('sales_id', $sales->id)->first();
+      $file = $fileUpload->filename;
+      unlink($destinationPath = base_path() . '/public/uploaded/'.$file);
+
+      $files = FileUpload::findOrFail($id)->forceDelete();
+      return redirect()->route('frontend.slsmark.editreq', $requisite->id)->withFlashSuccess('The data is cancelled.');
+
     }
 
 }

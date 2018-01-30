@@ -15,6 +15,7 @@
             {!!Form::hidden('salesorder', $requisite->salesorder)!!}
             {!!Form::hidden('line', $requisite->line)!!}
             {!! Form::hidden('salesline', $requisite->salesorder.'-'.$requisite->line) !!}
+
             <div class="form-group row ">
               {!! Form::label('release', 'Release? ', array('class' => 'col-md-2')) !!}
               <div class="col-md-10">{!! Form::checkbox('release', 1, $requisite->release, array('class' => 'field')) !!}</div>
@@ -67,28 +68,18 @@
                        <table class="table table-bordered" >
                             <tr>
                                  <input type="hidden" name="id[]" value={!!$p->id!!} />
-                                 <td><input type="text" name="other_sub[]" value={!!$p->other_sub!!} placeholder="Enter your heading" class="form-control " /></td>
-                                 <td><input type="text" name="other_data[]" value={!!$p->other_data!!} placeholder="Enter your data" class="form-control" /></td>
-                                 {{-- <td><button type="button" name="remove" id="'+i+'"  class="btn btn-danger">Delete</button></td> --}}
+                                 <td><input type="text" name="other_sub[]" value="{!!$p->other_sub!!}" class="form-control " /></td>
+                                 <td><input type="text" name="other_data[]" value="{!!$p->other_data!!}" class="form-control" /></td>
                             </tr>
                        </table>
                 @endforeach
                 <table class="table table-bordered" id="dynamic_field">
                      <tr>
-                          <td><input type="text" name="other_subnew[]" placeholder="Enter your heading" class="form-control name_list" /></td>
-                          <td><input type="text" name="other_datanew[]" placeholder="Enter your data" class="form-control name_list" /></td>
+                          <td><input type="text" name="other_subnew[]"  class="form-control name_list" /></td>
+                          <td><input type="text" name="other_datanew[]"  class="form-control name_list" /></td>
                           <td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>
                      </tr>
                 </table>
-                {{-- <div class="table-responsive">
-                     <table class="table table-bordered" id="dynamic_field">
-                          <tr>
-                               <td><input type="text" name="other_sub[]" placeholder="Enter your heading" class="form-control name_list" /></td>
-                               <td><input type="text" name="other_data[]"  placeholder="Enter your data" class="form-control name_list" /></td>
-                               <td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>
-                          </tr>
-                     </table>
-                </div> --}}
                </div>
             </div>
 
@@ -123,8 +114,8 @@
             <div class="form-group row">
                       {!! Form::label('images', 'Files', array('class' => 'control-label col-md-2')) !!}
                     <div class="col-md-10">
-                      @foreach($requisite->fileupload as $file)
-                        <a href="{!! "/uploaded/$file->filename" !!}" download="{!! $file->filename !!}" >{!! $file->filename !!}</a><button> Delete </button>
+                      @foreach($fileUpload as $file)
+                        <a href="{!! "/uploaded/$file->filename" !!}" download="{!! $file->filename !!}" >{!! $file->filename !!}</a>&nbsp;<a href=" {!!route('frontend.slsmark.deletereqfile', $file->id)!!} " class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" data-toggle="modal tooltip" onclick="return confirm('Are you sure you want to delete this item?');" title="delete"></i></a>
                             {!! '&nbsp;'!!}
                       @endforeach
                     </div>
@@ -180,7 +171,7 @@
             var i=1;
             $('#add').click(function(){
                  i++;
-                 $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="other_sub[]" placeholder="Enter your heading" class="form-control name_list" /></td><td><input type="text" name="other_data[]" placeholder="Enter your data" class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+                 $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="other_sub[]"  class="form-control name_list" /></td><td><input type="text" name="other_data[]"  class="form-control name_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
             });
             $(document).on('click', '.btn_remove', function(){
                  var button_id = $(this).attr("id");

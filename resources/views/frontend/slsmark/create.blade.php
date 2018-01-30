@@ -3,15 +3,13 @@
 @section('content')
   <h1>Sales Marketing Department</h1>
 @include('frontend.slsmark.includes.nav')
-  {{-- <div class="page-header">
-      <h3 class="box-title"> {!! trans('') !!}</h3>
-  </div> <!--page-header--> --}}
+
   <div class="container-fluid">
         <div class="row" id="app">
           <div class="col-lg-12">
 
           <div class="col-lg-12">
-          @if (access()->hasPermissions(['sales-marketing']))
+          @if (access()->hasPermissions(['sales-marketing', 'edit-sales']))
             {!! Form::model($sales, array('route' => array('frontend.slsmark.index'), 'method' => 'POST', 'files'=>true)) !!}
 
             <table class="table table-bordered" id="users-table">
@@ -27,7 +25,6 @@
                         <th>Qty</th>
                         <th>Order Date</th>
                         <th>Due Date</th>
-                        <th>Status</th>
                         <th>Action</th>
 
                     </tr>
@@ -45,17 +42,10 @@
                       serverSide: true,
                       ajax: '{!! route('frontend.slsmark.createSales') !!}',
 
-                      "order": [[ 0, "desc" ]]
+                      'order': [[ 1, 'asc' ]]
                   });
               });
-
-
-              //Being injected from FrontendController
-              console.log(test);
           </script>
-
-
-
             {!! Form::close() !!}
           @else
             <br>

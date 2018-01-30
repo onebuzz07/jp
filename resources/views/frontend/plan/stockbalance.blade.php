@@ -10,12 +10,20 @@
         <div class="col-md-12 row">
           <div class="form-group row ">
             {!! Form::label('supplier', 'Supplier', array('class' => 'col-md-2')) !!}
-            <div class="col-md-10">{!! Form::text('supplier', $sales->supplier, array('class' => 'form-control')) !!}</div>
+            @if (!empty ($sheet->supplier))
+              <div class="col-md-10">{!! Form::text('supplier', $sheet->supplier, array('class' => 'form-control')) !!}</div>
+            @else
+              <div class="col-md-10">{!! Form::text('supplier', '', array('class' => 'form-control')) !!}</div>
+            @endif
           </div>
 
           <div class="form-group row ">
             {!! Form::label('price', 'Price', array('class' => 'col-md-2')) !!}
-            <div class="col-md-10">{!! Form::text('price', $sales->price, array('class' => 'form-control')) !!}</div>
+            @if (!empty($sheet->price))
+              <div class="col-md-10">{!! Form::text('price', $sheet->price, array('class' => 'form-control')) !!}</div>
+            @else
+              <div class="col-md-10">{!! Form::text('price','', array('class' => 'form-control')) !!}</div>
+            @endif
           </div>
 
           <div class="form-group row ">
@@ -31,8 +39,12 @@
           <div class="form-group  row">
             {!! Form::label('size', 'Size', array('class' => 'col-md-2')) !!}
             <div class="col-md-5">{!! Form::text('Size', $sales->items->size, array('class' => 'form-control')) !!}</div>
-            {!! Form::label('size', 'Page No.', array('class' => 'col-md-1')) !!}
-            <div class="col-md-4">{!! Form::text('size', '', array('class' => 'form-control')) !!}</div>
+            {!! Form::label('pageNo', 'Page No.', array('class' => 'col-md-1')) !!}
+            @if (!empty($sheet->pageNo))
+              <div class="col-md-4">{!! Form::text('pageNo', $sheet->pageNo, array('class' => 'form-control')) !!}</div>
+            @else
+              <div class="col-md-4">{!! Form::text('pageNo', '', array('class' => 'form-control')) !!}</div>
+            @endif
           </div>
 
         </div>
@@ -55,13 +67,19 @@
                   <td>{!! Form::text('date', \Carbon\Carbon::now()->format('d/m/Y'), array('id'=>'datepicker', 'class'=>'form-control')) !!}</td>
                   <td>{!! Form::text('job_no', '', array('class' => 'form-control')) !!}</td>
                   <td>{!! Form::text('grn_no', '', array('class' => 'form-control')) !!}</td>
-                  <td>{!! Form::number('inmt', '', array('class' => 'form-control')) !!}</td>
-                  <td>{!! Form::number('outmt', '', array('class' => 'form-control')) !!}</td>
-                  <td>{!! Form::number('balance', '', array('class' => 'form-control')) !!}</td>
+                  <td>{!! Form::number('inmt', '', array('class' => 'form-control', 'step'=>"any", 'id'=>'a1', 'v-model'=>"a1")) !!}</td>
+                  <td>{!! Form::number('outmt', '', array('class' => 'form-control','step'=>"any", 'id'=>'a2', 'v-model'=>"a2")) !!}</td>
+                  @if (!empty($balance->balance))
+                  <td>{!! Form::number('balance', null, array('readonly'=>true,'class' => 'form-control', 'step'=>"any", 'id'=>'a4', 'v-model'=>"a4")) !!}</td>
+                  @else
+                    <td>{!! Form::number('balance', '', array('readonly'=>true, 'class' => 'form-control', 'step'=>"any", 'id'=>'a3', 'v-model'=>"a3")) !!}</td>
+                  @endif
                   <td>{!! Form::text('remark', '', array('class' => 'form-control')) !!}</td>
                 </tr>
               </tbody>
           </table>
+
+
 
         <div class="form-group row">
           <button type="submit" class="btn btn-success" value="Create">Create </button>
@@ -93,15 +111,17 @@
                   $('#users-table').DataTable({
                       processing: true,
                       serverSide: true,
-                      ajax: '{!! route('frontend.plan.tablebalance') !!}',
+                      ajax:{
+                        url: '{!! route('frontend.plan.tablebalance') !!}',
+                        data: function(d) {
+                             d.items_id = '{!! $sales->items->id !!}';
+                             d._token = '{{ csrf_token() }}';
+                        }
+                      },
 
                       "order": [[ 0, "desc" ]]
                   });
               });
-
-
-              //Being injected from FrontendController
-              console.log(test);
           </script>
         </div>
         </div>
@@ -117,4 +137,25 @@
         });
       } );
       </script>
+      <script>
+      var vm = new Vue
+      ({
+              el:'#app',
+              data : {
+                a1: 0, a2: 0
+              },
+
+              computed: {
+                a3: function() {
+                  var total = (parseFloat(this.a1) - parseFloat(this.a2));
+                  return total;
+                },
+                a4: function() {
+                  var total1 =({!!$hu!!} + parseFloat(this.a1) - parseFloat(this.a2));
+                  return total1;
+                },
+              },
+      });
+      </script>
+
 @endsection

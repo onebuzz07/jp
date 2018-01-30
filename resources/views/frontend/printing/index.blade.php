@@ -14,7 +14,7 @@
               <th>Part Number</th>
               <th>Part Description</th>
               <th>Repeat?</th>
-              <th>Created at</th>
+              {{-- <th>Created at</th> --}}
               <th>Actions</th>
             </tr>
         </thead>

@@ -36,6 +36,10 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group row">
+                    {!! Form::label('deliverDate', 'Deliver Date(from SCO)', ['class' => 'col-md-2']) !!}
+                    <div class="col-md-10">{!! Form::text('deliverDate',$sales->deliverDate->format('d/m/Y'), array('id'=>'datepicker22', 'class' => 'form-control ', 'readonly'=>true)) !!}</div>
+                  </div>
+                  <div class="form-group row">
                     {!! Form::label('custName', 'Customer', ['class' => 'col-md-2']) !!}
                     <div class="col-md-10">{!! Form::text('custName', $sales->custName, array('readonly'=>true , 'class' => 'form-control ')) !!}</div>
                   </div>

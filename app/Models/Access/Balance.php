@@ -14,4 +14,9 @@ class Balance extends Model implements AuditableContract
     {
         return $this->belongsTo('App\Models\Access\sales');
     }
+
+    public function items()
+    {
+        return $this->belongsTo('App\Models\Access\item');
+    }
 }

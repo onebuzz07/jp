@@ -9,7 +9,7 @@
             <li class="{!! Request::is('slsmark/review') ? 'active' : '' !!}">{!! link_to_route('frontend.slsmark.review', 'PAF') !!}</li>
             <li class="{!! Request::is('slsmark/listStock') ? 'active' : '' !!}">{!! link_to_route('frontend.slsmark.listStock', 'Forecast Stock') !!}</li>
             <li class="{!! Request::is('slsmark/showsales') ? 'active' : '' !!}">{!! link_to_route('frontend.slsmark.showsales', 'Sample Requisition Order') !!}</li>
-            {{-- <li class="{!! Request::is('slsmark/repeat') ? 'active' : '' !!}">{!! link_to_route('frontend.slsmark.repeat', 'List of repeat sales confirmation order') !!}</li> --}}
+            <li class="{!! Request::is('slsmark/da') ? 'active' : '' !!}">{!! link_to_route('frontend.slsmark.da', 'Delivery Advice') !!}</li>
         </ul>
     </div>
 </nav>

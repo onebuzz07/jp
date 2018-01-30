@@ -85,7 +85,7 @@ class CtpController extends Controller
     if (access()->hasPermissions(['planning']))
     {
         $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat','sales.created_at', 'sales.id']);
+        ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat', 'sales.id','sales.created_at']);
 
         return Datatables::of($sales)
           ->editColumn('id', function ($sales) {

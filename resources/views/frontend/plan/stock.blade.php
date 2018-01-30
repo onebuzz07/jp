@@ -20,13 +20,9 @@
               </div>
 
               <div class="col-md-2">
-                <label> Stock(On hand):
-                    {{-- {!!($stocklist) ? $stocklist->Quantity_Change : 'Please import data'  !!} </label> --}}
+                <label> Stock(On hand): 0 </label>
               </div>
               <div class="col-md-2">
-                {{-- <label>Remaining : --}}
-                {{-- {!!($stockupdate) ? $stockupdate->stock_taken : ''  !!} (contoh kalau x nak null) --}}
-                {{-- {!!((int)$stockupdate['stock_qad'] - (int)$balance)!!} --}}
                 </label>
               </div>
               </div>
@@ -76,7 +72,6 @@
             <table class="table table-bordered" id="users-table20">
                 <thead>
                     <tr>
-                        {{-- <th>Part Number</th> --}}
                         <th>ID Num</th>
                         <th>P/O quantity</th>
                         <th>Stock Taken</th>
@@ -104,19 +99,14 @@
                         },
                   });
               });
-              //Being injected from FrontendController
-              // console.log(test);
               </script>
           </div>
           <div>
-              {{-- Remaining stock: {!!((int)$stockupdate->stock -(int)$stockupdate->stock_taken);!!} --}}
           </div>
-            {{-- <form name="stock" id="stock" method="POST" action ="{!! route('frontend.plan.storestock', $sales->id) !!}"> --}}
             {!! Form::open(array('route' => array('frontend.plan.storestock', $sales->id))) !!}
             <table class="table table-bordered" id="stockTable">
                 <thead>
                   <tr>
-                    {{-- <th>No.</th> --}}
                     <th>ID No</th>
                     <th>P/O Qty</th>
                     <th>Stock Taken</th>
@@ -128,10 +118,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                   {{-- @for ($i = 1; $i < 11; $i++) --}}
 
                   <tr id="Add">
-                    {{-- <td></td> --}}
+
                     <td>{!! Form::text('idNum', '', array( 'class'=>'form-control')) !!}</td>
                     <td>{!! Form::number('POQuantity', '', array( 'class'=>'form-control')) !!}</td>
                     <td>{!! Form::number('stock_taken', '', array( 'class'=>'form-control')) !!}</td>
@@ -140,14 +129,12 @@
                     <td>{!! Form::text('receiveDate', \Carbon\Carbon::now()->format('d/m/Y'), array('id'=>'datepicker', 'class'=>'form-control')) !!}</td>
                     <td>{!! Form::text('remarkStock', '', array( 'class'=>'form-control')) !!}</td>
                   </tr>
-                {{-- @endfor --}}
                 </tbody>
               </table>
 
               <div class="form-group row">
               <button type="submit" class="btn btn-success btn-block" >SAVE </button>
               </div>
-            {{-- </form> --}}
               {!!form::close()!!}
           </div>
         </div>

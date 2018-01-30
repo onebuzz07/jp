@@ -11,14 +11,12 @@
   <div class="container-fluid">
         <div class="row" id="app">
           <div class="col-lg-12">
-            {{-- <p class="text-right">No:   {{$sales->sco_number}}  </p> --}}
           </div>
           <div class="col-lg-12">
             {!! Form::model($sales, array('route' => array('frontend.slsmark.repeatstore', $sales->id), 'method' => 'POST', 'files'=>true)) !!}
               {!! Form::hidden('sco_number', $sales->sco_number )!!}
               {!! Form::hidden('purchaseOrder', $sales->purchaseOrder )!!}
               @if (access()->hasPermissions(['sales-marketing']))
-                {{-- {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!} --}}
 
                 <div class="form-group row ">
                   {!! Form::label('repeat_from', 'Repeat From? ', array('class' => 'col-md-2')) !!}
@@ -30,27 +28,28 @@
                   <div class="col-md-10">{!! Form::checkbox('approval', 1, true, array('class' => 'field')) !!}</div>
                 </div>
 
-                <div class="form-group row ">
+                <div class="form-group row {{ $errors->has('workorder') ? 'has-error' : '' }}">
                   {!! Form::label('workorder', 'Work Order', array('class' => 'col-md-2')) !!}
                   <div class="col-md-10">{!! Form::text('workorder', '', array('class' => 'form-control')) !!}</div>
+                  <span class="text-danger">{{ $errors->first('workorder') }}</span>
                 </div>
 
-                <div class="form-group row ">
+                <div class="form-group row {{ $errors->has('wid') ? 'has-error' : '' }}">
                   {!! Form::label('wid', 'ID', array('class' => 'col-md-2')) !!}
                   <div class="col-md-10">{!! Form::text('wid', '', array('class' => 'form-control')) !!}</div>
+                  <span class="text-danger">{{ $errors->first('wid') }}</span>
                 </div>
 
-                <div class="form-group row ">
+                <div class="form-group row {{ $errors->has('salesorder') ? 'has-error' : '' }}">
                   {!! Form::label('salesorder', 'Sales Order ', array('class' => 'col-md-2')) !!}
                   <div class="col-md-10">{!! Form::text('salesorder', '', array('class' => 'form-control')) !!}</div>
+                  <span class="text-danger">{{ $errors->first('salesorder') }}</span>
                 </div>
 
-                <div class="form-group row ">
+                <div class="form-group row  ">
                   {!! Form::label('line', 'Line', array('class' => 'col-md-2')) !!}
                   <div class="col-md-10">{!! Form::text('line', '', array('class' => 'form-control')) !!}</div>
                 </div>
-
-
 
               <div class="form-group row {{ $errors->has('datetime') ? 'has-error' : '' }}">
                 {!! Form::label('datetime', 'Date', ['class' => 'col-md-2']) !!}

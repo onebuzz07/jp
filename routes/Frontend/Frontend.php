@@ -91,6 +91,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('sco_paf/{id}', 'SalesController@sco_paf')->name('slsmark.sco_paf');
         Route::post('storesco/{id}', 'SalesController@storesco')->name('slsmark.storesco');
         Route::get('viewscopaf/{id}', 'SalesController@viewscopaf')->name('slsmark.viewscopaf');
+        Route::get('da', 'SalesController@da')->name('slsmark.da');
+        Route::get('deliveryadvice/{id}', 'SalesController@deliveryadvice')->name('slsmark.deliveryadvice');
+        Route::get('datable', 'SalesController@datable')->name('slsmark.datable');
+        Route::post('dastore/{id}', 'SalesController@dastore')->name('slsmark.dastore');
+        Route::post('importda', 'SalesController@importda')->name('slsmark.importda');
+        Route::post('search', 'SalesController@search')->name('slsmark.search');
+        Route::get('searchda/{id}', 'SalesController@searchda')->name('slsmark.searchda');
+        Route::get('searchdatable', 'SalesController@searchdatable')->name('slsmark.searchdatable');
+        Route::get('deletefile/{id}', 'SalesController@deletefile')->name('slsmark.deletefile');
+        Route::get('deletereqfile/{id}', 'SalesController@deletereqfile')->name('slsmark.deletereqfile');
 
 
     });

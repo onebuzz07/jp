@@ -127,20 +127,6 @@
               {!! Form::label('confirmBy', 'Confirm By', ['class' => 'col-md-2']) !!}
               <div class="col-md-10">{!! Form::text('confirmBy', $sales->confirmBy, array('class' => 'form-control', 'disabled'=>'disabled')) !!}</div>
             </div>
-              {{-- <div class="form-group row">
-                {!! Form::label('remark2', 'Remarks (for Planning department)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::textarea('remark2', $sales->remark2, array('class' => 'form-control','id'=>'2', 'readonly'=>true)) !!}</div>
-              </div>
-
-              <div class="form-group row">
-                {!! Form::label('remark3', 'Remarks (for CTP department)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::textarea('remark3', $sales->remark3, array('class' => 'form-control','id'=>'3', 'readonly'=>true)) !!}</div>
-              </div>
-              <div class="form-group row ">
-                {!! Form::label('remark4', 'Remarks (for Printing department)', ['class' => 'col-md-2']) !!}
-                <div class="col-md-10">{!! Form::textarea('remark4', $sales->remark4, array('class' => 'form-control' ,'id'=>'4', 'readonly'=>true)) !!}</div>
-              </div> --}}
-
               <div class="form-group row">
               <input type="button" class="btn btn-success btn-block" value="BACK" onclick="history.go(-1)">  </input>
             </div>

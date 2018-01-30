@@ -72,6 +72,14 @@ class PermissionTableSeeder extends Seeder
 
         $permission_model = config('access.permission');
         $viewBackend = new $permission_model();
+        $viewBackend->name = 'edit-sales';
+        $viewBackend->display_name = 'Edit Sales Marketing';
+        $viewBackend->created_at = Carbon::now();
+        $viewBackend->updated_at = Carbon::now();
+        $viewBackend->save();
+
+        $permission_model = config('access.permission');
+        $viewBackend = new $permission_model();
         $viewBackend->name = 'edit-plan';
         $viewBackend->display_name = 'Edit Planning';
         $viewBackend->created_at = Carbon::now();
@@ -88,7 +96,7 @@ class PermissionTableSeeder extends Seeder
 
         $permission_model = config('access.permission');
         $viewBackend = new $permission_model();
-        $viewBackend->name = 'edit-printing';
+        $viewBackend->name = 'edit-print';
         $viewBackend->display_name = 'Edit Printing';
         $viewBackend->created_at = Carbon::now();
         $viewBackend->updated_at = Carbon::now();

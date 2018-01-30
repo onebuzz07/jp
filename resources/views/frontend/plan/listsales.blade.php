@@ -18,16 +18,15 @@
       </div>
     {!!form::close()!!}
     <div class="col-md-12 row">
-    <h4>SCO </h4>
+    <h4>Sales Confirmation Order </h4>
     <table class="table table-bordered" id="users-table1">
         <thead>
             <tr>
-                <th>Salesline</th>
-                <th>Customer Name</th>
-                <th>Part Number</th>
-                <th>Part Description</th>
-                <th>Remarks?</th>
-                <th>Actions</th>
+                <th class="col-md-1">Salesline</th>
+                <th class="col-md-2">Customer Name</th>
+                <th class="col-md-2">Part Number</th>
+                <th class="col-md-3">Part Description</th>
+                <th class="col-md-1">Actions</th>
             </tr>
         </thead>
     </table>
@@ -39,11 +38,8 @@
               processing: true,
               serverSide: true,
               ajax: '{!! route('frontend.plan.prodtable') !!}',
-
-
           });
       });
-      console.log(test);
   </script>
 </div>
 @stop

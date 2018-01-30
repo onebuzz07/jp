@@ -10,12 +10,12 @@
       <div class="col-lg-12">
         {!! Form::model($sales, array('route' => array('frontend.plan.index', $sales->id), 'method' => 'PUT')) !!}
         <div class="col-lg-12">
-          {!! Form::label('sco_number', 'SCO NUMBER:', array('class' => 'col-md-2')) !!}
-          <div class="col-md-2">{!! Form::text('sco_number', $sales->sco_number, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+          {!! Form::label('partNo', 'Item Number:', array('class' => 'col-md-2')) !!}
+          <div class="col-md-2">{!! $sales->items->partNo!!}</div>
           {!! Form::label('so_number', 'SO:  ', array('class' => 'col-md-2')) !!}
-          <div class="col-md-2">{!! Form::text('so_number', $sales->salesorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+          <div class="col-md-2">{!! $sales->salesorder !!}</div>
           {!! Form::label('wo_number', 'WO:  ', array('class' => 'col-md-2')) !!}
-          <div class="col-md-2">{!! Form::text('wo_number', $sales->workorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+          <div class="col-md-2">{!! $sales->workorder !!}</div>
         </div>
         <br><br>
         @foreach ($stations as $pro)
@@ -32,10 +32,10 @@
               </tr>
               <tr>
 
-                <td>{!! Form::text('station[]', $pro->station, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
-                <td>{!! Form::text('remarksQAD[]',$pro->remarksQAD, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
-                <td>{!! Form::textarea('desc[]', $pro->desc, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
-                <td>{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->operation)) !!}</td>
+                <td class="col-md-2">{!! $pro->station !!}</td>
+                <td class="col-md-3">{!! $pro->remarksQAD !!}</td>
+                <td class="col-md-3">{!! $pro->desc !!}</td>
+                <td class="col-md-4">{!! $pro->remarks!!}</td>
               </tr>
             </table>
           </div>
@@ -64,10 +64,7 @@
              ['color', ['color']],
              ['para', ['ul', 'ol', 'paragraph']]
           ],
-
           height:175,
-
-
             });
     });
 

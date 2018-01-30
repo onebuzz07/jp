@@ -16,6 +16,8 @@
         <!-- Otherwise apply the normal LTR layouts -->
         {{ Html::style(mix('css/frontend.css')) }}
         <link href="{{ asset('css/backend/plugin/datatables/dataTables.bootstrap.min.css') }}" rel="stylesheet">
+        <link type="text/css" href="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.9/css/dataTables.checkboxes.css" rel="stylesheet" />
+
         @yield('after-styles')
         <script>
             window.Laravel = <?php echo json_encode([
@@ -32,6 +34,9 @@
         <script type="text/javascript" src="http://211.24.114.106:8090/js/vendor/jquery/vue.js"></script>
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+        <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.9/js/dataTables.checkboxes.min.js"></script>
+
+
 
             @include('includes.partials.logged-in-as')
             @include('frontend.includes.nav')

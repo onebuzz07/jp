@@ -55,7 +55,19 @@ class item extends Model implements AuditableContract
       {
           return $this->hasMany('App\Models\Access\Stockupdatepowo');
       }
+    public function sheeting()
+      {
+          return $this->hasMany('App\Models\Access\Sheetings');
+      }
+    public function balance()
+      {
+          return $this->hasMany('App\Models\Access\Balance');
+      }
 
+    public function delivery()
+      {
+          return $this->belongsTo('App\Models\Access\sales');
+      }
     // public function requisites()
     //   {
     //       return $this->hasMany('App\Models\Access\Requisite');

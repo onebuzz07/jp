@@ -3,15 +3,13 @@
 @section('content')
     <h1>Planning Department</h1>
   @include('frontend.plan.includes.nav')
-    {{-- <form action="{!! route('frontend.plan.import') !!}" method="post" enctype="multipart/form-data"> --}}
 
-    <h4>Sales Confirmation Order</h4>
+    <h4>List of Workorder</h4>
     <table class="table table-bordered" id="users-table">
         <thead>
             <tr>
-                <th>Salesline</th>
                 <th>Work Order</th>
-                <th>Customer Name</th>
+                <th>Model</th>
                 <th>Part Number</th>
                 <th>Part Description</th>
                 <th>Actions</th>
@@ -27,9 +25,7 @@
               serverSide: true,
               ajax: '{!! route('frontend.plan.tablelist') !!}',
 
-
           });
       });
-      console.log(test);
   </script>
 @stop

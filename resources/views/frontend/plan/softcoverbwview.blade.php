@@ -15,6 +15,8 @@
               <th>Part Description</th>
               <th>Date</th>
               <th>By</th>
+              <th>Paper Supply</th>
+              <th>Print Qty</th>
               <th>Actions</th>
             </tr>
         </thead>

@@ -145,17 +145,16 @@
           </div>
         </div>
       </div> {{-- container-fluid --}}
-<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
-<script type="text/javascript">
-     $(document).ready(function() {
-         $('#summernote2').summernote('disable');
-         });
-    $(document).ready(function() {
-             $('#summernote').summernote({
-               height:150,
-                 });
-             });
-</script>
-
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+  <script type="text/javascript">
+       $(document).ready(function() {
+           $('#summernote2').summernote('disable');
+           });
+      $(document).ready(function() {
+               $('#summernote').summernote({
+                 height:150,
+                   });
+               });
+  </script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
 @endsection

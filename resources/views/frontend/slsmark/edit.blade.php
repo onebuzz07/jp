@@ -417,7 +417,7 @@
                     </div>
                   @endif
 
-                  @if (access()->hasPermissions(['printing']))
+                  @if (access()->hasPermissions(['printing', 'ctp']))
                     <div class="col-md-12">
                       <div class="form-group row">
                         {!! Form::label('advisePlate', 'Advise Plate/Film (by CTP)', array('class' => 'col-md-12')) !!}
@@ -480,7 +480,7 @@
                 </div>
                 @endif
 
-              @if (access()->hasPermissions(['sales-marketing', 'printing']))
+              @if (access()->hasPermissions(['sales-marketing', 'printing', 'ctp']))
                   <div class="col-md-12">
                     <div class="form-group row">
                       {!! Form::label('adviseBy', 'Advise By', array('class' => 'col-md-2')) !!}

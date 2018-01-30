@@ -3,7 +3,6 @@
 @section('content')
     <h1>Sales Marketing Department</h1>
   @include('frontend.slsmark.includes.nav')
-    {{-- <form action="{!! route('frontend.slsmark.import') !!}" method="post" enctype="multipart/form-data"> --}}
     <div class="col-md-12">
       <h4>Import sales order</h4>
       {!! Form::open(array('route' => array('frontend.slsmark.importedsales'), 'method'=>'POST', 'files'=>true)) !!}
@@ -33,7 +32,7 @@
                 <th>Part Number</th>
                 <th>Part Description</th>
                 <th>Repeat?</th>
-                <th>Created at </th>
+                {{-- <th>Created at </th> --}}
                 <th>Actions</th>
             </tr>
         </thead>

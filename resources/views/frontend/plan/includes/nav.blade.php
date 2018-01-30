@@ -17,7 +17,7 @@
                 <a href="{!! route('frontend.plan.listsales')!!}">Production</a>
             </li>
             <li class="{!! Request::is('plan/listbalance') ? 'active' : '' !!} dropdown">
-                <a href="{!! route('frontend.plan.listbalance')!!}">Sheeting</a>
+                <a href="{!! route('frontend.plan.listbalance')!!}">Roll Inventory & Sheet</a>
             </li>
         </ul>
     </div>

@@ -31,6 +31,7 @@ use App\Models\Access\Balance;
 use App\Models\Access\Sheeting;
 use App\Models\Access\Prodqads;
 use App\Models\Access\Wotype;
+use App\Models\Access\Sheet;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
@@ -107,7 +108,7 @@ class PlanController extends Controller
       if (access()->hasPermissions(['planning']))
       {
           $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from','sales.created_at', 'sales.id']);
+          ->select(['sales.salesline','sales.custName', 'items.partNo' , 'items.partDesc','sales.repeat_from', 'sales.id','sales.created_at']);
 
           return Datatables::of($sales)
             ->editColumn('id', function ($sales) {
@@ -2873,8 +2874,8 @@ class PlanController extends Controller
      $boxes->save();
 
      $workorder = Workorder::where('sales_id', $sales->id)->first();
+     $wotype = Wotype::where('typeofformula', '=', 'Boxes')->where('workorders_id', $workorder->id)->first();
 
-     $wotype = Wotype::where('typeofformula', '=', 'Boxes')->where('workorders_id', $workorder->id);
      $wotype->paper_sup = $boxes->totalpaper;
      $wotype->printqty = $boxes->totalqty  ;
      $wotype->save();
@@ -3069,7 +3070,7 @@ class PlanController extends Controller
     public function prodtable()
     {
       $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-      ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc' ,'sales.prodremark', 'sales.id'])
+      ->select(['sales.salesline','sales.custName', 'items.partNo', 'items.partDesc', 'sales.id','sales.prodremark'])
       ->where('sales.status', '=', 'Approved')
       ->orwhere('sales.status', '=', 'PAF');
       return Datatables::of($sales)
@@ -3093,7 +3094,7 @@ class PlanController extends Controller
       $sales = Sales::find($id);
       $production = Production::where('sales_id', $sales->id)->first();
       $stations = Station::where('sales_id', $sales->id)->get();
-      $prodqads = Prodqads::where('wo_number', $sales->workorder)->where('salesjob', $sales->salesorder)->get();
+      $prodqads = Prodqads::where('wo_part', $sales->items->partNo)->get();
       return view('frontend.plan.viewproduction')->with('sales', $sales)->with('production', $production)->with('stations', $stations)->with('prodqads', $prodqads);
     }
 
@@ -3140,7 +3141,7 @@ class PlanController extends Controller
       $sales = Sales::find($id);
       $production = Production::where('sales_id', $sales->id)->first();
       $stations = Station::where('sales_id', $sales->id)->get();
-      $prodqads = Prodqads::where('wo_number', $sales->workorder)->where('salesjob', $sales->salesorder)->get();
+      $prodqads = Prodqads::where('wo_part', $sales->items->partNo)->get();
       return view('frontend.plan.editproduction')->with('sales', $sales)->with('production', $production)->with('stations', $stations)->with('prodqads', $prodqads);
     }
 
@@ -3162,10 +3163,11 @@ class PlanController extends Controller
     public function production ($id)
     {
       $sales = Sales::find($id);
+      $items = Item::find($sales->items_id);
       $production = Production::where('sales_id', $sales->id)->first();
       $stations = Station::where('sales_id', $sales->id)->get();
-      $prodqads = Prodqads::where('wo_number', $sales->workorder)->where('salesjob', $sales->salesorder)->get();
-      return view('frontend.plan.production')->with('sales', $sales)->with('production', $production)->with('stations', $stations)->with('prodqads', $prodqads);
+      $prodqads = Prodqads::where('wo_part', $sales->items->partNo)->where('wid', $sales->wid)->get();
+      return view('frontend.plan.production')->with('sales', $sales)->with('production', $production)->with('stations', $stations)->with('prodqads', $prodqads)->with('items', $items);
     }
 
     public function storeproduction($id, Request $request)
@@ -3174,22 +3176,22 @@ class PlanController extends Controller
       $sales = Sales::find($id);
       $sales->prodremark = 'y';
       $sales->save();
+
+      // return $prodqads;
       $production = new Production;
       // $production = Production::where('sco_number', $sales->sco_number)->first();
       // return $production;
         $production->sales_id = $sales->id;
-        $production->sco_number = $sales->sco_number;
+        $production->item_number = $sales->items->partNo;
         $production->so_number = $request->input('so_number');
         $production->wo_number = $request->input('wo_number');
         $production->wid = $request->input('wid');
-        $production->keyproduction = $request->input('so_number').$request->input('wo_number').$sales->sco_number;
+        $production->keyproduction = $request->input('so_number').$request->input('wo_number').$sales->items->partNo;
 
         $production->save();
 
       // $station = Station::where('sco_number', $sales->sco_number)->get();
-
-        $prodqads = Prodqads::where('salesjob', $sales->salesorder)->where('wo_number', $sales->workorder)->get();
-        // return $prodqads;
+        $prodqads = Prodqads::where('wo_part', $sales->items->partNo)->get();
 
         $i=0;
 
@@ -3230,7 +3232,8 @@ class PlanController extends Controller
          $balance = 0;
        }
        else {
-          $balance = DB::table("powos")->where('status','=', 'PO')->where('item_number','=', $items->partNo)->sum('quantity_ordered') + DB::table("powos")->where('status','=', 'WO')->where('item_number','=', $items->partNo)->sum('quantity_ordered');
+          $balance = 0;
+          // $balance = DB::table("powos")->where('status','=', 'PO')->where('item_number','=', $items->partNo)->sum('quantity_ordered') + DB::table("powos")->where('status','=', 'WO')->where('item_number','=', $items->partNo)->sum('quantity_ordered');
        }
 
        if ($stockupdate == null){
@@ -3248,6 +3251,86 @@ class PlanController extends Controller
        ->with('balance', $balance)
       ->with('stock', $stock)
       ->with('inventory',1000);
+   }
+
+   public function importwo (Request $request)
+   {
+
+     if(Input::hasFile('import_wo')){
+           $path = Input::file('import_wo')->getRealPath();
+           $rows = Excel::load($path, function($reader) {
+                 $reader->toArray();
+                 $reader->noHeading();
+             })->get();
+
+            foreach ($rows as $row) {
+              $powos = Powo::where('item_number', $row[0])
+               ->where('reference', $row[2])
+               ->first();
+
+             if ($powos)
+             {
+                continue;
+             }
+             else
+             {
+               $row8 = str_replace(",", "", $row[6]);
+               $date = \DateTime::createFromFormat('d/m/Y',$row[7]);
+                     $item = array([
+                      'item_number' => $row[0],
+                      'reference' => $row[2],
+                      'due_date' => $date,
+                      'quantity_ordered' => '-'.$row8,
+                      'rawmaterial' => $row[5],
+                      'wo_id' => $row[3],
+                      'job' =>$row[4],
+                      'status' => 'WO'
+                  ]);
+                  DB::table('powos')->insert($item );
+             }
+           }
+         }
+       return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Work Order is saved.');
+   }
+
+   public function importpo (Request $request)
+   {
+     if(Input::hasFile('import_po')){
+           $path = Input::file('import_po')->getRealPath();
+           $rows = Excel::load($path, function($reader) {
+                 $reader->toArray();
+                 $reader->noHeading();
+             })->get();
+
+            foreach ($rows as $row) {
+              $powos = Powo::where('item_number', $row[1])
+               ->where('reference', $row[0])
+               ->first();
+
+             if ($powos)
+             {
+                continue;
+             }
+             else
+             {
+               $row8 = str_replace(",", "", $row[2]);
+               $date = \DateTime::createFromFormat('d/m/Y',$row[3]);
+                     $item = array([
+                      'item_number' => $row[1],
+                      'reference' => $row[0],
+                      'due_date' => $date,
+                      'quantity_ordered' => $row8,
+                      'rawmaterial' =>'-' ,
+                      'wo_id' => '-',
+                      'job' => '-',
+                      'status' => 'PO'
+                  ]);
+                  DB::table('powos')->insert($item );
+             }
+           }
+         }
+
+       return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Puchase Order is saved.');
    }
 
    public function storestock ($id, Request $request)
@@ -3296,7 +3379,7 @@ class PlanController extends Controller
    public function powotable(Request $request)
    {
      $powos = Powo::select(['status', 'reference','rawmaterial','wo_id', 'due_date','job', 'quantity_ordered'])
-     ->where('reference', '=', $request->input('partNo') );
+     ->where('item_number', '=', $request->input('partNo') );
      return Datatables::of($powos)
      ->editColumn('due_date', function ($date) {
              return $date->due_date ? with(new Carbon($date->due_date))->format('d/m/Y') : '';
@@ -3306,79 +3389,7 @@ class PlanController extends Controller
    }
 
    //bakal dibuang
-   public function importwo (Request $request)
-   {
 
-     if(Input::hasFile('import_wo')){
-           $path = Input::file('import_wo')->getRealPath();
-           $rows = Excel::load($path, function($reader) {
-                 $reader->toArray();
-                 $reader->noHeading();
-             })->get();
-
-            foreach ($rows as $row) {
-              $powos = Powo::where('item_number', $row[0])
-               ->where('reference', $row[2])
-               ->first();
-
-             if ($powos)
-             {
-                continue;
-             }
-             else
-             {
-               $row8 = str_replace(",", "", $row[6]);
-               $date = \DateTime::createFromFormat('d/m/Y',$row[7]);
-                     $item = array([
-                      'item_number' => $row[0],
-                      'reference' => $row[2],
-                      'due_date' => $date,
-                      'quantity_ordered' => $row8,
-                      'status' => 'WO'
-                  ]);
-                  DB::table('powos')->insert($item );
-             }
-           }
-         }
-       return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Work Order is saved.');
-   }
-
-   public function importpo (Request $request)
-   {
-     if(Input::hasFile('import_po')){
-           $path = Input::file('import_po')->getRealPath();
-           $rows = Excel::load($path, function($reader) {
-                 $reader->toArray();
-                 $reader->noHeading();
-             })->get();
-
-            foreach ($rows as $row) {
-              $powos = Powo::where('item_number', $row[1])
-               ->where('reference', $row[0])
-               ->first();
-
-             if ($powos)
-             {
-                continue;
-             }
-             else
-             {
-               $row8 = str_replace(",", "", $row[2]);
-               $date = \DateTime::createFromFormat('d/m/Y',$row[3]);
-                     $item = array([
-                      'item_number' => $row[1],
-                      'reference' => $row[0],
-                      'due_date' => $date,
-                      'quantity_ordered' => $row8,
-                      'status' => 'PO'
-                  ]);
-                  DB::table('powos')->insert($item );
-             }
-           }
-         }
-
-       return redirect()->route('frontend.plan.liststock')->withFlashSuccess('The Puchase Order is saved.');
-   }
 
 
 
@@ -3400,7 +3411,8 @@ class PlanController extends Controller
          $softcover = Softcover::leftJoin('sales', 'soft_covers.sales_id', '=', 'sales.id')
           ->leftJoin('items', 'sales.items_id', '=', 'items.id')
           ->leftJoin('users', 'soft_covers.user', '=', 'users.id')
-          ->select(['sales.salesline', 'sales.custName','items.partNo','items.partDesc', 'soft_covers.created_at','users.first_name', 'soft_covers.id', 'soft_covers.sales_id' ]);
+          ->leftJoin('wotypes', 'wotypes.workorders_id', '=', 'soft_covers.workorders_id')
+          ->select(['sales.salesline', 'sales.custName','items.partNo','items.partDesc', 'soft_covers.created_at','users.first_name','wotypes.paper_sup', 'wotypes.printqty',  'soft_covers.id', 'soft_covers.sales_id' ]);
 
          return Datatables::of($softcover)
           ->editColumn('created_at', function ($date) {
@@ -3432,7 +3444,8 @@ class PlanController extends Controller
      $softcoverbw = Softcoverbw::leftJoin('sales', 'softcoverbws.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'softcoverbws.user', '=', 'users.id')
-      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'softcoverbws.created_at', 'users.first_name','softcoverbws.id', 'softcoverbws.sales_id' ]);
+      ->leftJoin('wotypes', 'wotypes.workorders_id', '=', 'softcoverbws.workorders_id')
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'softcoverbws.created_at', 'users.first_name','wotypes.paper_sup', 'wotypes.printqty', 'softcoverbws.id', 'softcoverbws.sales_id' ]);
 
       return Datatables::of($softcoverbw)
        ->editColumn('created_at', function ($date) {
@@ -3462,7 +3475,8 @@ class PlanController extends Controller
      $overseasfb = Overseasfb::leftJoin('sales', 'overseasfbs.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'overseasfbs.user', '=', 'users.id')
-      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'overseasfbs.created_at','users.first_name', 'overseasfbs.id', 'overseasfbs.sales_id' ]);
+      ->leftJoin('wotypes', 'wotypes.workorders_id', '=', 'overseasfbs.workorders_id')
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'overseasfbs.created_at','users.first_name','wotypes.paper_sup', 'wotypes.printqty',  'overseasfbs.id', 'overseasfbs.sales_id' ]);
 
       return Datatables::of($overseasfb)
        ->editColumn('created_at', function ($date) {
@@ -3492,7 +3506,8 @@ class PlanController extends Controller
      $overseaswt = Overseaswt::leftJoin('sales', 'overseaswts.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'overseaswts.user', '=', 'users.id')
-      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'overseaswts.created_at','users.first_name', 'overseaswts.id', 'overseaswts.sales_id' ]);
+      ->leftJoin('wotypes', 'wotypes.workorders_id', '=', 'overseaswts.workorders_id')
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'overseaswts.created_at','users.first_name','wotypes.paper_sup', 'wotypes.printqty',  'overseaswts.id', 'overseaswts.sales_id' ]);
 
       return Datatables::of($overseaswt)
        ->editColumn('created_at', function ($date) {
@@ -3523,7 +3538,8 @@ class PlanController extends Controller
      $boxes = Boxes::leftJoin('sales', 'boxes.sales_id', '=', 'sales.id')
       ->leftJoin('items', 'sales.items_id', '=', 'items.id')
       ->leftJoin('users', 'boxes.user', '=', 'users.id')
-      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'boxes.created_at','users.first_name', 'boxes.id', 'boxes.sales_id' ]);
+      ->leftJoin('wotypes', 'wotypes.workorders_id', '=', 'boxes.workorders_id')
+      ->select(['sales.salesline','sales.custName','items.partNo','items.partDesc', 'boxes.created_at','users.first_name', 'wotypes.paper_sup', 'wotypes.printqty', 'boxes.id', 'boxes.sales_id' ]);
 
       return Datatables::of($boxes)
        ->editColumn('created_at', function ($date) {
@@ -3668,27 +3684,7 @@ class PlanController extends Controller
      return view ('frontend.plan.listbalance')->with('sales', $sales);
    }
 
-   public function tablelist()
-   {
-     $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
-     ->select(['sales.salesline','sales.workorder','sales.custName', 'items.partNo', 'items.partDesc' , 'sales.id'])
-     ->where('sales.status', '=', 'Approved')
-     ->orWhere('sales.status', '=', 'PAF');
 
-     return Datatables::of($sales)
-         ->editColumn('id', function ($sales) {
-
-           $prod = Sales::find($sales->id);
-           $sheeting = Sheeting::where('sco_number', $prod->sco_number)->first();
-         //return $sales->action_buttons;
-             return '<a href="'. route('frontend.plan.stockbalance', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Roll Inventory"></i> Roll Inventory</a>
-             <a href="'. route('frontend.plan.sheeting', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Sheeting"></i> Sheeting</a>
-
-             ';
-     })
-     ->escapeColumns([])
-     ->make();
-   }
    // <a href="'. route('frontend.plan.viewstock', $sheeting->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Sheeting"></i> Sheeting</a>
 
    // public function viewstock($id)
@@ -3700,40 +3696,89 @@ class PlanController extends Controller
    public function stockbalance($id)
    {
      $sales= Sales::find($id);
-     $sheeting = Sheeting::where('sco_number', $sales->sco_number)->first();
+     // $items = Item::where('items_id', $sales->items_id)->first();
+     $sheet = Sheet::where('sales_id', $sales->id)->first();
+     $balance = Balance::where('sales_id', $sales->id)->orderBy('created_at', 'desc')->first();
 
-       return view ('frontend.plan.stockbalance')->with('sales', $sales)->with('sheeting', $sheeting);
+     if (!empty($balance))
+     {
+       $hu = $balance->balance;
+       // $hu = ($balance->inmt - $balance->outmt);
+     }
+     else {
+       $hu = 0;
+     }
+
+       return view ('frontend.plan.stockbalance')->with('sales', $sales)->with('sheet', $sheet)->with('balance', $balance)->with('hu', $hu);
+       // ->with('items', $items)
 
    }
 
    public function balancestore($id, Request $request)
    {
       $sales = Sales::find($id);
-      $balances = new Balance;
+      $sheet = Sheet::where('sales_id', $sales->id)->first();
+      if ($sheet){
+        $balances = new Balance;
 
-      $balances->sco_number = $sales->sco_number;
-      $balances->salesorder = $sales->salesorder;
-      $balances->date = $request->input('date');
-      $balances->job_no = $request->input('job_no');
-      $balances->grn_no = $request->input('grn_no');
-      $balances->inmt = $request->input('inmt');
-      $balances->outmt = $request->input('outmt');
-      $balances->balance = $request->input('balance');
-      $balances->remark = $request->input('remark');
+        $balances->items_id = $sales->items->id;
+        $balances->sales_id = $sales->id;
+        $balances->workorder = $sales->workorder;
+        $balances->date = $request->input('date');
+        $balances->job_no = $request->input('job_no');
+        $balances->grn_no = $request->input('grn_no');
+        $balances->inmt = $request->input('inmt');
+        $balances->outmt = $request->input('outmt');
+        $balances->balance = $request->input('balance');
+        $balances->remark = $request->input('remark');
 
-      $balances->save();
+        $balances->save();
+      }
+      else {
+        $sheet = new Sheet;
+
+        $sheet->items_id = $sales->items->id;
+        $sheet->sales_id = $sales->id;
+        $sheet->supplier = $request->input('supplier');
+        $sheet->price = $request->input('price');
+        $sheet->pageNo = $request->input('pageNo');
+        $sheet->save();
+
+        $balances = new Balance;
+
+        $balances->items_id = $sales->items->id;
+        $balances->sales_id = $sales->id;
+        $balances->workorder = $sales->workorder;
+        $balances->date = $request->input('date');
+        $balances->job_no = $request->input('job_no');
+        $balances->grn_no = $request->input('grn_no');
+        $balances->inmt = $request->input('inmt');
+        $balances->outmt = $request->input('outmt');
+        $balances->balance = $request->input('balance');
+        $balances->remark = $request->input('remark');
+
+        $balances->save();
+      }
+
+
+
 
       return redirect()->route('frontend.plan.stockbalance', $sales->id)->withFlashSuccess('The data is  saved.');
    }
 
-   public function tablebalance()
+   public function tablebalance(Request $request)
    {
-     $balances = Balance::select(['date', 'job_no', 'grn_no', 'inmt', 'outmt', 'balance', 'remark', 'id']);
+     // $balances = Balance::select(['date', 'job_no', 'grn_no', 'inmt', 'outmt', 'balance', 'remark', 'id']);
+     $balances = Balance::join('items', 'items.id', 'balances.items_id')
+     ->select(['balances.date', 'balances.job_no', 'balances.grn_no', 'balances.inmt', 'balances.outmt', 'balances.balance', 'balances.remark', 'balances.id'])
+     ->where('items_id', $request->input('items_id'));
      return Datatables::of($balances)
          ->editColumn('id', function ($balances) {
-         //return $sales->action_buttons;
-             return '<a href="'. route('frontend.plan.delete',$balances->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>';
+         return '<a href="'. route('frontend.plan.delete',$balances->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>';
      })
+     ->order(function ($balances) {
+                     $balances->orderBy('balances.created_at', 'desc');
+                 })
      ->escapeColumns([])
      ->make();
    }
@@ -3741,39 +3786,82 @@ class PlanController extends Controller
    public function sheeting($id)
    {
      $sales= Sales::find($id);
-     $sheetings = Sheeting::where('sco_number', $sales->sco_number)->first();
+     // $items = Item::where('sales_id', $sales->id);
+     $sheet = Sheet::where('sales_id', $sales->id)->first();
+    $sheeting = Sheeting::where('sheets_id', $sheet->id)->get();
 
-     return view ('frontend.plan.sheeting')->with('sales', $sales)->with('sheetings', $sheetings);
+
+     return view ('frontend.plan.sheeting')->with('sales', $sales)->with('sheet', $sheet)->with('sheeting', $sheeting);
+   }
+
+   public function tablelist()
+   {
+     $sales = Sales::leftJoin('items', 'items.sales_id', '=', 'sales.id' )
+     ->select(['sales.workorder','items.model', 'items.partNo', 'items.partDesc' , 'sales.id'])
+     ->where('sales.status', '=', 'Approved')
+     ->orWhere('sales.status', '=', 'PAF');
+
+     return Datatables::of($sales)
+         ->editColumn('id', function ($sales) {
+          $sheet = Sheet::find($sales->id);
+          if(!empty($sheet))
+          {
+            return '<a href="'. route('frontend.plan.stockbalance', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Roll Inventory"></i> Roll Inventory</a>
+            <a href="'. route('frontend.plan.sheeting', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Sheeting"></i> Sheeting</a>
+            ';
+          }
+          else
+          {
+            return '<a href="'. route('frontend.plan.stockbalance', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" title="Roll Inventory"></i> Roll Inventory</a>
+            ';
+          }
+           // $sheeting = Sheeting::where('items_id', $prod->items_id)->first();
+         //return $sales->action_buttons;
+
+     })
+     ->escapeColumns([])
+     ->make();
    }
 
    public function sheetingstore($id, Request $request)
    {
       $sales = Sales::find($id);
-      $sheetings = new Sheeting;
+      $sheet = Sheet::where('sales_id', $sales->id)->first();
+      $sheeting = Sheeting::find($sheet->id);
+       $sheeting = new Sheeting;
 
-      $sheetings->sco_number = $sales->sco_number;
-      $sheetings->salesorder = $sales->salesorder;
-      $sheetings->supplier = $request->input('supplier');
-      $sheetings->item_number = $request->input('item_number');
-      $sheetings->desc = $request->input('desc');
-      $sheetings->qty = $request->input('qty');
-      $sheetings->due_date = $request->input('due_date');
-      $sheetings->customerid = $request->input('customerid');
-      $sheetings->partNo = $request->input('partNo');
+        $sheeting->sheets_id = $sheet->id;
+        $sheeting->item_number = $request->input('item_number');
+        $sheeting->desc = $request->input('desc');
+        $sheeting->qty = $request->input('qty');
+        $sheeting->due_date = $request->input('due_date');
+        $sheeting->customerid = $request->input('customerid');
+        $sheeting->partNo = $request->input('partNo');
 
-      $sheetings->save();
+        $sheeting->save();
 
-      return redirect()->route('frontend.plan.listbalance', $sales->id)->withFlashSuccess('The data is  saved.');
+
+      return redirect()->route('frontend.plan.sheeting', $sales->id)->withFlashSuccess('The data is  saved.');
    }
 
    public function sheettable(Request $request)
    {
-     $sheetings = Sheeting::select(['salesorder', 'supplier', 'item_number', 'desc', 'qty','customerid', 'partNo', 'id'])
-     ->where('sco_number','=', $request->input('sco_number'));
+     $sheeting = Sheeting::join('sheets', 'sheets.id', 'sheetings.sheets_id')
+     ->join('sales', 'sales.id', 'sheets.sales_id')
+     ->select(['sales.workorder', 'sheets.supplier', 'sheetings.item_number', 'sheetings.desc', 'sheetings.qty','sheetings.customerid', 'sheetings.partNo', 'sheetings.id'])
+     ->where('sheets.sales_id','=', $request->input('sales_id'))
+     ;
 
-     return Datatables::of($sheetings)
-       ->editColumn('id', function ($sheetings) {
-                 return '<a href="'. route('frontend.plan.deletesheet',$sheetings->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>
+     // $sheetings = Sheeting::join('sales', 'sales.id', 'sheetings.sales_id')
+     // ->select(['sales.workorder', 'sheetings.supplier', 'sheetings.item_number', 'sheetings.desc', 'sheetings.qty','sheetings.customerid', 'sheetings.partNo', 'sheetings.id'])
+     // ->where('sales_id','=', $request->input('sales_id'));
+
+     return Datatables::of($sheeting)
+       ->editColumn('id', function ($sheeting) {
+
+         // $sheeting = Sheeting::where('sheets_id', $sheet->id)->first();
+
+                 return '<a href="'. route('frontend.plan.deletesheet',$sheeting->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>
                  ';
              })
      ->escapeColumns([])
@@ -3782,14 +3870,42 @@ class PlanController extends Controller
 
    public function delete($id)
    {
-     $balances = Balance::findOrFail($id)->forceDelete();
-     return redirect()->route('frontend.plan.listbalance')->withFlashSuccess('The data is deleted.');
+     $balance = Balance::find($id);
+     $sales = Sales::where('id', $balance->sales_id)->where('items_id', $balance->items_id)->first();
+     $balance = Balance::findOrFail($id)->forceDelete();
+     $balanc = Balance::where('items_id', $sales->items_id)->get();
+
+     if ($balanc->count()){
+       foreach ($balanc as $bal){
+         $hu= DB::table("balances")->where('items_id','=', $bal->items_id)->sum('inmt') - DB::table("balances")->where('items_id','=', $bal->items_id)->sum('outmt');;
+       }
+
+     }
+     else {
+       $hu=0;
+     }
+     $balance = new Balance;
+     $balance->balance = $hu;
+     $balance->inmt = '0';
+     $balance->outmt = '0';
+     $balance->remark = 'Balance after delete';
+     $balance->job_no = '-';
+     $balance->grn_no = '-';
+     $balance->items_id = $sales->items_id;
+     $balance->sales_id = $sales->id;
+     $balance->workorder = $sales->workorder;
+     $balance->date = Carbon::now()->format('d/m/Y');
+     $balance->save();
+
+     return redirect()->route('frontend.plan.stockbalance',$sales->id)->withFlashSuccess('The data is deleted.');
    }
 
    public function deletesheet($id)
    {
+     $sheetings = Sheeting::find($id);
+     $sheet = Sheet::find($sheetings->sheets_id);
+     $sales = Sales::where('id', $sheet->sales_id)->first();
      $sheetings = Sheeting::findOrFail($id)->forceDelete();
-     $sales = Sales::where('sco_number', $sheetings->sco_number)->where('salesorder', $sheetings->salesorder)->first();
      return redirect()->route('frontend.plan.sheeting', $sales->id)->withFlashSuccess('The data is deleted.');
    }
 
