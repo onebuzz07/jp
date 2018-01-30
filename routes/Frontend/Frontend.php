@@ -211,13 +211,22 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'ctp', 'namespace' => 'ctp', 'middleware' => 'auth',], function () {
         Route::get('index', 'CtpController@index')->name('ctp.index');
-        Route::get('edit/{id}', 'CtpController@edit')->name('ctp.edit');
-        Route::put('update/{id}', 'CtpController@update')->name('ctp.update');
         Route::get('anyData', 'CtpController@anyData')->name('ctp.anyData');
+        Route::get('insert', 'CtpController@insert')->name('ctp.insert');
+        Route::get('pickup', 'CtpController@pickup')->name('ctp.pickup');
+        Route::get('delete', 'CtpController@delete')->name('ctp.delete');
+        Route::get('modify', 'CtpController@modify')->name('ctp.modify');
+        Route::get('replace', 'CtpController@replace')->name('ctp.replace');
+        Route::get('selectData', 'CtpController@selectData')->name('ctp.selectData');
+        Route::get('trans', 'CtpController@trans')->name('ctp.trans');
+        Route::get('print', 'CtpController@print')->name('ctp.print');
+        Route::get('anyDataWo', 'CtpController@anyDataWo')->name('ctp.anyDataWo');
+        /* Route::get('edit/{id}', 'CtpController@edit')->name('ctp.edit');
+        Route::put('update/{id}', 'CtpController@update')->name('ctp.update');
         Route::get('destroy/{id}', 'CtpController@destroy')->name('ctp.destroy');
         Route::get('repeatEdit/{id}', 'CtpController@repeatEdit')->name('ctp.repeatEdit');
         Route::put('repeatUpdate/{id}', 'CtpController@repeatUpdate')->name('ctp.repeatUpdate');
-        Route::get('repeatData', 'CtpController@repeatData')->name('ctp.repeatData');
+        Route::get('repeatData', 'CtpController@repeatData')->name('ctp.repeatData'); */
     });
 
     Route::group(['prefix' => 'printing', 'namespace' => 'printing', 'middleware' => 'auth',], function () {
@@ -328,6 +337,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('viewplanning', 'ReportController@viewplanning')->name('report.viewplanning');
         Route::get('edit/{id}', 'ReportController@edit')->name('report.edit');
         Route::get('destroy/{id}', 'ReportController@destroy')->name('report.destroy');
+    });
+
+    Route::group(['prefix' => 'request', 'namespace' => 'request', 'middleware' => 'auth',], function () {
+        Route::get('index', 'RequestController@index')->name('request.index');
+        Route::get('anyData', 'RequestController@anyData')->name('request.anyData');
+        Route::get('insert', 'RequestController@insert')->name('request.insert');
+        Route::get('modify', 'RequestController@modify')->name('request.modify');
+        Route::get('delete', 'RequestController@delete')->name('request.delete');
+        Route::get('approve', 'RequestController@approve')->name('request.approve');
+        Route::get('close', 'RequestController@close')->name('request.close');
+        Route::get('selectData', 'RequestController@selectData')->name('request.selectData');
     });
 
 });

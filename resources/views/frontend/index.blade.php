@@ -60,11 +60,10 @@
                 <div class="row">
                   <div class="tile center-block" style="height:150px; width:150px; float:left; margin:0 5px 0 0;
                   padding:2px; background:lavender; display:table-cell">
-                      {{-- <a href="{{route('frontend.production.index')}}" > --}}
+                      <a href="{{route('frontend.request.index')}}" >
                           {{--<i class="glyphicon glyphicon-transfer fa-5x"></i><br/>--}}
                           <center>
-                             {{-- <h2>Production</h2> --}}
-                             <h2></h2>
+                             <h2>Maintenance</h2>
                           </center>
                       </a>
                   </div>
