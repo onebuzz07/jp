@@ -9,13 +9,9 @@
     <div class="row">
         <div class="col-md-4">
             {{ Form::open(array('route' => 'frontend.sr.select', 'method' => 'get', 'class' => 'form-horizontal')) }}
+              <fieldset>
+                  <legend>Type</legend>
 
-                <fieldset>
-
-                    <!-- Form Name -->
-                    <legend>Type</legend>
-
-                    <!-- Multiple Radios -->
                     <div class="form-group">
                         <div class="col-md-12">
 
@@ -56,7 +52,6 @@
 
                         </div>
                     </div>
-
                     <!-- Button -->
                     <div class="form-group">
 
@@ -66,12 +61,8 @@
                     </div>
 
                 </fieldset>
-
-
-
             {{ Form::close() }}
         </div>
     </div>
-
 
 @endsection

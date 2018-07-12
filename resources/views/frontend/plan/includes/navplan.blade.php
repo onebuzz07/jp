@@ -3,9 +3,13 @@
         <ul class="nav navbar-nav">
 
           <li class="{!! Request::is('plan/selectpn') ? 'active' : '' !!} dropdown">
-              <a href="{!! route('frontend.plan.selectpn')!!}">Create</a>
+              <a href="{!! route('frontend.plan.selectpn')!!}">Create/Edit</a>
           </li>
-            <li class="{!! Request::is('plan/softcoverview') ? 'active' : '' !!} dropdown">
+          <li class="{!! Request::is('plan/listformula') ? 'active' : '' !!} dropdown">
+            <a href="{!! route('frontend.plan.listformula')!!}">Remarks</a>
+          </li>
+
+            {{-- <li class="{!! Request::is('plan/softcoverview') ? 'active' : '' !!} dropdown">
                 <a href="{!! route('frontend.plan.softcoverview')!!}">Soft Cover v1.5</a>
             </li>
             <li class="{!! Request::is('plan/softcoverbwview') ? 'active' : '' !!} dropdown">
@@ -22,7 +26,7 @@
             </li>
             <li class="{!! Request::is('plan/planningview') ? 'active' : '' !!} dropdown">
                 <a href="{!! route('frontend.plan.planningview')!!}">Planning V1.4</a>
-            </li>
+            </li> --}}
 
 
         </ul>

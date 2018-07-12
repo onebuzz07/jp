@@ -10,43 +10,56 @@
       <div class="col-lg-12">
         {!! Form::model($sales, array('route' => array('frontend.plan.storeproduction', $sales->id), 'method' => 'POST')) !!}
         <div class="col-lg-12">
-          {!! Form::label('sco_number', 'SCO NUMBER:', array('class' => 'col-md-2')) !!}
-          <div class="col-md-2">{!! Form::text('sco_number', $sales->sco_number, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+          {!! Form::label('partNo', 'Item Number:', array('class' => 'col-md-2')) !!}
+          <div class="col-md-2">{!! $sales->items->partNo !!}</div>
           {!! Form::label('so_number', 'SO No.  :  ', array('class' => 'col-md-2')) !!}
-          <div class="col-md-2">{!! Form::text('so_number', $sales->salesorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-          {!! Form::label('wo_number', 'WO No.:  ', array('class' => 'col-md-2')) !!}
-          <div class="col-md-2">{!! Form::text('wo_number', $sales->workorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+          <div class="col-md-2">{!! $sales->salesorder !!}</div>
+          {!! Form::label('wid', 'ID:  ', array('class' => 'col-md-2')) !!}
+          <div class="col-md-2">{!! $sales->wid !!}</div>
         </div>
-        {!!Form::hidden('wid', $sales->wid)!!}
+        {!!Form::hidden('workorder', $sales->workorder)!!}
         <br><br>
+        @if($prodqads == null)
+          <div class="form-group row">
+            <input type="button" class="btn btn-warning" value="BACK" onclick="history.go(-1)">  </input>
+          </div>
+      @else
         @foreach ($prodqads as $pro)
 
             <div class="form-group row ">
               {!!Form::hidden('salesjob[]', $pro->salesjob)!!}
               {!! Form::hidden('operation[]',$pro->operation, array('class' => 'form-control', 'readonly'=>true)) !!}
-              <table class="table ">
-                <tr>
-                  <th>Station</th>
-                  <th>Remarks(qad)</th>
-                  <th>Description</th>
-                  <th>Remarks</th>
+              <table class="table">
+                <tr >
+                  <th class="col-md-6">Station</th>
+                  <th class="col-md-6">Description</th>
                 </tr>
-                <tr>
+                <tr >
+                  <td class="col-md-6">{!!$pro->wo_name !!}</td>
+                  {!!Form::hidden('station[]',  $pro->wo_name) !!}
+                  {!!Form::hidden('desc[]', $pro->desc) !!}
+                  <td class="col-md-6">{!! $pro->desc !!}</td>
+                </tr>
+              </table>
 
-                  <td>{!! Form::text('station[]', $pro->wo_name, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
-                  <td>{!! Form::text('remarksQAD[]',$pro->remarks, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
-                  <td>{!! Form::textarea('desc[]', $pro->desc, array('class' => 'form-control', 'readonly'=>true)) !!}</td>
-                  <td>{!! Form::textarea('remarks[]','', array('class' => 'form-control', 'id'=>$pro->operation)) !!}</td>
+              <table class=" col-md-12 table">
+                <tr >
+                  <th class="col-md-12">Remarks</th>
+                </tr>
+                <tr >
+                  <td class="col-md-12">{!! Form::textarea('remarks[]',$pro->remarks, array('class' => 'form-control', 'id'=>$pro->operation)) !!}</td>
                 </tr>
               </table>
             </div>
 
         @endforeach
-
-
         <div class="form-group row">
-            <button type="submit" class="btn btn-success btn-block" value="SAVE"> SAVE </button>
+          <input type="button" class="btn btn-warning" value="BACK" onclick="history.go(-1)">  </input>
+          <button type="submit" class="btn btn-success" value="SAVE"> SAVE </button>
         </div>
+
+      @endif
+
 
       </div>
     </div>

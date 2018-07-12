@@ -114,7 +114,15 @@ class ReportController extends Controller
               return '<input type="checkbox" value ="'.$station->operation.'.'.$station->workorder.'" name="wo_operation[]" >
               ';
           })
+        ->editColumn('station', function ($station) {
 
+              return '<p >('.$station->operation.')'.$station->station.' </p>
+              ';
+          })
+        ->order(function ($station) {
+                        $station->orderBy('operation', 'asc');
+                    })
+        
         ->escapeColumns([])
         ->make();
     }

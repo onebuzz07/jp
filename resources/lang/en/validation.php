@@ -56,8 +56,8 @@ return [
         'string'  => 'The :attribute may not be greater than :max characters.',
         'array'   => 'The :attribute may not have more than :max items.',
     ],
-    'mimes'                => ':attribute must be a file of type: :values.',
-    'mimetypes'            => ':attribute must be a file of type: :values.',
+    'mimes'                => 'The :attribute must be a file of type: :values.',
+    'mimetypes'            => 'The :attribute must be a file of type: :values.',
     'min'                  => [
         'numeric' => 'The :attribute must be at least :min.',
         'file'    => 'The :attribute must be at least :min kilobytes.',
@@ -118,26 +118,6 @@ return [
 
     'attributes' => [
 
-      'datetime'                  => 'Date',
-      'custName'                  => 'Customer Name',
-      'model'                     => 'Model',
-      'partDesc'                  => 'Part Description',
-      'partNo'                    => 'Part Number',
-      'size'                      => 'Size',
-      'quantity'                  => 'Quantity',
-      'rawMaterial'               => 'Raw Material',
-      'noPages'                   => 'Number of Pages',
-      'colour'                    => 'Colour',
-      'finishing'                 => 'Finishing',
-      'deliverDate'               => 'Deliver Date',
-      'lot'                       => 'LOT',
-      'mfgDate'                   => 'MFG Date',
-      'expiryDate'                => 'Expiry Date',
-      'dateFacNo'                 => 'Date and Fac Number',
-      'packerID'                  => 'Packer\'s ID',
-      'remark'                    => 'Remarks',
-      'images'                    => 'Files',
-
         'backend' => [
             'access' => [
                 'permissions' => [
@@ -183,15 +163,14 @@ return [
             'email'                     => 'E-mail Address',
             'first_name'                => 'First Name',
             'last_name'                 => 'Last Name',
-            'name'                      => 'Full Name',
+            'name'                        => 'Full Name',
             'password'                  => 'Password',
             'password_confirmation'     => 'Password Confirmation',
-            'phone'                     => 'Phone',
-            'message'                   => 'Message',
+            'phone' => 'Phone',
+            'message' => 'Message',
             'new_password'              => 'New Password',
             'new_password_confirmation' => 'New Password Confirmation',
             'old_password'              => 'Old Password',
-
         ],
     ],
 

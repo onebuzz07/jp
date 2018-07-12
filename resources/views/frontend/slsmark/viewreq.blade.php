@@ -12,10 +12,10 @@
 
             {!! Form::model($requisite, array('method' => ' PUT', 'files'=> true)) !!}
             {{ Form::hidden('requisites_id', $requisite->id)}}
-            <div class="form-group row ">
+            {{-- <div class="form-group row ">
               {!! Form::label('release', 'Release? ', array('class' => 'col-md-2')) !!}
               <div class="col-md-10">{!! Form::checkbox('release', 1, $requisite->release, array('class' => 'field', 'disable'=>'disable')) !!}</div>
-            </div>
+            </div> --}}
 
             <div class="form-group row">
               {!! Form::label('dateSRO', 'Date', ['class' => 'col-md-2']) !!}
@@ -35,6 +35,11 @@
             <div class="form-group row">
               {!! Form::label('partDescSRO', 'Part Description', ['class' => 'col-md-2']) !!}
               <div class="col-md-10">{!! Form::text('partDescSRO', $requisite->partDescSRO , array('class' => 'form-control', 'readonly'=>true,)) !!}</div>
+            </div>
+
+            <div class="form-group row">
+              {!! Form::label('partDesc2SRO', 'Part Description 2', ['class' => 'col-md-2']) !!}
+              <div class="col-md-10">{!! Form::text('partDesc2SRO', $requisite->partDesc2SRO , array('class' => 'form-control', 'readonly'=>true,)) !!}</div>
             </div>
 
             <div class="form-group row">
@@ -64,36 +69,18 @@
                        <table class="table table-bordered" >
                             <tr>
                                  <input type="hidden" name="id[]" value={!!$p->id!!} />
-                                 <td><input type="text" name="other_sub[]" value={!!$p->other_sub!!} placeholder="Enter your heading" class="form-control " disabled /></td>
-                                 <td><input type="text" name="other_data[]" value={!!$p->other_data!!} placeholder="Enter your data" class="form-control" disabled/></td>
-                                 {{-- <td><button type="button" name="remove" id="'+i+'"  class="btn btn-danger">Delete</button></td> --}}
+                                 <td><input type="text" name="other_sub[]" value="{!!$p->other_sub!!}" class="form-control " disabled /></td>
+                                 <td><input type="text" name="other_data[]" value="{!!$p->other_data!!}" class="form-control" disabled /></td>
                             </tr>
                        </table>
                 @endforeach
-                {{-- <table class="table table-bordered" id="dynamic_field">
-                     <tr>
-                          <td><input type="text" name="other_subnew[]" placeholder="Enter your heading" class="form-control name_list" /></td>
-                          <td><input type="text" name="other_datanew[]" placeholder="Enter your data" class="form-control name_list" /></td>
-                          <td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>
-                     </tr>
-                </table> --}}
-                {{-- <div class="table-responsive">
-                     <table class="table table-bordered" id="dynamic_field">
-                          <tr>
-                               <td><input type="text" name="other_sub[]" placeholder="Enter your heading" class="form-control name_list" /></td>
-                               <td><input type="text" name="other_data[]"  placeholder="Enter your data" class="form-control name_list" /></td>
-                               <td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>
-                          </tr>
-                     </table>
-                </div> --}}
                </div>
             </div>
 
 
             <div class="form-group row">
               {!! Form::label('remarksSRO', 'Remarks', ['class' => 'col-md-2']) !!}
-              {{-- <div class=>{!! Form::textarea('remarksSRO', $requisite->remarksSRO, array('class' => 'form-control', 'readonly'=>true, 'id'=>'1')) !!}</div> --}}
-              <div class="col-md-10">{!!$requisite->remarksSRO!!}</div>
+              <div class="col-md-10">{!! Form::textarea('remarksSRO', $requisite->remarksSRO, array('class' => 'form-control', 'readonly'=>true, 'id'=>'1')) !!}</div>
             </div>
 
             <div class="form-group row">
@@ -111,18 +98,11 @@
               <div class="col-md-10">{!! Form::text('preparedBy',Auth::user()->first_name.' '.Auth::user()->last_name, array('class' => 'form-control', 'readonly'=>true,)) !!}</div>
             </div>
 
-            {{-- <div class="form-group row ">
-              {{ Form::label('images[]', 'Files(If any)', array('class' => 'control-label col-md-2')) }}
-              <div class="col-md-10">
-              <input multiple="multiple" class="btn btn-default btn-file " name="images[]" type="file" id="images[]">
-              </div>
-            </div> --}}
-
             <div class="form-group row">
                       {!! Form::label('images', 'Files', array('class' => 'control-label col-md-2')) !!}
                     <div class="col-md-10">
                       @foreach($requisite->fileupload as $file)
-                        <a href="{!! "/uploaded/$file->filename" !!}" download="{!! $file->filename !!}" >{!! $file->filename !!}</a><button> Delete </button>
+                        <a href="{!! "/uploaded/$file->filename" !!}" download="{!! $file->filename !!}" >{!! $file->filename !!}</a>
                             {!! '&nbsp;'!!}
                       @endforeach
                     </div>

@@ -168,8 +168,9 @@
       </table>
       </div>
     </div>
-    <div class="form-group row">
-    <button type="submit" class="btn btn-success btn-block" >SAVE </button>
+    <div class="col-md-12 form-group row">
+      <button type="submit" class="btn btn-warning" >EDIT </button>
+      <input type="button" class="btn btn-primary " value="BACK" onclick="history.go(-1)">  </input>
   </div>
     {!!Form::close()!!}
 </div>
@@ -179,7 +180,7 @@
       el:'#app',
         data : {
           n1: {!!$plannings->aread!!}, n3: {!!$plannings->areaw!!}, n5: {!!$plannings->papergsm!!}, n6: {!!$plannings->up!!}, n7: {!!$plannings->qty!!},
-          n8: {!!$plannings->ink!!}, n9: {!!$plannings->total!!}, n18: {!!$plannings->length!!}, n19: {!!$plannings->width!!}, n20: {!!$plannings->weight!!}, 
+          n8: {!!$plannings->ink!!}, n9: {!!$plannings->total!!}, n18: {!!$plannings->length!!}, n19: {!!$plannings->width!!}, n20: {!!$plannings->weight!!},
           n21: {!!$plannings->paperqty!!}, n24: {!!$plannings->mt!!}
         },
         methods: {

@@ -16,8 +16,8 @@ class CreateProductionsTable extends Migration
         Schema::create('productions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('sales_id')->nullable();
-
-            $table->string('sco_number')->nullable();
+            $table->string('item_number')->nullable();
+            // $table->string('sco_number')->nullable();
             $table->string('so_number')->nullable();
             $table->string('wo_number')->nullable();
             $table->string('wid')->nullable();

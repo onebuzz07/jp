@@ -19,7 +19,17 @@
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                {{-- <li class="dropdown messages-menu">
+
+                @if (config('locale.status') && count(config('locale.languages')) > 1)
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <i class="fa fa-language"></i> {{ trans('menus.language-picker.language') }} <span class="caret"></span>
+                        </a>
+                        @include('includes.partials.lang')
+                    </li>
+                @endif
+
+                <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
                         <span class="label label-default">0</span>
@@ -40,7 +50,7 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li class="header">{{ trans_choice('strings.backend.general.you_have.notifications', 0) }}</li>
+                        <li class="header">{{ trans_choice('strings.backend.general.you_have.notifications', 0, ['number' => 0]) }}</li>
                         <li class="footer">
                             {{ link_to('#', trans('strings.backend.general.see_all.notifications')) }}
                         </li>
@@ -59,7 +69,7 @@
                             {{ link_to('#', trans('strings.backend.general.see_all.tasks')) }}
                         </li>
                     </ul>
-                </li><!-- /.tasks-menu --> --}}
+                </li><!-- /.tasks-menu -->
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -76,7 +86,17 @@
                             </p>
                         </li>
 
-
+                        <li class="user-body">
+                            <div class="col-xs-4 text-center">
+                                {{ link_to('#', 'Link') }}
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                {{ link_to('#', 'Link') }}
+                            </div>
+                            <div class="col-xs-4 text-center">
+                                {{ link_to('#', 'Link') }}
+                            </div>
+                        </li>
 
                         <li class="user-footer">
                             <div class="pull-left">

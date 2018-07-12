@@ -23,4 +23,8 @@ class Workorder extends Model implements AuditableContract
     {
         return $this->hasMany('App\Models\Access\Wotype');
     }
+  public function formulas()
+    {
+        return $this->hasMany('App\Models\Access\Formula');
+    }
 }

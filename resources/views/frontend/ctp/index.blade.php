@@ -3,32 +3,46 @@
 @section('content')
     {{--  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>  --}}
-     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.4/css/select.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.4/css/select.bootstrap.min.css">
     <!-- [Start] New Plate Modal -->
     <div class="modal fade" id="modalNew" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-custom" role="document">
             <div class="modal-content">
                 <div class="modal-header modal-header-custom">
-                    <h3 class="modal-title modal-title-custom" id="exampleModalLongTitle">Add New Plate</h3>
+                    <h3 class="modal-title modal-title-custom" id="exampleModalLongTitle">Add New</h3>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="form-group row">
                             <div class="col-sm-6">
                                 <div class="input-group">
-                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Plate Type</span>
+                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Request ID</span>
+                                    <select class="selectpicker form-control form-control-custom-modal" id="select_req_id">
+                                        <option></option>
+                                        @foreach ($select_req_ids as $select_req_id)
+                                            <option>{{ $select_req_id->req_id }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Printer Type</span>
                                     <select class="selectpicker form-control form-control-custom-modal" id="select_plate_type">
                                         <option></option>
-                                        <option>N</option>
+                                        <option>H</option>
                                         <option>R</option>
-                                        <option>PA</option>
-                                        <option>PQ</option>
+                                        <option>KBA</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="input-group">
-                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Plate Size</span>
+                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Size</span>
                                     <select class="selectpicker form-control form-control-custom-modal" id="select_plate_size">
                                         <option></option>
                                         <option>785</option>
@@ -42,17 +56,24 @@
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Type Vendor</span>
-                                    <input type="text" class="form-control form-control-custom-modal" id="text_type_vendor">
-                                    {{--  <select class="form-control form-control-custom-modal" id="select_type_vendor">
+                                    {{--  <input type="text" class="form-control form-control-custom-modal" id="text_type_vendor">  --}}
+                                     <select class="selectpicker form-control form-control-custom-modal" id="text_type_vendor">
+                                        {{--  <optgroup label="New">
+                                            <option id="editable_type_vendor" class="editable" value="new">New Vendor Type</option>
+                                        </optgroup>  --}}
                                         <option></option>
-                                    </select>  --}}
+                                        @foreach ($select_type_vendors as $select_type_vendor)
+                                            <option>{{ $select_type_vendor->value }}</option>
+                                        @endforeach
+                                        {{--  <input id="text_type_vendor_new" class="editOption form-control form-control-custom-modal" style="display:none;"></input>  --}}
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Machine</span>
                                     <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
-                                    <select class="selectpicker form-control form-control-custom-modal" id="select_mac_no" data-live-search="true">
+                                    <select class="selectpicker form-control form-control-custom-modal" id="select_mac_no">
                                         <option></option>
                                         <option>Roland</option>
                                         <option>KBA</option>
@@ -67,14 +88,14 @@
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Customer</span>
                                     <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
                                     <select class="selectpicker form-control form-control-custom-modal" id="select_cust_no" data-live-search="true">
-                                        <optgroup label="New">
+                                        {{--  <optgroup label="New">
                                             <option id="editable_cust" class="editable" value="new">New Customer</option>
-                                        </optgroup>
+                                        </optgroup>  --}}
                                         <option></option>
-                                        @foreach ($select_cust_nos as $select_cust_no)
-                                            <option>{{ $select_cust_no->cust_no }}</option>
+                                        @foreach ($select_cust_no_masters as $select_cust_no_master)
+                                            <option>{{ $select_cust_no_master->cust_no }}</option>
                                         @endforeach
-                                        <input id="select_cust_no_new" class="editOption form-control form-control-custom-modal" style="display:none;"></input>
+                                        {{--  <input id="select_cust_no_new" class="editOption form-control form-control-custom-modal" style="display:none;"></input>  --}}
                                     </select>
                                 </div>
                             </div>
@@ -83,15 +104,15 @@
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">FG Code</span>
                                     <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
                                     <select class="selectpicker form-control form-control-custom-modal" id="select_part_no" data-live-search="true">  
-                                        <optgroup label="New">
+                                        {{--  <optgroup label="New">
                                             <option id="editable_part" class="editable" value="new">New FG Code</option>
-                                        </optgroup>
+                                        </optgroup>  --}}
                                         <option></option>
-                                        @foreach ($select_part_nos as $select_part_no)
-                                            <option>{{ $select_part_no->part_no }}</option>
+                                        @foreach ($select_part_no_masters as $select_part_no_master)
+                                            <option>{{ $select_part_no_master->part_no }}</option>
                                         @endforeach
                                         
-                                        <input id="select_part_no_new" class="editOption form-control form-control-custom-modal" style="display:none;"></input>
+                                        {{--  <input id="select_part_no_new" class="editOption form-control form-control-custom-modal" style="display:none;"></input>  --}}
                                     </select>
                                 </div>
                             </div>
@@ -100,10 +121,14 @@
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Location</span>
-                                    <input type="text" class="form-control form-control-custom-modal" id="text_location">
-                                    {{--  <select class="form-control form-control-custom-modal" id="select_location">
+                                    <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                    {{--  <input type="text" class="form-control form-control-custom-modal" id="text_location">  --}}
+                                    <select class="form-control form-control-custom-modal" id="text_location">
                                         <option></option>
-                                    </select>  --}}
+                                        @foreach ($select_locs as $select_loc)
+                                            <option>{{ $select_loc->value }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -159,6 +184,15 @@
                                 </div>
                             </div>
                         </div>
+                        {{--  <div class="form-group row">
+                            <div class="col-sm-6">
+                                
+                                <span class="input-group-addon">
+                                    <input id="check_main_2" type="checkbox" aria-label="...">
+                                </span>
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Send SMS on Creation</span>
+                            </div>
+                        </div>  --}}
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -175,24 +209,25 @@
         <div class="modal-dialog modal-dialog-custom" role="document">
             <div class="modal-content">
                 <div class="modal-header modal-header-custom">
-                    <h3 class="modal-title modal-title-custom" id="modalModifyTitle">Modify Plate</h3>
+                    <h3 class="modal-title modal-title-custom" id="modalModifyTitle">Modify</h3>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="form-group row">
                             <div class="col-sm-6">
                                 <div class="input-group">
-                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Plate Type</span>
+                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Printer Type</span>
                                     <select class="selectpicker form-control form-control-custom-modal" id="select_plate_type_modify">
                                         <option></option>
-                                        <option>PA</option>
-                                        <option>PQ</option>
+                                        <option>H</option>
+                                        <option>R</option>
+                                        <option>KBA</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="input-group">
-                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Plate Size</span>
+                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Size</span>
                                     <select class="selectpicker form-control form-control-custom-modal" id="select_plate_size_modify">
                                         <option></option>
                                         <option>785</option>
@@ -206,30 +241,46 @@
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Type Vendor</span>
-                                    <input type="text" class="form-control form-control-custom-modal" id="text_type_vendor_modify">
-                                    {{--  <select class="form-control form-control-custom-modal" id="select_type_vendor">
+                                   {{--   <input type="text" class="form-control form-control-custom-modal" id="text_type_vendor_modify">  --}}
+                                    <select class="form-control form-control-custom-modal" id="text_type_vendor_modify">
                                         <option></option>
-                                    </select>  --}}
+                                        @foreach ($select_type_vendors as $select_type_vendor)
+                                            <option>{{ $select_type_vendor->value }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Location</span>
-                                    <input type="text" class="form-control form-control-custom-modal" id="text_location_modify">
-                                    {{--  <select class="form-control form-control-custom-modal" id="select_location">
+                                    {{--  <input type="text" class="form-control form-control-custom-modal" id="text_location_modify">  --}}
+                                    <select disabled class="form-control form-control-custom-modal" id="text_location_modify">
                                         <option></option>
-                                    </select>  --}}
+                                        @foreach ($select_locs as $select_loc)
+                                            <option>{{ $select_loc->value }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
                        
                         <div class="form-group row">
-                            <div class="col-sm-6">
+                            {{--  <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Quantity</span>
-                                    {{--  <input type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="c2" />  --}}
                                     <input class="form-control currency form-control-custom-modal text-right" value="0" min="0" type="number" id="input_qty_modify" />
                                     
+                                </div>
+                            </div>  --}}
+                             <div class="col-sm-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Print Req</span>
+                                    <select class="form-control form-control-custom-modal" id="select_print_req_modify">
+                                        <option></option>
+                                        <option>Cover</option>
+                                        <option>Text</option>
+                                        <option>Sticker</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -256,7 +307,7 @@
                                 </div>
                             </div>
                         </div>
-                         <div class="form-group row">
+                        {{--  <div class="form-group row">
                             <div class="col-sm-6">
                                 <div class="input-group">
                                     <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Print Req</span>
@@ -268,7 +319,7 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        </div>  --}}
                         <div class="form-group row">
                             <div class="col-sm-12">
                                 <div class="input-group">
@@ -293,7 +344,7 @@
         <div class="modal-dialog modal-dialog-custom" role="document">
             <div class="modal-content">
             <div class="modal-header modal-header-custom">
-                <h3 class="modal-title modal-title-custom" id="modalMaintenanceTitle">Plate Replacement</h3>
+                <h3 class="modal-title modal-title-custom" id="modalMaintenanceTitle">Maintenance</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -315,20 +366,19 @@
                         </div>  --}}
                         <div class="col-sm-6">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">New Plate ID</span>
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Printer Type</span>
                                 <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
-                                <select class="selectpicker form-control form-control-custom-modal" id="select_plate_id_new_main" data-live-search="true">
-                                <option></option>
+                                <select class="selectpicker form-control form-control-custom-modal" id="select_printer_main">
                                     <option></option>
-                                    @foreach ($select_plate_ids as $select_plate_id)
-                                        <option>{{ $select_plate_id->mold_id }}</option>
-                                    @endforeach
+                                    <option>H</option>
+                                    <option>R</option>
+                                    <option>KBA</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Return Date</span>
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Date</span>
                                 <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
                                 <div class='input-group date form-control-custom-modal' id='datetimepicker2'>
                                     <input type='text' class="form-control" id="date_return"/>
@@ -341,20 +391,29 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            <div class="input-group">
-                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Printer</span>
-                                <input type="text" class="form-control form-control-custom-modal" id="text_printer_main">
-                                {{--  <select class="form-control form-control-custom-modal" id="select_printer_main">
-                                <option></option>
-                                @foreach ($mold_infos as $mold_info)
-                                    <option>{{ $mold_info->cust_no }}</option>
-                                @endforeach
-                                </select>  --}}
+                           <div class="input-group">
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Reason</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                <select class="form-control form-control-custom-modal" id="text_reason_main">
+                                    <option></option>
+                                    @foreach ($select_reasons as $select_reason)
+                                        <option>{{ $select_reason->value }}</option>
+                                    @endforeach
+                                   {{--   <option></option>
+                                    <option>Spoil</option>
+                                    <option>Bent</option>
+                                    <option>Dent</option>
+                                    <option>Scratches</option>
+                                    <option>Worn off</option>
+                                    <option>Expired</option>
+                                    <option>Mc Machine</option>  --}}
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="input-group">
                                 <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">CTP</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
                                 <select class="form-control form-control-custom-modal" id="select_ctp_main">
                                     <option></option>
                                     <option>New</option>
@@ -369,27 +428,41 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Reason</span>
-                                {{--  <input type="text" class="form-control form-control-custom-modal" id="text_reason_main">  --}}
-                                <select class="form-control form-control-custom-modal" id="text_reason_main">
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Add / Write Off</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                <select class="form-control form-control-custom-modal" id="text_addwrite_main">
                                     <option></option>
-                                    <option>Spoil</option>
-                                    <option>Bent</option>
-                                    <option>Dent</option>
-                                    <option>Scratches</option>
-                                    <option>Worn off</option>
-                                    <option>Expired</option>
-                                    <option>Mc Machine</option>
+                                    <option>Add</option>
+                                    <option>Write Off</option>
                                 </select>
                             </div>
                         </div>
-                        
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Quantity</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                {{--  <input type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="c2" />  --}}
+                                <input class="form-control currency form-control-custom-modal text-right" value="0" min="0" type="number" id="input_qty_main" />
+                                
+                            </div>
+                        </div>
                     </div>
-                    
-                
-                
+                   {{--   <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">By</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                <select class="selectpicker form-control form-control-custom-modal" id="select_pickup_by">
+                                <option></option>
+                                    @foreach ($select_users as $select_user)
+                                        <option>{{ $select_user->email }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>  --}}
                 </form>
             </div>
             <div class="modal-footer">
@@ -401,12 +474,13 @@
     </div>
     <!-- [End] Add Maintenance Modal -->
 
-    <!-- [Start] Plate Pickup Modal -->
+    {{--  Changed to plate move 20180227  --}}
+    <!-- [Start] Plate Pickup Modal --> 
     <div class="modal fade" id="modalPickup" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-custom" role="document">
             <div class="modal-content">
             <div class="modal-header modal-header-custom">
-                <h3 class="modal-title modal-title-custom" id="modalPickupTitle">Plate Pickup</h3>
+                <h3 class="modal-title modal-title-custom" id="modalPickupTitle">Move</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -416,7 +490,7 @@
                     <div class="form-group row">
                         <div class="col-sm-6">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Pickup By</span>
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Move By</span>
                                 <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
                                 <select class="selectpicker form-control form-control-custom-modal" id="select_pickup_by">
                                 <option></option>
@@ -428,7 +502,7 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="input-group">
-                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Pickup Date</span>
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Move Date</span>
                                 <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
                                 <div class='input-group date form-control-custom-modal' id='datetimepicker1'>
                                     <input type='text' class="form-control" id="date_pickup"/>
@@ -439,6 +513,51 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        {{--  <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">From Location</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                <input type="text" class="form-control form-control-custom-modal" id="text_pickup_from_loc">
+                
+                            </div>
+                        </div>  --}}
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">To Location</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                {{--  <input type="text" class="form-control form-control-custom-modal" id="text_pickup_to_loc">  --}}
+                                <select class="form-control form-control-custom-modal" id="text_pickup_to_loc">
+                                    <option></option>
+                                        @foreach ($select_locs as $select_loc)
+                                            <option>{{ $select_loc->value }}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Quantity</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                {{--  <input type="number" value="1000" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="c2" />  --}}
+                                <input class="form-control currency form-control-custom-modal text-right" value="0" min="0" type="number" id="text_pickup_qty" />
+                                
+                            </div>
+                        </div>
+                    </div>
+                    {{--  <div class="form-group row">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon input-group-addon-custom-modal" id="sizing-addon2">Quantity</span>
+                                <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
+                                <input class="form-control currency form-control-custom-modal text-right" value="0" min="0" type="number" id="text_pickup_qty" />
+                                
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            
+                        </div>
+                    </div>  --}}
                     <div class="form-group row">
                         <div class="col-sm-12">
                             <div class="input-group">
@@ -461,27 +580,15 @@
    
     <div class="container-fluid">
         <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title" style="font-weight:bold">CTP Department</h3>
-                <br>
-                <ul class="nav nav-tabs navbar-custom">
-                    <li class="active"><a href="index">Plate Management</a></li>
-                    <li><a href="trans">Plate Transactions</a></li>
-                </ul>
-            </div>
+            @include('frontend.ctp.includes.nav', ['mainTitle' => 'CTP Department / Plate Maintenance'])
             <br>
-
-
-        
-  
-    
-  
             <div class="panel-body">
+            
                 {{-- [Start] Row 1 Selctions --}}
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                     <div class="input-group">
-                        <span class="input-group-addon input-group-addon-custom" id="sizing-addon2" >Plate ID</span>
+                        <span class="input-group-addon input-group-addon-custom" id="sizing-addon2" >ID</span>
                         <select class="selectpicker form-control" id="select_plate_id_form" data-live-search="true">
                         <option></option>
                             @foreach ($select_plate_ids as $select_plate_id)
@@ -490,7 +597,7 @@
                         </select>
                     </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="input-group">
                             <span class="input-group-addon input-group-addon-custom" id="sizing-addon2">Customer</span>
                             <select class="selectpicker form-control" id="select_cust_no_form" data-live-search="true">
@@ -501,7 +608,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="input-group">
                             <span class="input-group-addon input-group-addon-custom" id="sizing-addon2">FG Code</span>
                             <select class="selectpicker form-control" id="select_part_no_form" data-live-search="true">
@@ -512,7 +619,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    {{--  <div class="col-lg-3">
                         <div class="input-group">
                             <span class="input-group-addon input-group-addon-custom" id="sizing-addon2">Status</span>
                             <select class="selectpicker form-control" id="select_status_form">
@@ -522,7 +629,7 @@
                                 <option>Replaced</option>
                             </select>
                         </div>
-                    </div>
+                    </div>  --}}
                 </div> 
                 {{-- [End] Row 1 Selctions --}}
                 <br>
@@ -534,8 +641,9 @@
                             <button id="btnPlateNew" type="button" class="btn btn-primary" data-toggle="modal" title="New"><i class="fa fa-plus-square-o"></i></button>
                             <button id="btnPlateModify" type="button" class="btn btn-primary" data-toggle="modal" title="Modify"><i class="fa fa-edit"></i></button>
                             <button id="btnPlateDelete" type="button" class="btn btn-primary"><i class="fa fa-trash-o" title="Delete"></i></button>
-                            <button id="btnPlatePickup" type="button" class="btn btn-primary" data-toggle="modal" title="Pickup"><i class="fa fa-truck"></i></button>
-                            <button id="btnPlateMaintain" type="button" class="btn btn-primary" data-toggle="modal" title="Replace"><i class="fa fa-wrench"></i></button>  
+                            <button id="btnPlatePickup" type="button" class="btn btn-primary" data-toggle="modal" title="Move"><i class="fa fa-truck"></i></button>
+                            <button id="btnPlateMaintain" type="button" class="btn btn-primary" data-toggle="modal" title="Maintain"><i class="fa fa-wrench"></i></button>  
+                            <button id="btnPlateComplete" type="button" class="btn btn-primary" data-toggle="modal" title="Complete"><i class="fa fa-check"></i></button>  
                         </span>
                     </div>
                     <div class="col-lg-6">
@@ -553,14 +661,14 @@
                             <table id="ctp-table" class="table table-striped table-bordered dt-responsive" style="white-space:nowrap;" cellspacing="0" width="100%">
                                 <thead  style="background-color:#d9edf7; color:#31708f">
                                 <tr>
-                                    <th>Plate ID</th>
-                                    <th>Plate Type</th>
+                                    <th>ID</th>
+                                    <th>Printer Type</th>
                                     <th>Type Vendor</th>
-                                    <th>Plate Size (mm)</th>
+                                    <th>Size (mm)</th>
                                     <th>Customer ID</th>
                                     <th>Customer FG Code</th>
                                     <th>Machine</th>
-                                    <th>Plate Qty</th>
+                                    <th>Qty</th>
                                     <th>Location</th>
                                     <th>Life Span (Qty to print)</th>
                                     <th>Print Requirement</th>
@@ -573,9 +681,57 @@
                                     <th>Picked By</th>
                                     <th>Picked At</th>
                                     <th>Picked Remark</th>
+                                    <th>Complete By</th>
+                                    <th>Complete At</th>
                                 </tr>
                                 </thead>
                                 
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {{--  [End] Table  --}}
+
+                <h5 class="text-info" style="font-weight:bold">Maintenance Log</h3>
+
+                {{--  [Start] Table  --}}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="dataTables_wrapper">
+                            <table id="main-table" class="table table-striped table-bordered dt-responsive" style="white-space:nowrap;" cellspacing="0" width="100%">
+                                <thead  style="background-color:#d9edf7; color:#31708f">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Printer Type</th>
+                                    <th>Reason</th>
+                                    <th>CTP</th>
+                                    <th>Add / Write Off</th>
+                                    <th>Quantity</th>
+                                    <th>By</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {{--  [End] Table  --}}
+
+                <h5 class="text-info" style="font-weight:bold">Location Log</h3>
+
+                {{--  [Start] Table  --}}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="dataTables_wrapper">
+                            <table id="move-table" class="table table-striped table-bordered dt-responsive" style="white-space:nowrap;" cellspacing="0" width="100%">
+                                <thead  style="background-color:#d9edf7; color:#31708f">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>From Location</th>
+                                    <th>To Location</th>
+                                    <th>Moved By</th>
+                                    <th>Quantity</th>
+                                </tr>
+                                </thead>
                             </table>
                         </div>
                     </div>
@@ -653,7 +809,7 @@
             /*"bScrollCollapse": true,*/
             "searching": false,
             "lengthChange": false,
-            "iDisplayLength":10,
+            "iDisplayLength":2,
             "retrieve": true,
             select: true,
             //"ajax":djson.json,
@@ -692,36 +848,109 @@
                         { data: 'picked_by'},
                         { data: 'picked_at'},
                         { data: 'picked_remark'},
+                        { data: 'complete_by'},
+                        { data: 'complete_at'},
                     ]
         });
         $('#ctp-table').on( 'click', 'tr', function () {
             if ( $(this).hasClass('selected') ) {
                     $(this).removeClass('selected');
                     selectedMoldId = undefined;
-                }
-                else {
+                    $('#main-table').DataTable().draw();
+                    $('#move-table').DataTable().draw();
                     
-                    table.$('tr.selected').removeClass('selected');
-                    $(this).addClass('selected');
-                    if (table.row( this ).data() == undefined){
-                        return;
-                    }
-                    //alert(table.row( this ).data().mold_id);
-                    selectedMoldId = table.row( this ).data().mold_id;
-                    selectedMoldType = table.row( this ).data().mold_type;
-                    selectedMoldTypeVendor = table.row( this ).data().mold_type_vendor;
-                    selectedMoldSize = table.row( this ).data().mold_size;
-                    selectedQty = table.row( this ).data().qty;
-                    selectedLocation = table.row( this ).data().location;
-                    selectedQtyLife = table.row( this ).data().qty_life;
-                    selectedPrintReq = table.row( this ).data().print_req;
-                    selectedFilmDesc = table.row( this ).data().film_desc;
-                    selectedQtyFilm = table.row( this ).data().qty_film;
-                    selectedStatus = table.row( this ).data().status;
-                    selectedRemark = table.row( this ).data().remark;
                 }
+            else {
+                
+                table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+                if (table.row( this ).data() == undefined){
+                    return;
+                }
+                //alert(table.row( this ).data().mold_id);
+                selectedMoldId = table.row( this ).data().mold_id;
+                selectedMoldType = table.row( this ).data().mold_type;
+                selectedMoldTypeVendor = table.row( this ).data().mold_type_vendor;
+                selectedMoldSize = table.row( this ).data().mold_size;
+                selectedQty = table.row( this ).data().qty;
+                selectedLocation = table.row( this ).data().location;
+                selectedQtyLife = table.row( this ).data().qty_life;
+                selectedPrintReq = table.row( this ).data().print_req;
+                selectedFilmDesc = table.row( this ).data().film_desc;
+                selectedQtyFilm = table.row( this ).data().qty_film;
+                selectedStatus = table.row( this ).data().status;
+                selectedRemark = table.row( this ).data().remark;
+
+                $('#main-table').DataTable().draw();
+                $('#move-table').DataTable().draw();
+                
+            }
             
         //alert( 'Clicked row id '+id );
+        });
+
+        var tableMain = $('#main-table').DataTable( {
+            "scrollY": false,
+            "scrollX": true,
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            /*"bScrollCollapse": true,*/
+            "searching": false,
+            "lengthChange": false,
+            "iDisplayLength":2,
+            "retrieve": true,
+            //"ajax":djson.json,
+            processing: true,
+            serverSide: true,
+            //ajax:"{!! route('frontend.ctp.anyData') !!}"
+            
+            ajax: {
+                    url: "/ctp/anyDataMain", 
+                    data: function (d) {
+                                d.mold_id = selectedMoldId;
+                            }
+            },
+            
+            columns: [
+                        { data: 'date'},
+                        { data: 'printer'},
+                        { data: 'reason'},
+                        { data: 'CTP'},
+                        { data: 'add_write'},
+                        { data: 'quantity'},
+                        { data: 'created_by'},
+                    ]
+        });
+
+        var tableWo = $('#move-table').DataTable( {
+            "scrollY": false,
+            "scrollX": true,
+            "sScrollX": "100%",
+            "sScrollXInner": "100%",
+            /*"bScrollCollapse": true,*/
+            "searching": false,
+            "lengthChange": false,
+            "iDisplayLength":2,
+            "retrieve": true,
+            //"ajax":djson.json,
+            processing: true,
+            serverSide: true,
+            //ajax:"{!! route('frontend.ctp.anyData') !!}"
+            
+            ajax: {
+                    url: "/ctp/anyDataMove", 
+                    data: function (d) {
+                                d.mold_id = selectedMoldId;
+                            }
+            },
+            
+            columns: [
+                        { data: 'move_at'},
+                        { data: 'from_location'},
+                        { data: 'to_location'},
+                        { data: 'move_by'},
+                        { data: 'move_qty'},
+                    ]
         });
 
     } ); 
@@ -773,6 +1002,7 @@
                             oTable = $('#ctp-table').DataTable();
                             //oTable.ajax.reload();
                                 oTable.draw();
+                                selectedMoldId = undefined;
                             //result.preventDefault();
                             }});
             
@@ -791,6 +1021,7 @@
     
         $(function(){
             $('#btnPlateNew').click(function(e){
+                $('#select_req_id').val('');
                 $("#select_cust_no").val('');
                 $('#select_cust_no_new').val('new');
                 $('#select_cust_no_new').hide();
@@ -801,6 +1032,8 @@
                 $("#select_plate_type").val('');
                 $("#select_plate_size").val('');
                 $("#text_type_vendor").val('');
+                $("#text_type_vendor_new").val('new');
+                $('#text_type_vendor_new').hide();
                 $("#text_location").val('');
                 $("#input_qty").val('0');
                 $("#input_qty_life").val('0');
@@ -830,22 +1063,25 @@
                 buttons: {
                     Yes: function(yesButton){
                         
+                        
                          $.ajax({
                             url: "/ctp/insert", 
                             data: { 
+                                mold_type : 'plate',
                                 cust_no: $('select[id="select_cust_no"]').val(), 
                                 part_no : $('select[id="select_part_no"]').val(), 
                                 mac_no : $('select[id="select_mac_no"]').val(),
                                 plate_type : $('select[id="select_plate_type"]').val(),
                                 plate_size : $('select[id="select_plate_size"]').val(),
-                                type_vendor : $('input[id="text_type_vendor"]').val(),
-                                location : $('input[id="text_location"]').val(),
+                                type_vendor : $('select[id="text_type_vendor"]').val(),
+                                location : $('select[id="text_location"]').val(),
                                 print_req : $('select[id="select_print_req"]').val(),
                                 qty : $('input[id="input_qty"]').val(),
                                 qty_life : $('input[id="input_qty_life"]').val(),
                                 film_desc : $('input[id="text_film_desc"]').val(),
                                 qty_film : $('input[id="input_qty_film"]').val(),
                                 remark : $('textarea[id="text_remark"]').val(),
+                                req_id : $('#select_req_id').val(),
                                 
                             },
                             success: function(result){
@@ -867,21 +1103,29 @@
                                     type: 'blue', 
                                     icon: 'fa fa-info-circle',
                                     title: 'Saved',
-                                    content: 'Record has been saved. New plate ID : [' + result.success + ']',
+                                    content: 'Record has been saved. ID : [' + result.success + ']',
                                     buttons: { OK : function (){
-                                        $.get('/ctp/selectData', function(data) {
+                                          $.get('/ctp/selectData', function(data) {
                                             $('#select_plate_id_form').empty().append('<option></option>');
                                             $('#select_plate_id_curr_main').empty().append('<option></option>');
                                             $('#select_plate_id_new_main').empty().append('<option></option>');
-                                            $('#select_cust_no').empty().append('<option></option>');
-                                            $('#select_cust_no_form').empty().append('<option></option>');
-                                            $('#select_part_no').empty().append('<option></option>');
-                                            $('#select_part_no_form').empty().append('<option></option>');
                                             $.each(data.mold_id, function(index,subCatObj){
                                                 $('#select_plate_id_form').append('<option>'+subCatObj.mold_id+'</option>');
                                                 $('#select_plate_id_curr_main').append('<option>'+subCatObj.mold_id+'</option>');
                                                 $('#select_plate_id_new_main').append('<option>'+subCatObj.mold_id+'</option>');
+                                            }); 
+                                            
+                                            $('#select_req_id').empty().append('<option></option>');
+                                            $.each(data.req_id, function(index,subCatObj){
+                                                $('#select_req_id').append('<option>'+subCatObj.req_id+'</option>');
                                             });
+                                            /*
+                                            $('#select_cust_no').empty().append('<option></option>');
+                                            $('#select_cust_no_form').empty().append('<option></option>');
+                                            $('#select_part_no').empty().append('<option></option>');
+                                            $('#select_part_no_form').empty().append('<option></option>');
+                                            $('#text_type_vendor').empty().append('<option></option>');
+                                            
                                             $.each(data.cust_no, function(index,subCatObj){
                                                 $('#select_cust_no').append('<option>'+subCatObj.cust_no+'</option>');
                                                 $('#select_cust_no_form').append('<option>'+subCatObj.cust_no+'</option>');
@@ -890,13 +1134,16 @@
                                                 $('#select_part_no').append('<option>'+subCatObj.part_no+'</option>');
                                                 $('#select_part_no_form').append('<option>'+subCatObj.part_no+'</option>');
                                             });
+                                            $.each(data.type_vendor, function(index,subCatObj){
+                                                $('#text_type_vendor').append('<option>'+subCatObj.type_vendor+'</option>');
+                                            });           */
                                             $('.selectpicker').selectpicker('refresh');
                                             $("#select_plate_id_form").val(result.success);
                                             $('.selectpicker').selectpicker('refresh');
                                             $('#modalNew').modal('hide');
                                             $('.modal-backdrop').remove();
                                             $('#ctp-table').DataTable().draw();
-                                        });
+                                        });  
                                         
                                         //$('#modalNew').modal('hide');
                                         //$('.modal-backdrop').remove();
@@ -914,7 +1161,6 @@
                                 alert(error);
                                 return false;
                             }});
-                            
                         
                     },
                     No: function () {
@@ -960,7 +1206,7 @@
             */
             });
         });
-
+        /*
         var initialText = $('#editable_cust').val();
         $('#select_cust_no_new').val(initialText);
 
@@ -1004,6 +1250,61 @@
             $('#select_part_no_new').hide();
             }
         });
+
+        var initialTextVendorType = $('#editable_type_vendor').val();
+        $('#text_type_vendor_new').val(initialTextVendorType);
+
+        $('#text_type_vendor').change(function(){
+            var selectedTypeVendor = $('option:selected', this).attr('class');
+            var optionTextTypeVendor= $('#editable_type_vendor').text();
+
+            if(selectedTypeVendor == "editable"){
+            $('#text_type_vendor_new').show();
+
+            
+            $('#text_type_vendor_new').keyup(function(){
+                var editTextVendorType = $('#text_type_vendor_new').val();
+                $('#editable_type_vendor').val(editTextVendorType);
+            });
+
+            }else{
+            $('#text_type_vendor_new').hide();
+            }
+        });*/
+
+        $('#select_plate_type').change(function(){
+            if ($("#select_plate_type").val() == 'H'){
+                $("#select_plate_size").val('790');
+                $("#select_mac_no").val('Heidelberg');
+            }else if ($("#select_plate_type").val() == 'R'){
+                $("#select_plate_size").val('785');
+                $("#select_mac_no").val('Roland');
+            }else if ($("#select_plate_type").val() == 'KBA'){
+                $("#select_plate_size").val('795');
+                $("#select_mac_no").val('KBA');
+            }else{
+                $("#select_plate_size").val('');
+                $("#select_mac_no").val('');
+            }
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        $('#select_req_id').change(function(){           
+            $('#select_part_no').LoadingOverlay("show");
+            $('#select_cust_no').LoadingOverlay("show");
+            $("#select_part_no").prop('disabled',true);
+            $("#select_cust_no").prop('disabled',true);
+            $.get('/ctp/selectDataReq', {req_id: $('#select_req_id').val()},  function(data) {
+                $('#select_part_no').val(data.part_no);
+                $('#select_cust_no').val(data.cust_no);
+                $('.selectpicker').selectpicker('refresh');
+                $('#select_part_no').LoadingOverlay("hide");
+                $('#select_cust_no').LoadingOverlay("hide");
+                $("#select_part_no").prop('disabled',false);
+                $("#select_cust_no").prop('disabled',false);
+                $('.selectpicker').selectpicker('refresh');
+            }); 
+        });
         
     </script>
     {{--  [End] Modal New Scripts  --}}
@@ -1018,20 +1319,30 @@
                         type: 'red', 
                         icon: 'fa fa-exclamation-circle',
                         title: 'Error',
-                        content: 'Please select a plate to be modified.',
+                        content: 'Please select a record to be modified.',
+                        buttons: { OK : function (){}}
+                    });
+                    return false;
+                }
+                if (selectedStatus != 'New'){
+                    $.confirm({
+                        type: 'red', 
+                        icon: 'fa fa-exclamation-circle',
+                        title: 'Error',
+                        content: 'Please select a record with status [New] to be modified.',
                         buttons: { OK : function (){}}
                     });
                     return false;
                 }
                 //alert(selectedMoldId);
-                $("#modalModifyTitle").text("Plate Modify ( Plate ID : " + selectedMoldId + ")");
+                $("#modalModifyTitle").text("Modify ( ID : " + selectedMoldId + ")");
 
 
                 $("#select_plate_type_modify").val(selectedMoldType);
                 $("#select_plate_size_modify").val(selectedMoldSize);
                 $("#text_type_vendor_modify").val(selectedMoldTypeVendor);
                 $("#text_location_modify").val(selectedLocation);
-                $("#input_qty_modify").val(selectedQty);
+                //$("#input_qty_modify").val(selectedQty);
                 $("#input_qty_life_modify").val(selectedQtyLife);
                 $("#text_film_desc_modify").val(selectedFilmDesc);
                 $("#input_qty_film_modify").val(selectedQtyFilm);
@@ -1065,10 +1376,10 @@
                                 mold_id : selectedMoldId,
                                 plate_type : $('select[id="select_plate_type_modify"]').val(),
                                 plate_size : $('select[id="select_plate_size_modify"]').val(),
-                                type_vendor : $('input[id="text_type_vendor_modify"]').val(),
-                                location : $('input[id="text_location_modify"]').val(),
+                                type_vendor : $('select[id="text_type_vendor_modify"]').val(),
+                                location : $('select[id="text_location_modify"]').val(),
                                 print_req : $('select[id="select_print_req_modify"]').val(),
-                                qty : $('input[id="input_qty_modify"]').val(),
+                                //qty : $('input[id="input_qty_modify"]').val(),
                                 qty_life : $('input[id="input_qty_life_modify"]').val(),
                                 film_desc : $('input[id="text_film_desc_modify"]').val(),
                                 qty_film : $('input[id="input_qty_film_modify"]').val(),
@@ -1150,22 +1461,35 @@
             $('#btnPlatePickup').click(function(e){
                 $("#select_pickup_by").val('');
                 $("#datetimepicker1").data('DateTimePicker').date(new Date());
+                $("#text_pickup_from_loc").val('');
+                $("#text_pickup_to_loc").val('');
+                $("#text_pickup_qty").val('0');
                 $('textarea[id="text_pickup_remark"]').val('');
 
                 $('.selectpicker').selectpicker('refresh');
 
-                if (selectedMoldId == undefined || selectedStatus != 'New'){
+                if (selectedMoldId == undefined){
                     $.confirm({
                         type: 'red', 
                         icon: 'fa fa-exclamation-circle',
                         title: 'Error',
-                        content: 'Please select a plate with status [New] to be pickup.',
+                        content: 'Please select a record to be moved.',
+                        buttons: { OK : function (){}}
+                    });
+                    return false;
+                }
+                if (selectedStatus != 'New'){
+                    $.confirm({
+                        type: 'red', 
+                        icon: 'fa fa-exclamation-circle',
+                        title: 'Error',
+                        content: 'Please select a record with status [New] to be moved.',
                         buttons: { OK : function (){}}
                     });
                     return false;
                 }
                 //alert(selectedMoldId);
-                $("#modalPickupTitle").text("Plate Pickup ( Plate ID : " + selectedMoldId + ")");
+                $("#modalPickupTitle").text("Move ( ID : " + selectedMoldId + ")");
                 //$("#modalPickupTitle").innerText = 'Plate Pickup ' + selectedMoldId;
                 //$("#modalPickupTitle").val('Plate Pickup ' + selectedMoldId);
                 e.preventDefault();
@@ -1179,8 +1503,8 @@
             e.stopPropagation();
             $.confirm({
                 icon: 'fa fa-info-circle',
-                title: 'Picking Up',
-                content: 'Confirm pickup?',
+                title: 'Moving',
+                content: 'Confirm move?',
                 type: 'blue', 
                 //theme: 'supervan', 
                 buttons: {
@@ -1193,6 +1517,9 @@
                                 picked_by: $('select[id="select_pickup_by"]').val(), 
                                 picked_at : $("#datetimepicker1").data('DateTimePicker').date().format('YYYY-MM-DD HH:mm'),  
                                 picked_remark : $('textarea[id="text_pickup_remark"]').val(),
+                                picked_from_loc : selectedLocation,
+                                picked_to_loc : $("#text_pickup_to_loc").val(),
+                                picked_qty : $("#text_pickup_qty").val(),
                             },
                             success: function(result){
                                 if (result.error){
@@ -1212,8 +1539,8 @@
                                     //theme: 'supervan',
                                     type: 'blue', 
                                     icon: 'fa fa-info-circle',
-                                    title: 'Picked Up',
-                                    content: 'Plate has been pick up.',
+                                    title: 'Moved',
+                                    content: 'Record has been moved.',
                                     buttons: { OK : function (){
                                         selectedMoldId = undefined;
                                         $('#modalPickup').modal('hide');
@@ -1244,21 +1571,6 @@
             $('#btnModalPickupClose').click(function(e){
                 e.preventDefault();
                 ModalCloseWarning('#modalPickup');
-                /*
-                $.confirm({
-                    type: 'orange',
-                    icon: 'fa fa-warning',
-                    title: 'Warning',
-                    content: 'Record not saved, comfirm close?',
-                    buttons: {
-                        Yes: function(yesButton){
-                            $('#modalPickup').modal('hide');
-                            $('.modal-backdrop').remove();
-                        },
-                        No: function () {
-                        }
-                    }
-                });*/
             });
         });
         
@@ -1275,7 +1587,17 @@
                         type: 'red', 
                         icon: 'fa fa-exclamation-circle',
                         title: 'Error',
-                        content: 'Please select a plate to be deleted.',
+                        content: 'Please select a record to be deleted.',
+                        buttons: { OK : function (){}}
+                    });
+                    return false;
+                }
+                if (selectedStatus != 'New'){
+                    $.confirm({
+                        type: 'red', 
+                        icon: 'fa fa-exclamation-circle',
+                        title: 'Error',
+                        content: 'Please select a record with status [New] to be deleted.',
                         buttons: { OK : function (){}}
                     });
                     return false;
@@ -1284,7 +1606,7 @@
                     type: 'blue', 
                     icon: 'fa fa-info-circle',
                     title: 'Deleting',
-                    content: 'Are you sure you want to delete Plate ID [' + selectedMoldId + ']?',
+                    content: 'Are you sure you want to delete ID [' + selectedMoldId + ']?',
                     buttons: { 
                         Yes: function(yesButton){
                             $.ajax({
@@ -1354,9 +1676,9 @@
     <script>    
         $(function(){
             $('#btnPlateMaintain').click(function(e){
-                $("#select_plate_id_curr_main").val('');
-                $("#select_plate_id_new_main").val('');
-                $("#text_printer_main").val('');
+                $("#text_addwrite_main").val('');
+                $("#input_qty_main").val('0');
+                $("#select_printer_main").val('');
                 $("#select_ctp_main").val('');
                 $("#text_reason_main").val('');
                 $("#datetimepicker2").data('DateTimePicker').date(new Date());
@@ -1368,13 +1690,22 @@
                         type: 'red', 
                         icon: 'fa fa-exclamation-circle',
                         title: 'Error',
-                        content: 'Please select a plate to be replaced.',
+                        content: 'Please select a record.',
                         buttons: { OK : function (){}}
                     });
                     return false;
                 }
-                //alert(selectedMoldId);
-                $("#modalMaintenanceTitle").text("Plate Replacement ( Plate ID : " + selectedMoldId + ")");
+                if (selectedStatus != 'New'){
+                    $.confirm({
+                        type: 'red', 
+                        icon: 'fa fa-exclamation-circle',
+                        title: 'Error',
+                        content: 'Please select a record with status [New] to be maintain.',
+                        buttons: { OK : function (){}}
+                    });
+                    return false;
+                }
+                $("#modalMaintenanceTitle").text("Maintenance ( ID : " + selectedMoldId + ")");
                 //$("#modalPickupTitle").innerText = 'Plate Pickup ' + selectedMoldId;
                 //$("#modalPickupTitle").val('Plate Pickup ' + selectedMoldId);
 
@@ -1389,8 +1720,8 @@
             e.stopPropagation();
             $.confirm({
                 icon: 'fa fa-info-circle',
-                title: 'Replacing',
-                content: 'Confirm replace?',
+                title: 'Maintaining',
+                content: 'Confirm?',
                 type: 'blue', 
                 //theme: 'supervan', 
                 buttons: {
@@ -1399,12 +1730,13 @@
                          $.ajax({
                             url: "/ctp/replace", 
                             data: { 
-                                old_mold_id : selectedMoldId,
-                                new_mold_id : $("#select_plate_id_new_main").val(),
-                                printer : $("#text_printer_main").val(),
+                                mold_id : selectedMoldId,
+                                printer : $("#select_printer_main").val(),
                                 CTP: $("#select_ctp_main").val(),
                                 reason : $("#text_reason_main").val(),
                                 return_date : $("#datetimepicker2").data('DateTimePicker').date().format('YYYY-MM-DD HH:mm'),  
+                                add_write : $("#text_addwrite_main").val(),
+                                quantity : $("#input_qty_main").val(),
                             },
                             success: function(result){
                                 if (result.error){
@@ -1424,8 +1756,8 @@
                                     //theme: 'supervan',
                                     type: 'blue', 
                                     icon: 'fa fa-info-circle',
-                                    title: 'Replaced',
-                                    content: 'Plate has been replaced.',
+                                    title: 'Maintained',
+                                    content: 'Record has been changed.',
                                     buttons: { OK : function (){
                                         selectedMoldId = undefined;
                                         $('#modalMaintenance').modal('hide');
@@ -1459,6 +1791,82 @@
         });
     </script>
     {{--  [End] Modal Maintenance Scripts  --}}
+
+    {{--  [Start] Modal Complete Scripts  --}}
+    <script>
+    
+        $(function(){
+            $('#btnPlateComplete').click(function(e){
+                if (selectedMoldId == undefined){
+                    $.confirm({
+                        type: 'red', 
+                        icon: 'fa fa-exclamation-circle',
+                        title: 'Error',
+                        content: 'Please select a record to be completed.',
+                        buttons: { OK : function (){}}
+                    });
+                    return false;
+                }
+                if (selectedStatus != 'New'){
+                    $.confirm({
+                        type: 'red', 
+                        icon: 'fa fa-exclamation-circle',
+                        title: 'Error',
+                        content: 'Please select a record qith status [New] to be completed.',
+                        buttons: { OK : function (){}}
+                    });
+                    return false;
+                }
+                $.confirm({
+                    type: 'blue', 
+                    icon: 'fa fa-info-circle',
+                    title: 'Completing',
+                    content: 'Are you sure you want to complete ID [' + selectedMoldId + ']?',
+                    buttons: { 
+                        Yes: function(yesButton){
+                            $.ajax({
+                                url: "/ctp/complete", 
+                                data: { 
+                                    mold_id: selectedMoldId,
+                                },
+                                success: function(result){
+                                    if (result.error){
+                                        $.confirm({
+                                            type: 'red', 
+                                            icon: 'fa fa-exclamation-circle',
+                                            title: 'Error',
+                                            content: result.error,
+                                            buttons: { OK : function (){}}
+                                        });
+                                        return false;
+                                    }
+                                    $.confirm({
+                                        type: 'blue', 
+                                        icon: 'fa fa-info-circle',
+                                        title: 'Deleted',
+                                        content: 'Record has been completed.',
+                                        buttons: { OK : function (){
+                                            selectedMoldId = undefined;
+                                            $('#ctp-table').DataTable().draw();
+
+                                        }}
+                                    });
+                                    return false;
+                                    
+                                },
+                                error: function (request, status, error) {
+                                    alert(error);
+                                    return false;
+                                }});
+                        },No: function () {
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+    {{--  [End] Modal Complete Scripts  --}}
 
     <script>
         function ModalCloseWarning(modalName){

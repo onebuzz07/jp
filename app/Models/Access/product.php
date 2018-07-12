@@ -13,6 +13,7 @@ class product extends Model implements AuditableContract
   use Auditable;
 
   protected $dates = ['deleted_at','datetime','requiredDate'];
+  protected $casts = ['deleted_at','datetime','requiredDate'];
 
   public function items()
     {

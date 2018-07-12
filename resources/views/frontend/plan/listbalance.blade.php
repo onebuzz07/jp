@@ -3,18 +3,26 @@
 @section('content')
     <h1>Planning Department</h1>
   @include('frontend.plan.includes.nav')
-    {{-- <form action="{!! route('frontend.plan.import') !!}" method="post" enctype="multipart/form-data"> --}}
-
-    <h4>Sales Confirmation Order</h4>
+  @include('frontend.plan.includes.navroll')
+    <div class="col-md-12" id="button"><a class="btn btn-md btn-primary" href="{!!route('frontend.plan.choosepo')!!}"> Create New Roll</a></div>
+    <br><br>
+    <h4>List of Roll</h4>
     <table class="table table-bordered" id="users-table">
         <thead>
             <tr>
-                <th>Salesline</th>
-                <th>Work Order</th>
-                <th>Customer Name</th>
-                <th>Part Number</th>
-                <th>Part Description</th>
-                <th>Actions</th>
+              <th>Part NO</th>
+              <th>PO #</th>
+              <th>Po Date</th>
+              <th>GRN</th>
+              <th>Date Received</th>
+              <th>Location</th>
+              <th>Supplier Code</th>
+              <th>Supplier Name</th>
+              <th>Size</th>
+              <th>System QTY </th>
+              <th>Actual QTY </th>
+              <th>Unit </th>
+              <th>Actions</th>
             </tr>
         </thead>
     </table>
@@ -27,9 +35,7 @@
               serverSide: true,
               ajax: '{!! route('frontend.plan.tablelist') !!}',
 
-
           });
       });
-      console.log(test);
   </script>
 @stop

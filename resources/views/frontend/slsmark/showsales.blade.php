@@ -14,16 +14,27 @@
             {!! Form::model($sales, array('route' => array('frontend.slsmark.index'), 'method' => 'POST', 'files'=>true)) !!}
 
 
-          <h4> List of sample requisition order that been requested</h4>
+          <h4> SRO (History)</h4>
           <table class="table table-bordered" id="users-table2">
               <thead>
                   <tr>
-                      <th>Sales-line</th>
-                      <th>Customer Name</th>
-                      <th>Part Number</th>
-                      <th>Part Description</th>
-                      <th>Revision</th>
+                      <th>SRO #</th>
+                      {{-- <th>SO</th>
+                      <th>Line</th>
+                      <th>ID</th> --}}
+                      <th>Name</th>
+                      <th>Item #</th>
+                      <th>1st Description</th>
+                      <th>2nd Description</th>
+                      <th>Qty Order</th>
+                      {{-- <th>Keep Qty</th>
+                      <th>Manual Qty</th>
+                      <th>Stock Card Qty</th>
+                      <th>Wo Qty</th>
+                      <th>Total WO Qty</th> --}}
+                      <th>Require Date</th>
                       <th>Action</th>
+                      <th>Confirm (SC?)</th>
 
                   </tr>
               </thead>
@@ -40,13 +51,9 @@
                     serverSide: true,
                     ajax: '{!! route('frontend.slsmark.requisition') !!}',
 
-                    "order": [[ 0, "desc" ]]
+                    "order": [[ 6, "desc" ]]
                 });
             });
-
-
-            //Being injected from FrontendController
-            console.log(test);
         </script>
 
 

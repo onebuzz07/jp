@@ -16,15 +16,12 @@ class CreateSheetingsTable extends Migration
         Schema::create('sheetings', function (Blueprint $table) {
 
             $table->increments('id');
-            $table->string('sco_number')->nullable();
-            $table->string('salesorder')->nullable();
-            $table->string('supplier')->nullable();
+
+            $table->integer('sheets_id')->nullable();
             $table->string('item_number')->nullable();
             $table->string('desc')->nullable();
-            $table->string('size')->nullable();
-            $table->string('pageNo')->nullable();
+            
             $table->string('qty')->nullable();
-            $table->string('price')->nullable();
             $table->string('due_date')->nullable();
             $table->string('customerid')->nullable();
             $table->string('partNo')->nullable();

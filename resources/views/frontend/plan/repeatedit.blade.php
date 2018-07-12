@@ -32,6 +32,11 @@
               </div>
 
               <div class="form-group row">
+                {!! Form::label('partDesc2', 'Part Description 2', ['class' => 'col-md-2']) !!}
+                <div class="col-md-10">{!! Form::text('partDesc2', $repeat->items->partDesc2, array('class' => 'form-control', 'disabled' => 'disabled')) !!}</div>
+              </div>
+
+              <div class="form-group row">
                 {!! Form::label('partNo', 'Part Number', ['class' => 'col-md-2']) !!}
                 <div class="col-md-10">{!! Form::text('partNo', $repeat->items->partNo, array('class' => 'form-control', 'disabled' => 'disabled')) !!}</div>
               </div>

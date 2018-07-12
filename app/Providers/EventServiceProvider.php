@@ -14,16 +14,13 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
+    protected $listen = [];
 
     /**
      * Class event subscribers.
      *
      * @var array
      */
-     'App\Events\Event' => [],
-
-];
     protected $subscribe = [
         /*
          * Frontend Subscribers

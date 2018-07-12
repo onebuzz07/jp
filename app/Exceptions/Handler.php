@@ -57,6 +57,7 @@ class Handler extends ExceptionHandler
          * All instances of GeneralException redirect back with a flash message to show a bootstrap alert-error
          */
         if ($exception instanceof GeneralException) {
+			error_reporting(0);
             return redirect()->back()->withInput()->withFlashDanger($exception->getMessage());
         }
 

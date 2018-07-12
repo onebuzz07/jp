@@ -4,15 +4,20 @@
     <h1>Planning Department</h1>
 
     @include('frontend.plan.includes.nav')
-  <h4>Product Amendment Form</h4>
+    @include('frontend.plan.includes.navpaf')
+  <h4>Product Amendment Form <small>New</small></h4>
   <table class="table table-bordered" id="users-table2">
       <thead>
           <tr>
             <th>PAF #</th>
-            <th>Sales-line</th>
+            <th>ID</th>
+            <th>WO #</th>
             <th>Customer Name</th>
-            <th>Part Number</th>
-            <th>Part Description</th>
+            <th>Part No</th>
+            <th>Quantity</th>
+            <th>Due Date</th>
+            <th>Cust PO No</th>
+            <th>SO No</th>
             <th>Rev</th>
             <th>Actions</th>
           </tr>
@@ -30,7 +35,5 @@
             "order": [[ 0, "desc" ]]
         });
     });
-    //Being injected from FrontendController
-    console.log(test);
 </script>
 @endsection

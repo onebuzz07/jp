@@ -41,7 +41,7 @@
           {!!"Qty Ordered: " .$sales->items->quantity. "PCS "!!}
       </div>
       <div class="col-xs-5 row">
-          {!!"Sales Order " .$sales->salesorder!!}
+          {!!"Sales Order: " .$sales->salesorder!!}
       </div>
     </div>
     <div class="col-xs-12 row">
@@ -78,7 +78,7 @@
         <table class="table row group table-bordered">
           <thead>
             <tr style="background-color: #f47373;">
-              <th class="col-sm-1">Operation Number</th>
+              <th class="col-sm-1">Op No.</th>
               <th class="col-sm-1">Station</th>
               <th class="col-sm-1">Remarks (QAD)</th>
               <th class="col-sm-2">Description</th>

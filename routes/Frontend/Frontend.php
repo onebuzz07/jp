@@ -10,6 +10,20 @@ Route::get('contact', 'ContactController@index')->name('contact');
 Route::post('contact/send', 'ContactController@send')->name('contact.send');
 Route::get('odbctest', 'FrontendController@odbctest')->name('odbctest');
 
+Route::get('imported', 'ImportedController@imported')->name('imported');
+
+Route::post('imported2', 'ImportedController@imported2')->name('imported2');
+Route::post('importso', 'ImportedController@importso')->name('importso');
+Route::post('importedsales', 'ImportedController@importedsales')->name('importedsales');
+Route::post('importedprod', 'ImportedController@importedprod')->name('importedprod');
+Route::post('importps', 'ImportedController@importps')->name('importps');
+Route::post('importth', 'ImportedController@importth')->name('importth');
+Route::post('importinv', 'ImportedController@importinv')->name('importinv');
+Route::post('importbosch', 'ImportedController@importbosch')->name('importbosch');
+Route::post('importmanual', 'ImportedController@importmanual')->name('importmanual');
+Route::post('importcomment', 'ImportedController@importcomment')->name('importcomment');
+Route::post('importedpo', 'ImportedController@importedpo')->name('importedpo');
+
 /*
  * These frontend controllers require the user to be logged in
  * All route names are prefixed with 'frontend.'
@@ -32,10 +46,23 @@ Route::group(['middleware' => 'auth'], function () {
     });
     Route::group(['prefix' => 'slsmark', 'namespace' => 'slsmark', 'middleware' => 'auth',], function () {
 
+        Route::get('history', 'SalesController@history')->name('slsmark.history');
+        Route::get('historytable', 'SalesController@historytable')->name('slsmark.historytable');
+        Route::get('createcanceltable', 'SalesController@createcanceltable')->name('slsmark.createcanceltable');
+        Route::get('cancelso', 'SalesController@cancelso')->name('slsmark.cancelso');
+        Route::get('send', 'SalesController@send')->name('slsmark.send');
         Route::get('index', 'SalesController@index')->name('slsmark.index');
+        Route::get('notfinish', 'SalesController@notfinish')->name('slsmark.notfinish');
+        Route::get('unfinishtable', 'SalesController@unfinishtable')->name('slsmark.unfinishtable');
         Route::get('create', 'SalesController@create')->name('slsmark.create');
+        Route::get('createhist', 'SalesController@createhist')->name('slsmark.createhist');
+        Route::get('recordchange/{id}', 'SalesController@recordchange')->name('slsmark.recordchange');
         Route::get('createSales', 'SalesController@createSales')->name('slsmark.createSales');
+        Route::get('createtable', 'SalesController@createtable')->name('slsmark.createtable');
+        Route::get('createhistorytable', 'SalesController@createhistorytable')->name('slsmark.createhistorytable');
         Route::get('createsco/{id}', 'SalesController@createsco')->name('slsmark.createsco');
+        Route::get('createsc', 'SalesController@createsc')->name('slsmark.createsc');
+        Route::post('storesc', 'SalesController@storesc')->name('slsmark.storesc');
         Route::post('store/{id}', 'SalesController@store')->name('slsmark.store');
         Route::get('dataTable', 'SalesController@anyData')->name('slsmark.dataTable');
         Route::get('review', 'SalesController@review')->name('slsmark.review');
@@ -50,7 +77,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('showformTable', 'SalesController@showformTable')->name('slsmark.showformTable');
         Route::get('showrepeatformTable', 'SalesController@showrepeatformTable')->name('slsmark.showrepeatformTable');
         Route::get('show/{id}', 'SalesController@show')->name('slsmark.show');
-        Route::get('addrepeat/{id}', 'SalesController@addrepeat')->name('slsmark.addrepeat');
+        Route::get('addrepeat', 'SalesController@addrepeat')->name('slsmark.addrepeat');
+        Route::get('editrepeat/{id}', 'SalesController@editrepeat')->name('slsmark.editrepeat');
+        Route::post('storeeditrepeat/{id}', 'SalesController@storeeditrepeat')->name('slsmark.storeeditrepeat');
+        Route::get('tablerepeat', 'SalesController@tablerepeat')->name('slsmark.tablerepeat');
         Route::post('repeatstore', 'SalesController@repeatstore')->name('slsmark.repeatstore');
         Route::get('editform/{id}', 'SalesController@editform')->name('slsmark.editform');
         Route::post('storeform/{id}', 'SalesController@storeform')->name('slsmark.storeform');
@@ -67,16 +97,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('viewstocktable/($id)', 'SalesController@viewstocktable')->name('slsmark.viewstocktable');
 
         // Route::get('button', 'SalesController@button')->name('slsmark.button');
-        Route::post('imported2', 'SalesController@imported2')->name('slsmark.imported2');
-        Route::post('importso', 'SalesController@importso')->name('slsmark.importso');
+
         Route::get('editrcof/{id}', 'SalesController@editrcof')->name('slsmark.editrcof');
         Route::put('updatercof/{id}', 'SalesController@updatercof')->name('slsmark.updatercof');
         Route::get('showrepeat/{id}', 'SalesController@showrepeat')->name('slsmark.showrepeat');
         Route::get('destroyrepeat/{id}', 'SalesController@destroyrepeat')->name('slsmark.destroyrepeat');
         Route::get('deletestock/{id}', 'SalesController@deletestock')->name('slsmark.deletestock');
-        Route::post('importedsales', 'SalesController@importedsales')->name('slsmark.importedsales');
-        Route::post('importeditem', 'SalesController@importeditem')->name('slsmark.importeditem');
+
         Route::get('showsales', 'SalesController@showsales')->name('slsmark.showsales');
+        Route::get('pafsro/{id}', 'SalesController@pafsro')->name('slsmark.pafsro');
+        Route::post('storepafsro/{id}', 'SalesController@storepafsro')->name('slsmark.storepafsro');
         Route::get('samplerequisite/{id}', 'SalesController@samplerequisite')->name('slsmark.samplerequisite');
         Route::get('tablesample', 'SalesController@tablesample')->name('slsmark.tablesample');
         Route::post('storereq/{id}', 'SalesController@storereq')->name('slsmark.storereq');
@@ -90,7 +120,95 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('destroyreq/{id}', 'SalesController@destroyreq')->name('slsmark.destroyreq');
         Route::get('sco_paf/{id}', 'SalesController@sco_paf')->name('slsmark.sco_paf');
         Route::post('storesco/{id}', 'SalesController@storesco')->name('slsmark.storesco');
-        Route::get('viewscopaf/{id}', 'SalesController@viewscopaf')->name('slsmark.viewscopaf');
+        Route::get('viewpaf/{id}', 'SalesController@viewpaf')->name('slsmark.viewpaf');
+        Route::get('createpaf/{id}', 'SalesController@createpaf')->name('slsmark.createpaf');
+        Route::get('da', 'SalesController@da')->name('slsmark.da');
+        Route::get('deliveryadvice/{id}', 'SalesController@deliveryadvice')->name('slsmark.deliveryadvice');
+        Route::get('datable', 'SalesController@datable')->name('slsmark.datable');
+        Route::post('dastore/{id}', 'SalesController@dastore')->name('slsmark.dastore');
+
+        Route::post('storedateda/{id}', 'SalesController@storedateda')->name('slsmark.storedateda');
+        Route::post('search', 'SalesController@search')->name('slsmark.search');
+        Route::get('searchda/{id}', 'SalesController@searchda')->name('slsmark.searchda');
+        Route::get('searchdatable', 'SalesController@searchdatable')->name('slsmark.searchdatable');
+        Route::get('deletefile/{id}', 'SalesController@deletefile')->name('slsmark.deletefile');
+        Route::get('deletereqfile/{id}', 'SalesController@deletereqfile')->name('slsmark.deletereqfile');
+        Route::get('stockstatus', 'SalesController@stockstatus')->name('slsmark.stockstatus');
+        Route::get('tablestock', 'SalesController@tablestock')->name('slsmark.tablestock');
+        Route::get('stocklist', 'SalesController@stocklist')->name('slsmark.stocklist');
+        Route::get('addremarkmstock/{id}', 'SalesController@addremarkmstock')->name('slsmark.addremarkmstock');
+        Route::post('storeremarkmanual/{id}', 'SalesController@storeremarkmanual')->name('slsmark.storeremarkmanual');
+        Route::get('manualstock/{id}', 'SalesController@manualstock')->name('slsmark.manualstock');
+        Route::post('manualstore/{id}', 'SalesController@manualstore')->name('slsmark.manualstore');
+        Route::get('stocktables1', 'SalesController@stocktables1')->name('slsmark.stocktables1');
+        Route::get('stocktables2', 'SalesController@stocktables2')->name('slsmark.stocktables2');
+        Route::post('storestocks1/{id}', 'SalesController@storestocks1')->name('slsmark.storestocks1');
+        Route::post('storestocks2', 'SalesController@storestocks2')->name('slsmark.storestocks2');
+        Route::get('confirmreq/{id}', 'SalesController@confirmreq')->name('slsmark.confirmreq');
+
+        Route::get('samplereq', 'SalesController@samplereq')->name('slsmark.samplereq');
+        Route::post('storereq2', 'SalesController@storereq2')->name('slsmark.storereq2');
+        Route::get('editstock/{id}', 'SalesController@editstock')->name('slsmark.editstock');
+        Route::get('updatewidtable', 'SalesController@updatewidtable')->name('slsmark.updatewidtable');
+        Route::get('updatewid', 'SalesController@updatewid')->name('slsmark.updatewid');
+        Route::get('tablewid', 'SalesController@tablewid')->name('slsmark.tablewid');
+        Route::post('updatewidview', 'SalesController@updatewidview')->name('slsmark.updatewidview');
+        Route::post('updatewidstore', 'SalesController@updatewidstore')->name('slsmark.updatewidstore');
+        Route::get('editwid/{id}', 'SalesController@editwid')->name('slsmark.editwid');
+        Route::post('editwidstore/{id}', 'SalesController@editwidstore')->name('slsmark.editwidstore');
+        Route::get('editwidtable', 'SalesController@editwidtable')->name('slsmark.editwidtable');
+        Route::get('deletewid/{id}', 'SalesController@deletewid')->name('slsmark.deletewid');
+        Route::get('dalist/', 'SalesController@dalist')->name('slsmark.dalist');
+        Route::post('storebosch', 'SalesController@storebosch')->name('slsmark.storebosch');
+        Route::post('changebosch', 'SalesController@changebosch')->name('slsmark.changebosch');
+        Route::get('daselect', 'SalesController@daselect')->name('slsmark.daselect');
+        Route::get('format1', 'SalesController@format1')->name('slsmark.format1');
+        Route::get('format2/{id}', 'SalesController@format2')->name('slsmark.format2');
+        Route::post('savef2/{id}', 'SalesController@savef2')->name('slsmark.savef2');
+        Route::get('format3/{id}', 'SalesController@format3')->name('slsmark.format3');
+        Route::post('updatef2/{id}', 'SalesController@updatef2')->name('slsmark.updatef2');
+        Route::get('etctable', 'SalesController@etctable')->name('slsmark.etctable');
+        Route::get('boschtable', 'SalesController@boschtable')->name('slsmark.boschtable');
+        Route::get('editname', 'SalesController@editname')->name('slsmark.editname');
+        Route::post('storeeditname', 'SalesController@storeeditname')->name('slsmark.storeeditname');
+        Route::post('storeeditbosch', 'SalesController@storeeditbosch')->name('slsmark.storeeditbosch');
+        Route::get('historysc', 'SalesController@historysc')->name('slsmark.historysc');
+        Route::get('histsctable', 'SalesController@histsctable')->name('slsmark.histsctable');
+        Route::get('newsc', 'SalesController@newsc')->name('slsmark.newsc');
+        Route::get('newsctable', 'SalesController@newsctable')->name('slsmark.newsctable');
+        Route::get('notfinishistorysc', 'SalesController@notfinishistorysc')->name('slsmark.notfinishistorysc');
+        Route::get('notfinishnewsc', 'SalesController@notfinishnewsc')->name('slsmark.notfinishnewsc');
+        Route::get('printbosch', 'SalesController@printbosch')->name('slsmark.printbosch');
+        Route::post('boschpdf', 'SalesController@boschpdf')->name('slsmark.boschpdf');
+        Route::get('bosch', 'SalesController@bosch')->name('slsmark.bosch');
+        Route::get('otherformat', 'SalesController@otherformat')->name('slsmark.otherformat');
+        Route::get('otherformattable', 'SalesController@otherformattable')->name('slsmark.otherformattable');
+        Route::get('printother', 'SalesController@printother')->name('slsmark.printother');
+        Route::post('otherpdf', 'SalesController@otherpdf')->name('slsmark.otherpdf');
+        Route::get('createrepeat/{id}', 'SalesController@createrepeat')->name('slsmark.createrepeat');
+        Route::get('createpaf/{id}', 'SalesController@createpaf')->name('slsmark.createpaf');
+        Route::post('storepaf/{id}', 'SalesController@storepaf')->name('slsmark.storepaf');
+        Route::get('storerepeat/{id}', 'SalesController@storerepeat')->name('slsmark.storerepeat');
+        Route::get('remarkso/{id}', 'SalesController@remarkso')->name('slsmark.remarkso');
+        Route::post('storeremarkso/{id}', 'SalesController@storeremarkso')->name('slsmark.storeremarkso');
+        Route::get('reviewhistory', 'SalesController@reviewhistory')->name('slsmark.reviewhistory');
+        Route::get('showformhistTable', 'SalesController@showformhistTable')->name('slsmark.showformhistTable');
+        Route::get('showsaleshist', 'SalesController@showsaleshist')->name('slsmark.showsaleshist');
+        Route::get('requisition2', 'SalesController@requisition2')->name('slsmark.requisition2');
+        Route::get('navsro', 'SalesController@navsro')->name('slsmark.navsro');
+        Route::get('newmanualso', 'SalesController@newmanualso')->name('slsmark.newmanualso');
+        Route::get('histmanualso', 'SalesController@histmanualso')->name('slsmark.histmanualso');
+        Route::get('navmanual', 'SalesController@navmanual')->name('slsmark.navmanual');
+        Route::get('newmanualtable', 'SalesController@newmanualtable')->name('slsmark.newmanualtable');
+        Route::get('histmanualtable', 'SalesController@histmanualtable')->name('slsmark.histmanualtable');
+        Route::get('confirmmanualso', 'SalesController@confirmmanualso')->name('slsmark.confirmmanualso');
+        Route::put('excel', 'SalesController@excel')->name('slsmark.excel');
+        Route::get('reporting', 'SalesController@reporting')->name('slsmark.reporting');
+        Route::get('reportingtable', 'SalesController@reportingtable')->name('slsmark.reportingtable');
+        Route::get('report', 'SalesController@report')->name('slsmark.report');
+        Route::get('createstock/{id}', 'SalesController@createstock')->name('slsmark.createstock');
+        Route::post('stockstores/{id}', 'SalesController@stockstores')->name('slsmark.stockstores');
+
 
 
     });
@@ -129,13 +247,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('storestock/{id}', 'PlanController@storestock')->name('plan.storestock');
         Route::get('viewstock/{id}', 'PlanController@viewstock')->name('plan.viewstock');
         Route::get('viewstocktableplan/(id)', 'PlanController@viewstocktableplan')->name('plan.viewstocktableplan');
-        Route::post('imported2', 'PlanController@imported2')->name('plan.imported2');
-        Route::post('importso', 'PlanController@importso')->name('plan.importso');
+
         Route::get('listTable', 'PlanController@listTable')->name('plan.listTable');
         Route::get('sotable', 'PlanController@sotable')->name('plan.sotable');
         Route::get('deletestock/{id}', 'PlanController@deletestock')->name('plan.deletestock');
-        Route::post('importwo', 'PlanController@importwo')->name('plan.importwo');
-        Route::post('importpo', 'PlanController@importpo')->name('plan.importpo');
+
         Route::get('potable', 'PlanController@potable')->name('plan.potable');
         Route::get('wotable', 'PlanController@wotable')->name('plan.wotable');
         Route::get('powotable', 'PlanController@powotable')->name('plan.powotable');
@@ -172,11 +288,19 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('productiontable', 'PlanController@productiontable')->name('plan.productiontable');
         Route::get('viewproduction/{id}', 'PlanController@viewproduction')->name('plan.viewproduction');
         Route::get('listbalance', 'PlanController@listbalance')->name('plan.listbalance');
+        Route::get('listhistorybalance', 'PlanController@listhistorybalance')->name('plan.listhistorybalance');
+        Route::get('tablelisthist', 'PlanController@tablelisthist')->name('plan.tablelisthist');
+
         Route::get('tablelist', 'PlanController@tablelist')->name('plan.tablelist');
         Route::get('stockbalance/{id}', 'PlanController@stockbalance')->name('plan.stockbalance');
+        Route::post('searchwid/{id}', 'PlanController@searchwid')->name('plan.searchwid');
+        Route::get('editpaperroll/{id}', 'PlanController@editpaperroll')->name('plan.editpaperroll');
+        Route::post('updateroll/{id}', 'PlanController@updateroll')->name('plan.updateroll');
         Route::post('balancestore/{id}', 'PlanController@balancestore')->name('plan.balancestore');
         Route::get('tablebalance', 'PlanController@tablebalance')->name('plan.tablebalance');
         Route::get('delete/{id}', 'PlanController@delete')->name('plan.delete');
+        Route::get('editbalance/{id}', 'PlanController@editbalance')->name('plan.editbalance');
+        Route::post('storeeditbalance/{id}', 'PlanController@storeeditbalance')->name('plan.storeeditbalance');
         Route::get('sheeting/{id}', 'PlanController@sheeting')->name('plan.sheeting');
         Route::post('sheetingstore/{id}', 'PlanController@sheetingstore')->name('plan.sheetingstore');
         Route::get('viewstock/{id}', 'PlanController@viewstock')->name('plan.viewstock');
@@ -203,44 +327,55 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('planningedit/{id}', 'PlanController@planningedit')->name('plan.planningedit');
         Route::post('planningupdate/{id}', 'PlanController@planningupdate')->name('plan.planningupdate');
 
-        Route::post('importedprod', 'PlanController@importedprod')->name('plan.importedprod');
+
         Route::get('editproduction/{id}', 'PlanController@editproduction')->name('plan.editproduction');
         Route::post('updateproduction/{id}', 'PlanController@updateproduction')->name('plan.updateproduction');
 
-    });
+        Route::get('listformula', 'PlanController@listformula')->name('plan.listformula');
+        Route::get('formulatable', 'PlanController@formulatable')->name('plan.formulatable');
+        Route::get('addremark/{id}', 'PlanController@addremark')->name('plan.addremark');
+        Route::post('remarkstore/{id}', 'PlanController@remarkstore')->name('plan.remarkstore');
+        Route::post('updateremark/{id}', 'PlanController@updateremark')->name('plan.updateremark');
+        Route::get('requisition', 'PlanController@requisition')->name('plan.requisition');
+        Route::get('sample', 'PlanController@sample')->name('plan.sample');
+        Route::get('viewreq/{id}', 'PlanController@viewreq')->name('plan.viewreq');
+        Route::get('confirmreq/{id}', 'PlanController@confirmreq')->name('plan.confirmreq');
+        Route::post('jobconfirmstore/{id}', 'PlanController@jobconfirmstore')->name('plan.jobconfirmstore');
+        Route::get('oldjob', 'PlanController@oldjob')->name('plan.oldjob');
+        Route::get('oldjobtable', 'PlanController@oldjobtable')->name('plan.oldjobtable');
+        Route::get('choosepo', 'PlanController@choosepo')->name('plan.choosepo');
+        Route::post('chooseposearch', 'PlanController@chooseposearch')->name('plan.chooseposearch');
+        Route::get('newroll/{id}', 'PlanController@newroll')->name('plan.newroll');
+        Route::post('storeroll', 'PlanController@storeroll')->name('plan.storeroll');
+        Route::get('pafconfirm', 'PlanController@pafconfirm')->name('plan.pafconfirm');
+        Route::get('navpaf', 'PlanController@navpaf')->name('plan.navpaf');
+        Route::get('pafTable2', 'PlanController@pafTable2')->name('plan.pafTable2');
+        Route::get('requisition2', 'PlanController@requisition2')->name('plan.requisition2');
+        Route::get('sroconfirm', 'PlanController@sroconfirm')->name('plan.sroconfirm');
+        Route::get('navsro', 'PlanController@navsro')->name('plan.navsro');
+        Route::get('navrep', 'PlanController@navrep')->name('plan.navrep');
+        Route::get('repeat', 'PlanController@repeat')->name('plan.repeat');
+        Route::get('repeattable1', 'PlanController@repeattable1')->name('plan.repeattable1');
+        Route::get('repeatconfirm', 'PlanController@repeatconfirm')->name('plan.repeatconfirm');
+        Route::get('repeattable2', 'PlanController@repeattable2')->name('plan.repeattable2');
+        Route::get('repeats/{id}', 'PlanController@repeats')->name('plan.repeats');
+        Route::put('updatebom/{id}', 'PlanController@updatebom')->name('plan.updatebom');
+        Route::get('newmanualso', 'PlanController@newmanualso')->name('plan.newmanualso');
+        Route::get('confirmmanualso/{id}', 'PlanController@confirmmanualso')->name('plan.confirmmanualso');
+        Route::get('histmanualso', 'PlanController@histmanualso')->name('plan.histmanualso');
+        Route::get('navmanual', 'PlanController@navmanual')->name('plan.navmanual');
+        Route::get('newmanualtable', 'PlanController@newmanualtable')->name('plan.newmanualtable');
+        Route::get('histmanualtable', 'PlanController@histmanualtable')->name('plan.histmanualtable');
+        Route::get('navroll', 'PlanController@navroll')->name('plan.navroll');
 
-    Route::group(['prefix' => 'ctp', 'namespace' => 'ctp', 'middleware' => 'auth',], function () {
-        Route::get('index', 'CtpController@index')->name('ctp.index');
-        Route::get('anyData', 'CtpController@anyData')->name('ctp.anyData');
-        Route::get('insert', 'CtpController@insert')->name('ctp.insert');
-        Route::get('pickup', 'CtpController@pickup')->name('ctp.pickup');
-        Route::get('delete', 'CtpController@delete')->name('ctp.delete');
-        Route::get('modify', 'CtpController@modify')->name('ctp.modify');
-        Route::get('replace', 'CtpController@replace')->name('ctp.replace');
-        Route::get('selectData', 'CtpController@selectData')->name('ctp.selectData');
-        Route::get('trans', 'CtpController@trans')->name('ctp.trans');
-        Route::get('print', 'CtpController@print')->name('ctp.print');
-        Route::get('anyDataWo', 'CtpController@anyDataWo')->name('ctp.anyDataWo');
-        /* Route::get('edit/{id}', 'CtpController@edit')->name('ctp.edit');
-        Route::put('update/{id}', 'CtpController@update')->name('ctp.update');
-        Route::get('destroy/{id}', 'CtpController@destroy')->name('ctp.destroy');
-        Route::get('repeatEdit/{id}', 'CtpController@repeatEdit')->name('ctp.repeatEdit');
-        Route::put('repeatUpdate/{id}', 'CtpController@repeatUpdate')->name('ctp.repeatUpdate');
-        Route::get('repeatData', 'CtpController@repeatData')->name('ctp.repeatData'); */
-    });
+        Route::get('addmanual/{id}', 'PlanController@addmanual')->name('plan.addmanual');
+        Route::post('storemanual/{id}', 'PlanController@storemanual')->name('plan.storemanual');
 
-    Route::group(['prefix' => 'printing', 'namespace' => 'printing', 'middleware' => 'auth',], function () {
-        Route::get('index', 'PrintingController@index')->name('printing.index');
-        Route::get('anyData', 'PrintingController@anyData')->name('printing.anyData');
-        Route::get('edit/{id}', 'PrintingController@edit')->name('printing.edit');
-        Route::put('update/{id}', 'PrintingController@update')->name('printing.update');
-        Route::get('repeatData', 'PrintingController@repeatData')->name('printing.repeatData');
-        Route::get('repeatEdit/{id}', 'PrintingController@repeatEdit')->name('printing.repeatEdit');
-        Route::put('repeatUpdate/{id}', 'PrintingController@repeatUpdate')->name('printing.repeatUpdate');
-        Route::get('destroy/{id}', 'PrintingController@destroy')->name('printing.destroy');
-    });
+	});
 
-    Route::group(['prefix' => 'production', 'namespace' => 'production', 'middleware' => 'auth',], function () {
+    
+
+   Route::group(['prefix' => 'production', 'namespace' => 'production', 'middleware' => 'auth',], function () {
         Route::get('index', 'ProductionController@index')->name('production.index');
         Route::get('anyData', 'ProductionController@anyData')->name('production.anyData');
 
@@ -339,6 +474,99 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('destroy/{id}', 'ReportController@destroy')->name('report.destroy');
     });
 
+    Route::group(['prefix' => 'ctp', 'namespace' => 'ctp', 'middleware' => 'auth',], function () {
+        Route::get('index', 'CtpController@index')->name('ctp.index');
+        Route::get('index_dc', 'CtpController@index_dc')->name('ctp.index_dc');
+        Route::get('index_fd', 'CtpController@index_fd')->name('ctp.index_fd');
+        Route::get('index_ff', 'CtpController@index_ff')->name('ctp.index_ff');
+        Route::get('drop_down', 'CtpController@drop_down')->name('ctp.drop_down');
+        Route::get('request', 'CtpController@request')->name('ctp.request');
+        Route::get('drop_down_insert', 'CtpController@drop_down_insert')->name('ctp.drop_down_insert');
+        Route::get('anyData', 'CtpController@anyData')->name('ctp.anyData');
+        Route::get('insert', 'CtpController@insert')->name('ctp.insert');
+        Route::get('insertRequest', 'CtpController@insertRequest')->name('ctp.insertRequest');
+        Route::get('pickup', 'CtpController@pickup')->name('ctp.pickup');
+        Route::get('delete', 'CtpController@delete')->name('ctp.delete');
+        Route::get('deleteRequest', 'CtpController@deleteRequest')->name('ctp.deleteRequest');
+        Route::get('modify', 'CtpController@modify')->name('ctp.modify');
+        Route::get('modifyRequest', 'CtpController@modifyRequest')->name('ctp.modifyRequest');
+        Route::get('replace', 'CtpController@replace')->name('ctp.replace');
+        Route::get('complete', 'CtpController@complete')->name('ctp.complete');
+        Route::get('selectData', 'CtpController@selectData')->name('ctp.selectData');
+        Route::get('selectDataTran', 'CtpController@selectDataTran')->name('ctp.selectDataTran');
+        Route::get('selectDataWo', 'CtpController@selectDataWo')->name('ctp.selectDataWo');
+        Route::get('selectDataReq', 'CtpController@selectDataReq')->name('ctp.selectDataReq');
+        Route::get('trans', 'CtpController@trans')->name('ctp.trans');
+        Route::get('trans_dc', 'CtpController@trans_dc')->name('ctp.trans_dc');
+        Route::get('trans_fd', 'CtpController@trans_fd')->name('ctp.trans_fd');
+        Route::get('trans_ff', 'CtpController@trans_ff')->name('ctp.trans_ff');
+        Route::get('print', 'CtpController@print')->name('ctp.print');
+        Route::get('anyDataWo', 'CtpController@anyDataWo')->name('ctp.anyDataWo');
+        Route::get('anyDataMove', 'CtpController@anyDataMove')->name('ctp.anyDataMove');
+        Route::get('anyDataMain', 'CtpController@anyDataMain')->name('ctp.anyDataMain');
+        Route::get('anyDataRequest', 'CtpController@anyDataRequest')->name('ctp.anyDataRequest');
+        /* Route::get('edit/{id}', 'CtpController@edit')->name('ctp.edit');
+        Route::put('update/{id}', 'CtpController@update')->name('ctp.update');
+        Route::get('destroy/{id}', 'CtpController@destroy')->name('ctp.destroy');
+        Route::get('repeatEdit/{id}', 'CtpController@repeatEdit')->name('ctp.repeatEdit');
+        Route::put('repeatUpdate/{id}', 'CtpController@repeatUpdate')->name('ctp.repeatUpdate');
+        Route::get('repeatData', 'CtpController@repeatData')->name('ctp.repeatData'); */
+    });
+
+    Route::group(['prefix' => 'printing', 'namespace' => 'printing', 'middleware' => 'auth',], function () {
+        Route::get('index', 'PrintingController@index')->name('printing.index');
+        Route::get('employee', 'PrintingController@employee')->name('printing.employee');
+        Route::get('wc', 'PrintingController@wc')->name('printing.wc');
+        Route::get('pack', 'PrintingController@pack')->name('printing.pack');
+        Route::get('index_plate', 'PrintingController@index_plate')->name('printing.index_plate');
+        Route::get('index_dc', 'PrintingController@index_dc')->name('printing.index_dc');
+        Route::get('index_fd', 'PrintingController@index_fd')->name('printing.index_fd');
+        Route::get('index_ff', 'PrintingController@index_ff')->name('printing.index_ff');
+        Route::get('drop_down', 'PrintingController@drop_down')->name('printing.drop_down');
+        Route::get('trans', 'PrintingController@trans')->name('printing.trans');
+        Route::get('trans_dc', 'PrintingController@trans_dc')->name('printing.trans_dc');
+        Route::get('trans_fd', 'PrintingController@trans_fd')->name('printing.trans_fd');
+        Route::get('trans_ff', 'PrintingController@trans_ff')->name('printing.trans_ff');
+        Route::get('request', 'PrintingController@request')->name('printing.request');
+        Route::get('insert', 'PrintingController@insert')->name('printing.insert');
+        Route::get('insertEmp', 'PrintingController@insertEmp')->name('printing.insertEmp');
+        Route::post('insertWc', 'PrintingController@insertWc')->name('printing.insertWc');
+        Route::get('insertPack', 'PrintingController@insertPack')->name('printing.insertPack');
+        Route::get('modify', 'PrintingController@modify')->name('printing.modify');
+        Route::get('modifyEmp', 'PrintingController@modifyEmp')->name('printing.modifyEmp');
+        Route::post('modifyWc', 'PrintingController@modifyWc')->name('printing.modifyWc');
+        Route::get('modifyPack', 'PrintingController@modifyPack')->name('printing.modifyPack');
+        Route::get('delete', 'PrintingController@delete')->name('printing.delete');
+        Route::get('deleteEmp', 'PrintingController@deleteEmp')->name('printing.deleteEmp');
+        Route::get('deleteWc', 'PrintingController@deleteWc')->name('printing.deleteWc');
+        Route::get('deletePack', 'PrintingController@deletePack')->name('printing.deletePack');
+        Route::get('verify', 'PrintingController@verify')->name('printing.verify');
+        Route::get('transfer', 'PrintingController@transfer')->name('printing.transfer');
+        Route::get('anyData', 'PrintingController@anyData')->name('printing.anyData');
+        Route::get('anyDataEmp', 'PrintingController@anyDataEmp')->name('printing.anyDataEmp');
+        Route::get('anyDataWc', 'PrintingController@anyDataWc')->name('printing.anyDataWc');
+        Route::get('anyDataPack', 'PrintingController@anyDataPack')->name('printing.anyDataPack');
+        Route::get('selectData', 'PrintingController@selectData')->name('printing.selectData');
+        Route::get('selectDataEmp', 'PrintingController@selectDataEmp')->name('printing.selectDataEmp');
+        Route::get('selectDataWc', 'PrintingController@selectDataWc')->name('printing.selectDataWc');
+        Route::get('selectDataPack', 'PrintingController@selectDataPack')->name('printing.selectDataPack');
+        Route::get('selectDataWorkCenter', 'PrintingController@selectDataWorkCenter')->name('printing.selectDataWorkCenter');
+        Route::get('selectDataWoId', 'PrintingController@selectDataWoId')->name('printing.selectDataWoId');
+        Route::get('selectDataPartNo', 'PrintingController@selectDataPartNo')->name('printing.selectDataPartNo');
+        Route::get('selectDataWoEmp', 'PrintingController@selectDataWoEmp')->name('printing.selectDataWoEmp');
+        Route::get('selectDataPartUm', 'PrintingController@selectDataPartUm')->name('printing.selectDataPartUm');
+
+        Route::get('view', 'PrintingController@view')->name('printing.view');
+
+
+        Route::get('edit/{id}', 'PrintingController@edit')->name('printing.edit');
+        Route::put('update/{id}', 'PrintingController@update')->name('printing.update');
+        Route::get('repeatData', 'PrintingController@repeatData')->name('printing.repeatData');
+        Route::get('repeatEdit/{id}', 'PrintingController@repeatEdit')->name('printing.repeatEdit');
+        Route::put('repeatUpdate/{id}', 'PrintingController@repeatUpdate')->name('printing.repeatUpdate');
+        Route::get('destroy/{id}', 'PrintingController@destroy')->name('printing.destroy');
+    });
+
     Route::group(['prefix' => 'request', 'namespace' => 'request', 'middleware' => 'auth',], function () {
         Route::get('index', 'RequestController@index')->name('request.index');
         Route::get('anyData', 'RequestController@anyData')->name('request.anyData');
@@ -348,6 +576,18 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('approve', 'RequestController@approve')->name('request.approve');
         Route::get('close', 'RequestController@close')->name('request.close');
         Route::get('selectData', 'RequestController@selectData')->name('request.selectData');
+    });
+
+    Route::group(['prefix' => 'jobreq', 'namespace' => 'jobreq', 'middleware' => 'auth',], function () {
+        Route::get('index', 'JobReqController@index')->name('jobreq.index');
+        Route::get('anyDataRequest', 'JobReqController@anyDataRequest')->name('jobreq.anyDataRequest');
+        Route::get('insertRequest', 'JobReqController@insertRequest')->name('jobreq.insertRequest');
+        Route::get('modifyRequest', 'JobReqController@modifyRequest')->name('jobreq.modifyRequest');
+        Route::get('deleteRequest', 'JobReqController@deleteRequest')->name('jobreq.deleteRequest');
+        Route::get('startRequest', 'JobReqController@startRequest')->name('jobreq.startRequest');
+        Route::get('completeRequest', 'JobReqController@completeRequest')->name('jobreq.completeRequest');
+        Route::get('pickupRequest', 'JobReqController@pickupRequest')->name('jobreq.pickupRequest');
+        Route::get('selectDataRequest', 'JobReqController@selectDataRequest')->name('jobreq.selectDataRequest');
     });
 
 });

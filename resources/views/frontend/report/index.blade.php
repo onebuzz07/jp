@@ -26,68 +26,59 @@
 
     <div class="row">
 
-        {!! Form::model($sales,  array('route' => array('frontend.report.indexpdf'), 'method' => 'POST', 'files'=>true)) !!}
-          <label> Search by Work Order ID </label>
+        {!! Form::model($sales,  array('route' => array('frontend.report.indexpdf'), 'method' => 'POST', 'files'=>true, 'id'=>'example')) !!}
+          <label> Search by Work Order ID or Customer Name</label>
             <table class="table table-bordered" id="report">
                 <thead>
                     <tr>
-                        <th>Select</th>
-                        <th>Customer Name</th>
-                        <th>Item No.</th>
-                        <th>Part Description</th>
-                        <th>Sales Order No</th>
-                        <th>Work Order No</th>
-                        <th>ID</th>
-                        <th>Operation No.</th>
+                        <th class="col-md-1">Select </th>
+                        <th class="col-md-3">Cust Name</th>
+                        <th class="col-md-1">Item No.</th>
+                        <th class="col-md-3">Part Desc.</th>
+                        <th class="col-md-1">SO No</th>
+                        <th class="col-md-1">WO No</th>
+                        <th class="col-md-1">ID</th>
+                        <th class="col-md-1">(Op No.) &Name</th>
                     </tr>
                 </thead>
+                <tbody>
 
+                </tbody>
+{{-- <input name="select_all" value="1" id="example-select-all" type="checkbox" /> --}}
 
                 {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
                 {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }}
 
+
                 <script type="text/javascript">
-                    $(function() {
+                    $(document).ready(function() {
                         $('#report').DataTable({
 
                             processing: true,
                             serverSide: true,
                             ajax:'{!! route('frontend.report.anydata') !!}',
+                            columns:[
+                                {"searchable": false},
+                                {"searchable": true},
+                                {"searchable": false},
+                                { "searchable": false},
+                                {"searchable": false},
+                                {"searchable": false},
+                                { "searchable": true},
+                                {"searchable": false}
+                              ],
 
-                          "order": [[ 0, "desc" ]]
+                            'order': [[ 1, 'asc']]
 
                         });
                     });
-
-                    </script>
-                                {{-- @if (isset($sales))
-                @foreach($sales as $s)
-                  @foreach ($s->station as $station)
-                <tbody>
-                            <tr>
-                              <td> {!!form::checkbox('operation[]', $station->operation)!!}</td>
-                              <td> {!!$s->custName!!}</td>
-                              <td>{!!$s->items->partNo!!}</td>
-                              <td>{!!$s->items->partDesc!!}</td>
-                              <td>{!!$s->salesorder!!}</td>
-                              <td>{!!form::text('workorder[]', $s->workorder, array('class' => 'form-control', 'readonly'=>true))!!}</td>
-                              <td>{!!$station->wid!!}</td>
-                              <td>{!!$station->operation!!}</td>
-                            </tr>
-
-                </tbody>
-                  @endforeach
-                @endforeach
-              @endif --}}
-
-
+                  </script>
 
             </table>
             <div class=" row">
                 <button type="submit" class="btn btn-success " value="Submit"> Submit </button>
             </div>
           {!!Form::close();!!}
-
 
         </div>
       </div>

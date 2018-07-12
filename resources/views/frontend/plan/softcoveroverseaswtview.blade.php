@@ -13,6 +13,7 @@
             <th>Customer Name</th>
             <th>Part Number</th>
             <th>Part Description</th>
+            <th>Part Description 2</th>
             <th>Date</th>
             <th>By</th>
             <th>Actions</th>

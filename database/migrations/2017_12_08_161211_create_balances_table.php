@@ -15,8 +15,9 @@ class CreateBalancesTable extends Migration
     {
         Schema::create('balances', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('sco_number')->nullable();
-            $table->string('salesorder')->nullable();
+            $table->integer('items_id')->nullable();
+            $table->integer('sales_id')->nullable();
+            $table->string('workorder')->nullable();
             $table->string('date')->nullable();
             $table->string('job_no')->nullable();
             $table->string('grn_no')->nullable();

@@ -1,8 +1,6 @@
 @extends('frontend.layouts.app1')
 
 @section('content')
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
     <link rel="stylesheet" href="https://cdn.datatables.net/select/1.2.4/css/select.bootstrap.min.css">
 
     <!-- [Start] Plate Request Modal -->
@@ -65,16 +63,9 @@
    
     <div class="container-fluid">
         <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title" style="font-weight:bold">CTP Department</h3>
-                <br>
-                <ul class="nav nav-tabs navbar-custom">
-                    <li><a href="index">Plate Management</a></li>
-                    <li class="active"><a href="trans">Plate Transactions</a></li>
-                </ul>
-            </div>
+            @include('frontend.ctp.includes.nav', ['mainTitle' => 'CTP Department / Plate Transactions'])
             <br>
-            @include('frontend.ctp.includes.nav')
+            {{--  @include('frontend.ctp.includes.nav')  --}}
 
         
   
@@ -85,7 +76,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                     <div class="input-group">
-                        <span class="input-group-addon input-group-addon-custom" id="sizing-addon2" >Plate ID</span>
+                        <span class="input-group-addon input-group-addon-custom" id="sizing-addon2" >ID</span>
                         <select class="selectpicker form-control" id="select_plate_id_form" data-live-search="true">
                         <option></option>
                             @foreach ($select_plate_ids as $select_plate_id)
@@ -143,14 +134,14 @@
                             <table id="ctp-table" class="table table-striped table-bordered dt-responsive" style="white-space:nowrap;" cellspacing="0" width="100%">
                                 <thead  style="background-color:#d9edf7; color:#31708f">
                                 <tr>
-                                    <th>Plate ID</th>
-                                    <th>Plate Type</th>
+                                    <th>ID</th>
+                                    <th>Printer Type</th>
                                     <th>Type Vendor</th>
-                                    <th>Plate Size (mm)</th>
+                                    <th>Size (mm)</th>
                                     <th>Customer ID</th>
                                     <th>Customer FG Code</th>
                                     <th>Machine</th>
-                                    <th>Plate Qty</th>
+                                    <th>Qty</th>
                                     <th>Location</th>
                                     <th>Life Span (Qty to print)</th>
                                     <th>Print Requirement</th>
@@ -171,7 +162,7 @@
                     </div>
                 </div>
                 {{--  [End] Table  --}}
-                </br>
+                <h5 class="text-info" style="font-weight:bold">Transactions</h3>
                 {{--  [Start] Table  --}}
                 <div class="row">
                     <div class="col-lg-12">
@@ -192,21 +183,33 @@
                     </div>
                 </div>
                 {{--  [End] Table  --}}
-                </br>
+
+                <h5 class="text-info" style="font-weight:bold">Print</h3>
+
                 {{-- [Start] Row 3  --}}
                 <div class="row">
                     <div class="col-lg-4">
                     <div class="input-group">
                         <span class="input-group-addon input-group-addon-custom" id="sizing-addon2">Work Order ID</span>
                         <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
-                        <input type="text" class="form-control" id="text_wo_print">
+                        <select class="selectpicker form-control" id="text_wo_print" data-live-search="true">
+                            <option></option>
+                            {{--  @foreach ($select_wos as $select_wo)
+                                <option>{{ $select_wo->wo_lot }}</option>
+                            @endforeach  --}}
+                        </select>
                     </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="input-group">
                             <span class="input-group-addon input-group-addon-custom" id="sizing-addon2">Printer</span>
                             <span class="input-group-addon input-group-addon-custom-modal-required">*</span>
-                            <input type="text" class="form-control" id="text_printer_print">
+                            <select class="selectpicker form-control" id="text_printer_print" data-live-search="true">
+                                <option></option>
+                                @foreach ($select_printers as $select_printer)
+                                    <option>{{ $select_printer->value }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -272,6 +275,7 @@
         var selectedFilmDesc;
         var selectedQtyFilm;
         var selectedRemark;
+        var selectedPartNo;
     </script>
     <script>
          $(document).ready(function() {
@@ -309,7 +313,7 @@
                                 d.mold_id = $('select[id="select_plate_id_form"]').val();
                                 d.part_no = $('select[id="select_part_no_form"]').val();
                                 d.cust_no = $('select[id="select_cust_no_form"]').val();
-                                d.status = 'P';
+                                //d.status = $('select[id="select_cust_no_form"]').val();
                             }
             },
             
@@ -362,8 +366,20 @@
                     selectedQtyFilm = table.row( this ).data().qty_film;
                     selectedStatus = table.row( this ).data().status;
                     selectedRemark = table.row( this ).data().remark;
+                    selectedPartNo = table.row( this ).data().part_no;
 
                     $('#wo-table').DataTable().draw();
+
+                    $.get('/ctp/selectDataWo', {part_no: selectedPartNo},  function(data) {
+                        $('#text_wo_print').empty().append('<option></option>');
+                        //alert(data.wr_mch.length);
+                        $.each(data.wo_lot, function(index,subCatObj){
+                            $('#text_wo_print').append('<option>'+subCatObj.wo_lot+'</option>');
+                        // alert(subCatObj.wr_mch);
+                        }); 
+                        $('.selectpicker').selectpicker('refresh');
+                    // alert($('select[id="text_wo_print"]').val());
+                    });
                 }
             
         //alert( 'Clicked row id '+id );
@@ -451,7 +467,7 @@
                             type: 'blue', 
                             icon: 'fa fa-info-circle',
                             title: 'Requested',
-                            content: 'Plate has been requested.',
+                            content: 'Record has been requested.',
                             buttons: { OK : function (){
                                 //selectedMoldId = undefined;
                                 $('#modalRequest').modal('hide');
@@ -531,7 +547,7 @@
                         type: 'red', 
                         icon: 'fa fa-exclamation-circle',
                         title: 'Error',
-                        content: 'Please select a plate to be printed.',
+                        content: 'Please select a record to be printed.',
                         buttons: { OK : function (){}}
                     });
                     return false;
@@ -570,12 +586,11 @@
                                         type: 'blue', 
                                         icon: 'fa fa-info-circle',
                                         title: 'Printed',
-                                        content: 'Plate has been printed.',
+                                        content: 'Record has been printed.',
                                         buttons: { OK : function (){
                                             selectedMoldId = undefined;
                                             $('#ctp-table').DataTable().draw();
                                             $('#wo-table').DataTable().draw();
-                                            
                                         }}
                                     });
                                     return false;
@@ -614,4 +629,43 @@
             });
         };
     </script>
+
+    {{--  [Start] WO Dropdown Changed  --}}
+    <script>
+         $('#text_wo_print').change(function(){
+             
+            $.get('/ctp/selectDataTran', {wo: $('select[id="text_wo_print"]').val()},  function(data) {
+                $('#text_qty_print').val(data.qty);
+                /*
+                $('#text_printer_print').empty().append('<option></option>');
+               
+                $.each(data.wr_mch, function(index,subCatObj){
+                    $('#text_printer_print').append('<option>'+subCatObj.wr_mch+'</option>');
+                   
+                }); 
+                $('.selectpicker').selectpicker('refresh');*/
+               // alert($('select[id="text_wo_print"]').val());
+            });
+            /*
+            $.ajax({
+                url: "/ctp/selectDataTran", 
+                data: { 
+                    wo: $('select[id="text_wo_print"]').val(),
+                },
+                success: function(data){
+                    $('#text_printer_print').empty().append('<option></option>');
+                    alert(data.cust_no);
+                    $.each(data.cust_no, function(index,subCatObj){
+                        $('#text_printer_print').append('<option>'+subCatObj.cust_no+'</option>');
+                    }); 
+                    $('.selectpicker').selectpicker('refresh');
+                    return false;
+                },
+                error: function (request, status, error) {
+                    alert(error);
+                    return false;
+            }});*/
+        });
+    </script>
+    {{--  [End] WO Dropdown Changed  --}}
 @stop

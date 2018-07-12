@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use Illuminate\Notifications\Notifiable;
 
 
 class sales extends Model implements AuditableContract
 {
   use SoftDeletes;
   use Auditable;
+  use Notifiable;
 
   protected $dates = ['deleted_at','datetime', 'deliverDate', 'Due_Date'];
   protected $table = 'sales';
@@ -88,5 +90,15 @@ class sales extends Model implements AuditableContract
     public function workorder()
     {
         return $this->hasOne('App\Models\Access\Workorder');
+    }
+
+    public function addstock()
+    {
+        return $this->hasMany('App\Models\Access\Addstock');
+    }
+
+    public function statusstock()
+    {
+        return $this->hasMany('App\Models\Access\Statusstock');
     }
 }

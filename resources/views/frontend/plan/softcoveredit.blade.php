@@ -569,8 +569,9 @@
 
   </table>
 </div>
-<div class="form-group row">
-<button type="submit" class="btn btn-success btn-block" >SAVE </button>
+<div class="col-md-12 form-group row">
+  <button type="submit" class="btn btn-warning" >EDIT </button>
+  <input type="button" class="btn btn-primary " value="BACK" onclick="history.go(-1)">  </input>
 </div>
 {!! Form::close() !!}
 </div>
@@ -1819,7 +1820,20 @@
                   },
 
                   n3000: function(){
-                      return (parseFloat(this.n131) + parseFloat(this.n141) + parseFloat(this.n151) + parseFloat(this.n161) + parseFloat(this.n171) + parseFloat(this.n181) + parseFloat(this.n191) + parseFloat(this.n2001) + parseFloat(this.n2011) + parseFloat(this.n2021));
+                    var na = parseFloat(this.n131) + parseFloat(this.n141) + parseFloat(this.n151) + parseFloat(this.n161) + parseFloat(this.n171) + parseFloat(this.n181) + parseFloat(this.n191) + parseFloat(this.n2001) + parseFloat(this.n2011) + parseFloat(this.n2021);
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                     return (na11 + a);
                   },
                   n3001: function(){
                     if (this.n3000 == 0)
@@ -1827,8 +1841,19 @@
                       return 0;
                     }
                     else {
-                      var na1 = (parseFloat(this.n3000) - parseFloat(this.n131) + parseFloat(this.n1) / parseFloat(this.n11));
-                      return this.f1(na1);
+                      var na = (parseFloat(this.n3000) - parseFloat(this.n131) + parseFloat(this.n1) / parseFloat(this.n11));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11 + a);
                     }
                   },
                   n3002: function(){
@@ -1837,12 +1862,38 @@
                       return 0;
                     }
                     else {
-                      var na2 = (parseFloat(this.n1) / parseFloat(this.n11) + parseFloat(this.n3000));
-                      return this.f1(na2);
+                      var na = (parseFloat(this.n1) / parseFloat(this.n11) + parseFloat(this.n3000));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11 + a);
+                      // return this.f1(na2);
                     }
                   },
                   n3003: function(){
-                    return (parseFloat(this.n136) + parseFloat(this.n146) + parseFloat(this.n156) + parseFloat(this.n166) + parseFloat(this.n176) + parseFloat(this.n186) + parseFloat(this.n196)+ parseFloat(this.n2006) + parseFloat(this.n2016) + parseFloat(this.n2026));
+                    var na = parseFloat(this.n136) + parseFloat(this.n146) + parseFloat(this.n156) + parseFloat(this.n166) + parseFloat(this.n176) + parseFloat(this.n186) + parseFloat(this.n196)+ parseFloat(this.n2006) + parseFloat(this.n2016) + parseFloat(this.n2026);
+                    var na1 = na.toString();
+                    var last1=na1.substr(-1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11 + a);
                   },
                   n3004: function(){
                     if (this.n3003 == 0)
@@ -1850,8 +1901,21 @@
                       return 0;
                     }
                     else {
-                      var na3 = (parseFloat(this.n3003) - parseFloat(this.n136) + parseFloat(this.n6) / parseFloat(this.n16));
-                      return this.f1(na3);
+                      var na = (parseFloat(this.n3003) - parseFloat(this.n136) + parseFloat(this.n6) / parseFloat(this.n16));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11 + a);
+                      // return this.f1(na3);
                     }
                   },
                   n3005: function(){
@@ -1860,12 +1924,38 @@
                       return 0;
                     }
                     else {
-                      var na4 = (parseFloat(this.n6) / parseFloat(this.n16) + parseFloat(this.n3003));
-                      return this.f1(na4);
+                      var na = (parseFloat(this.n6) / parseFloat(this.n16) + parseFloat(this.n3003));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na4);
                     }
                   },
                   n3006: function(){
-                    return (parseFloat(this.n132) + parseFloat(this.n142) + parseFloat(this.n152) + parseFloat(this.n162) + parseFloat(this.n172) + parseFloat(this.n182) + parseFloat(this.n192)+ parseFloat(this.n2002) + parseFloat(this.n2012) + parseFloat(this.n2022));
+                    var na = (parseFloat(this.n132) + parseFloat(this.n142) + parseFloat(this.n152) + parseFloat(this.n162) + parseFloat(this.n172) + parseFloat(this.n182) + parseFloat(this.n192)+ parseFloat(this.n2002) + parseFloat(this.n2012) + parseFloat(this.n2022));
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11+a);
                   },
                   n3007: function(){
                     if (this.n3006 == 0)
@@ -1873,8 +1963,21 @@
                       return 0;
                     }
                     else {
-                      var na5 = (parseFloat(this.n3006) - parseFloat(this.n132) + parseFloat(this.n2) / parseFloat(this.n12));
-                      return this.f1(na5);
+                      var na = (parseFloat(this.n3006) - parseFloat(this.n132) + parseFloat(this.n2) / parseFloat(this.n12));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na5);
                     }
                   },
                   n3008: function(){
@@ -1883,12 +1986,38 @@
                       return 0;
                     }
                     else {
-                      var na6 = (parseFloat(this.n2) / parseFloat(this.n12) + parseFloat(this.n3006));
-                      return this.f1(na6);
+                      var na = (parseFloat(this.n2) / parseFloat(this.n12) + parseFloat(this.n3006));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na6);
                     }
                   },
                   n3009: function(){
-                    return (parseFloat(this.n137) + parseFloat(this.n147) + parseFloat(this.n157) + parseFloat(this.n167) + parseFloat(this.n177) + parseFloat(this.n187) + parseFloat(this.n197)+ parseFloat(this.n2007) + parseFloat(this.n2017) + parseFloat(this.n2027));
+                    var na = (parseFloat(this.n137) + parseFloat(this.n147) + parseFloat(this.n157) + parseFloat(this.n167) + parseFloat(this.n177) + parseFloat(this.n187) + parseFloat(this.n197)+ parseFloat(this.n2007) + parseFloat(this.n2017) + parseFloat(this.n2027));
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11+a);
                   },
                   n3010: function(){
                     if (this.n3009 == 0)
@@ -1896,8 +2025,21 @@
                       return 0;
                     }
                     else {
-                      var na7 = (parseFloat(this.n3009) - parseFloat(this.n137) + parseFloat(this.n7) / parseFloat(this.n17));
-                      return this.f1(na7);
+                      var na = (parseFloat(this.n3009) - parseFloat(this.n137) + parseFloat(this.n7) / parseFloat(this.n17));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na7);
                     }
                   },
                   n3011: function(){
@@ -1906,12 +2048,38 @@
                       return 0;
                     }
                     else {
-                      var na8 = (parseFloat(this.n7) / parseFloat(this.n17) + parseFloat(this.n3009));
-                      return this.f1(na8);
+                      var na = (parseFloat(this.n7) / parseFloat(this.n17) + parseFloat(this.n3009));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na8);
                     }
                   },
                   n3012: function(){
-                    return (parseFloat(this.n133) + parseFloat(this.n143) + parseFloat(this.n153) + parseFloat(this.n163) + parseFloat(this.n173) + parseFloat(this.n183) + parseFloat(this.n193) + parseFloat(this.n2003) + parseFloat(this.n2013) + parseFloat(this.n2023));
+                    var na = (parseFloat(this.n133) + parseFloat(this.n143) + parseFloat(this.n153) + parseFloat(this.n163) + parseFloat(this.n173) + parseFloat(this.n183) + parseFloat(this.n193) + parseFloat(this.n2003) + parseFloat(this.n2013) + parseFloat(this.n2023));
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11+a);
                   },
                   n3013: function(){
                     if (this.n3012 == 0)
@@ -1919,8 +2087,21 @@
                       return 0;
                     }
                     else {
-                      var na9 = (parseFloat(this.n3012) - parseFloat(this.n133) + parseFloat(this.n3) / parseFloat(this.n13));
-                      return this.f1(na9);
+                      var na = (parseFloat(this.n3012) - parseFloat(this.n133) + parseFloat(this.n3) / parseFloat(this.n13));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na9);
                     }
                   },
                   n3014: function(){
@@ -1929,12 +2110,38 @@
                       return 0;
                     }
                     else {
-                      var na10 = (parseFloat(this.n3) / parseFloat(this.n13) + parseFloat(this.n3012));
-                      return this.f1(na10);
+                      var na = (parseFloat(this.n3) / parseFloat(this.n13) + parseFloat(this.n3012));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na10);
                     }
                   },
                   n3015: function(){
-                    return (parseFloat(this.n138) + parseFloat(this.n148) + parseFloat(this.n158) + parseFloat(this.n168) + parseFloat(this.n178) + parseFloat(this.n188) + parseFloat(this.n198)+ parseFloat(this.n2008) + parseFloat(this.n2018) + parseFloat(this.n2028));
+                    var na = (parseFloat(this.n138) + parseFloat(this.n148) + parseFloat(this.n158) + parseFloat(this.n168) + parseFloat(this.n178) + parseFloat(this.n188) + parseFloat(this.n198)+ parseFloat(this.n2008) + parseFloat(this.n2018) + parseFloat(this.n2028));
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11+a);
                   },
                   n3016: function(){
                     if (this.n3015 == 0)
@@ -1942,8 +2149,21 @@
                       return 0;
                     }
                     else {
-                      var na11 = (parseFloat(this.n3015) - parseFloat(this.n138) + parseFloat(this.n8) / parseFloat(this.n18));
-                      return this.f1(na11);
+                      var na = (parseFloat(this.n3015) - parseFloat(this.n138) + parseFloat(this.n8) / parseFloat(this.n18));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na11);
                     }
                   },
                   n3017: function(){
@@ -1952,12 +2172,38 @@
                       return 0;
                     }
                     else {
-                      var na12 = (parseFloat(this.n8) / parseFloat(this.n18) + parseFloat(this.n3015));
-                      return this.f1(na12);
+                      var na = (parseFloat(this.n8) / parseFloat(this.n18) + parseFloat(this.n3015));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na12);
                     }
                   },
                   n3018: function(){
-                    return (parseFloat(this.n134) + parseFloat(this.n144) + parseFloat(this.n154) + parseFloat(this.n164) + parseFloat(this.n174) + parseFloat(this.n184) + parseFloat(this.n194)+ parseFloat(this.n2004) + parseFloat(this.n2014) + parseFloat(this.n2024));
+                    var na =  (parseFloat(this.n134) + parseFloat(this.n144) + parseFloat(this.n154) + parseFloat(this.n164) + parseFloat(this.n174) + parseFloat(this.n184) + parseFloat(this.n194)+ parseFloat(this.n2004) + parseFloat(this.n2014) + parseFloat(this.n2024));
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11 + a);
                   },
                   n3019: function(){
                     if (this.n3018 == 0)
@@ -1965,8 +2211,21 @@
                       return 0;
                     }
                     else {
-                      var na13 =  (parseFloat(this.n3018) - parseFloat(this.n134) + parseFloat(this.n4) / parseFloat(this.n14));
-                      return this.f1(na13);
+                      var na =  (parseFloat(this.n3018) - parseFloat(this.n134) + parseFloat(this.n4) / parseFloat(this.n14));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na13);
                     }
                   },
                   n3020: function(){
@@ -1975,12 +2234,38 @@
                       return 0;
                     }
                     else {
-                      var na14 = (parseFloat(this.n4) / parseFloat(this.n14) + parseFloat(this.n3018));
-                      return this.f1(na14);
+                      var na = (parseFloat(this.n4) / parseFloat(this.n14) + parseFloat(this.n3018));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na14);
                     }
                   },
                   n3021: function(){
-                    return (parseFloat(this.n139) + parseFloat(this.n149) + parseFloat(this.n159) + parseFloat(this.n169) + parseFloat(this.n179) + parseFloat(this.n189) + parseFloat(this.n199) + parseFloat(this.n2009) + parseFloat(this.n2019) + parseFloat(this.n2029));
+                    var na = (parseFloat(this.n139) + parseFloat(this.n149) + parseFloat(this.n159) + parseFloat(this.n169) + parseFloat(this.n179) + parseFloat(this.n189) + parseFloat(this.n199) + parseFloat(this.n2009) + parseFloat(this.n2019) + parseFloat(this.n2029));
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11+a);
                   },
                   n3022: function(){
                     if (this.n3021 == 0)
@@ -1988,8 +2273,21 @@
                       return 0;
                     }
                     else {
-                      var na15 = ((this.n3021) - (this.n139) + (this.n9) / (this.n19));
-                      return this.f1(na15);
+                      var na = ((this.n3021) - (this.n139) + (this.n9) / (this.n19));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na15);
                     }
                   },
                   n3023: function(){
@@ -1998,12 +2296,38 @@
                       return 0;
                     }
                     else {
-                      var na16 = (parseFloat(this.n9) / parseFloat(this.n19) + parseFloat(this.n3021));
-                      return this.f1(na16);
+                      var na = (parseFloat(this.n9) / parseFloat(this.n19) + parseFloat(this.n3021));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na16);
                     }
                   },
                   n3024: function(){
-                    return (parseFloat(this.n135) + parseFloat(this.n145) + parseFloat(this.n155) + parseFloat(this.n165) + parseFloat(this.n175) + parseFloat(this.n185)+ parseFloat(this.n195)+ parseFloat(this.n2005) + parseFloat(this.n2015) + parseFloat(this.n2025));
+                    var na = (parseFloat(this.n135) + parseFloat(this.n145) + parseFloat(this.n155) + parseFloat(this.n165) + parseFloat(this.n175) + parseFloat(this.n185)+ parseFloat(this.n195)+ parseFloat(this.n2005) + parseFloat(this.n2015) + parseFloat(this.n2025));
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11+a);
                   },
                   n3025: function(){
                     if (this.n3024 == 0)
@@ -2011,8 +2335,21 @@
                       return 0;
                     }
                     else {
-                      var na17 = (parseFloat(this.n3024) - parseFloat(this.n135) + parseFloat(this.n5) / parseFloat(this.n15));
-                      return this.f1(na17);
+                      var na = (parseFloat(this.n3024) - parseFloat(this.n135) + parseFloat(this.n5) / parseFloat(this.n15));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na17);
                     }
                   },
                   n3026: function(){
@@ -2021,12 +2358,38 @@
                       return 0;
                     }
                     else {
-                      var na18 = (parseFloat(this.n5) / parseFloat(this.n15) + parseFloat(this.n3024));
-                      return this.f1(na18);
+                      var na = (parseFloat(this.n5) / parseFloat(this.n15) + parseFloat(this.n3024));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na18);
                     }
                   },
                   n3027: function(){
-                    return (parseFloat(this.n140) + parseFloat(this.n150) + parseFloat(this.n160) + parseFloat(this.n170) + parseFloat(this.n180) + parseFloat(this.n190) + parseFloat(this.n2000) + parseFloat(this.n2010) + parseFloat(this.n2020) + parseFloat(this.n2030));
+                    var na = (parseFloat(this.n140) + parseFloat(this.n150) + parseFloat(this.n160) + parseFloat(this.n170) + parseFloat(this.n180) + parseFloat(this.n190) + parseFloat(this.n2000) + parseFloat(this.n2010) + parseFloat(this.n2020) + parseFloat(this.n2030));
+                    var na1 = na.toString();
+                    var last1=na1.substr(- 1); //Get 1 character
+                    var last2 = na1.substr(-2);
+                    var na11 = na1.substr(0, na1.length-2);
+                    if (last1 < 5)
+                    {
+                      a = last2 - last1;
+
+                    }
+                    if(last1 > 5) {
+                      a = last2 - last1 + 10;
+                    }
+                    return (na11+a);
                   },
                   n3028: function(){
                     if (this.n3027 == 0)
@@ -2034,8 +2397,21 @@
                       return 0;
                     }
                     else {
-                        var na19 = (parseFloat(this.n3027) - parseFloat(this.n140) + parseFloat(this.n10) / parseFloat(this.n20));
-                        return this.f1(na19);
+                        var na = (parseFloat(this.n3027) - parseFloat(this.n140) + parseFloat(this.n10) / parseFloat(this.n20));
+                        var na1 = na.toString();
+                        var last1=na1.substr(- 1); //Get 1 character
+                        var last2 = na1.substr(-2);
+                        var na11 = na1.substr(0, na1.length-2);
+                        if (last1 < 5)
+                        {
+                          a = last2 - last1;
+
+                        }
+                        if(last1 > 5) {
+                          a = last2 - last1 + 10;
+                        }
+                        return (na11+a);
+                        // return this.f1(na19);
                     }
 
                   },
@@ -2045,8 +2421,21 @@
                       return 0;
                     }
                     else {
-                      var na20 = (parseFloat(this.n10) / parseFloat(this.n20) + parseFloat(this.n3027));
-                      return this.f1(na20);
+                      var na = (parseFloat(this.n10) / parseFloat(this.n20) + parseFloat(this.n3027));
+                      var na1 = na.toString();
+                      var last1=na1.substr(- 1); //Get 1 character
+                      var last2 = na1.substr(-2);
+                      var na11 = na1.substr(0, na1.length-2);
+                      if (last1 < 5)
+                      {
+                        a = last2 - last1;
+
+                      }
+                      if(last1 > 5) {
+                        a = last2 - last1 + 10;
+                      }
+                      return (na11+a);
+                      // return this.f1(na20);
                     }
                   },
               }

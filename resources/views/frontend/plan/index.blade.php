@@ -1,20 +1,27 @@
+<?php
+ini_set('max_execution_time', 0);
+?>
 @extends('frontend.layouts.app')
 
 @section('content')
     <h1>Planning Department</h1>
 
     @include('frontend.plan.includes.nav')
-
-    <h4>Approval page</h4>
+    @include('frontend.plan.includes.navjob')
+    <h4>New</h4>
     <table class="table table-bordered" id="users-table">
         <thead>
             <tr>
-              <th>Salesline</th>
+              <th>SC #</th>
+              <th>ID</th>
+              <th>WO #</th>
               <th>Customer Name</th>
-              <th>Part Number</th>
-              <th>Part Description</th>
-              <th>Repeat?</th>
-              <th>Created at</th>
+              <th>Part No</th>
+              <th>Quantity</th>
+              <th>Due Date</th>
+              <th>Cust PO No</th>
+              <th>SO No</th>
+              <th>Rev</th>
               <th>Actions</th>
             </tr>
         </thead>
@@ -34,10 +41,6 @@
                 "order": [[ 0, "desc" ]]
             });
         });
-
-
-        //Being injected from FrontendController
-        console.log(test);
     </script>
 
-@stop
+@endsection

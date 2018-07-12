@@ -2,6 +2,7 @@
 
 @section('content')
   <h1>CTP Department</h1>
+  
 @include('frontend.ctp.includes.nav')
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
       <h3 class="box-title"> {!! trans('SALES CONFIRMATION') !!} <small>(For CTP department)</small> </h3>
@@ -11,31 +12,16 @@
     </div>
     <div class="col-lg-12">
             {!! Form::model($sales, array('route' => array('frontend.ctp.update', $sales->id), 'method' => 'PUT')) !!}
-            {!! Form::hidden('salesline', $sales->salesorder.'-'.$sales->line) !!}
-                <div class="form-group row ">
-                  {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::checkbox('approval', 1, $sales->approval, array('class' => 'field', 'disabled'=>'disabled')) !!}</div>
-                </div>
 
-                <div class="form-group row ">
-                  {!! Form::label('workorder', 'Work Order ', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('workorder', $sales->workorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-                </div>
+            <div class="form-group row ">
+              {!! Form::label('salesline', 'Sales Order-Line ', array('class' => 'col-md-2')) !!}
+              <div class="col-md-10">{!! Form::text('salesline', $sales->salesline, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
+            </div>
 
-                <div class="form-group row ">
-                  {!! Form::label('wid', 'ID', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('wid', $sales->wid, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-                </div>
-
-                <div class="form-group row ">
-                  {!! Form::label('salesorder', 'Sales Order ', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('salesorder', $sales->salesorder, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-                </div>
-
-                <div class="form-group row ">
-                  {!! Form::label('line', 'Line', array('class' => 'col-md-2')) !!}
-                  <div class="col-md-10">{!! Form::text('line', $sales->line, array('class' => 'form-control', 'readonly'=>true)) !!}</div>
-                </div>
+            <div class="form-group row ">
+              {!! Form::label('approval', 'Customer Approval? ', array('class' => 'col-md-2')) !!}
+              <div class="col-md-10">{!! Form::checkbox('approval', 1, $sales->approval, array('class' => 'field', 'disabled'=>'disabled')) !!}</div>
+            </div>
 
             <div class="form-group row">
               {!! Form::label('datetime', 'Date', ['class' => 'col-md-2']) !!}

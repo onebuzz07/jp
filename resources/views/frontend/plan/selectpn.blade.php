@@ -9,10 +9,11 @@
     <table class="table table-bordered" id="users-table">
         <thead>
             <tr>
-              <th>Sales-Line</th>
+              <th>ID</th>
               <th>Customer Name</th>
               <th>Part Number</th>
               <th>Part Description</th>
+              <th>Part Description 2</th>
               <th>Actions</th>
             </tr>
         </thead>
@@ -32,10 +33,6 @@
                 "order": [[ 0, "desc" ]]
             });
         });
-
-
-        //Being injected from FrontendController
-        console.log(test);
     </script>
 
   @endsection

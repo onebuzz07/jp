@@ -13,6 +13,11 @@ class item extends Model implements AuditableContract
   use SoftDeletes;
   use Auditable;
 
+  // public function invqads()
+  //   {
+  //       return $this->hasMany('App\Models\Access\Invqad');
+  //   }
+
   public function sales()
     {
         return $this->belongsTo('App\Models\Access\sales');
@@ -55,9 +60,21 @@ class item extends Model implements AuditableContract
       {
           return $this->hasMany('App\Models\Access\Stockupdatepowo');
       }
+    public function sheeting()
+      {
+          return $this->hasMany('App\Models\Access\Sheetings');
+      }
+    public function balance()
+      {
+          return $this->hasMany('App\Models\Access\Balance');
+      }
 
-    // public function requisites()
+    public function delivery()
+      {
+          return $this->belongsTo('App\Models\Access\sales');
+      }
+    // public function salesqad()
     //   {
-    //       return $this->hasMany('App\Models\Access\Requisite');
+    //       return $this->belongsTo('App\Models\Access\Salesqad');
     //   }
 }
