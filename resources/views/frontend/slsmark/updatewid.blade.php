@@ -42,10 +42,11 @@
                   </tr>
               </thead>
             </table>
-
-
+ 
+			<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
             {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
             {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }}
+
 
           <script>
               $(function() {
@@ -53,21 +54,32 @@
                       processing: true,
                       serverSide: true,
                       ajax: '{!! route('frontend.slsmark.tablewid') !!}',
-                      // "columns":[
-                      //     {"name":"wid","orderable": true},
-                      //     {"orderable": true},
-                      //     {"orderable": false},
-                      //     { "orderable": false},
-                      //     {"orderable": true},
-                      //     {"orderable": false},
-                      //     {"orderable": false},
-                      //     { "orderable": false},
-                      //     {"orderable": true},
-                      //     {"orderable": false},
-                      //     {"orderable": false},
-                      //     {"orderable": false}
-                      //
-                      //   ],
+                      "columns":[
+                          {"orderable": false, "searchable": true},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": true},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": true},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          {"orderable": false, "searchable": false},
+                          // {"v": false}
+                      
+                        ],
                       'order': [[ 1, 'asc' ]]
                   });
               });

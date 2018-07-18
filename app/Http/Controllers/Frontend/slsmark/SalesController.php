@@ -1012,6 +1012,7 @@ class SalesController extends Controller
           $salesqad->sc_status = 'PAF';
           $salesqad->record_status = 'Modified';
           $salesqad->save();
+		  //return $salesqad;
 
           $sales = new Sales;
 
@@ -1029,7 +1030,13 @@ class SalesController extends Controller
           $sales->custName = $salesqad->Name;
           $sales->deliver_to = $salesqad->Ship_To;
           $sales->sold_to = $salesqad->Sold_To;
-          $sales->deliverDate = $salesqad->Due_Date;
+		  if ($salesqad->Due_Date == null || $salesqad->Due_Date == '0')
+		  { 
+			 
+		  }else{
+			  $sales->deliverDate = $salesqad->Due_Date;
+		  }
+          
           $sales->datetime = \Carbon\Carbon::now();
           $sales->status = 'PAF';
 
@@ -1204,6 +1211,7 @@ class SalesController extends Controller
               }
               return redirect()->route('frontend.slsmark.review')->withFlashSuccess('The data is saved.');
             }
+		//if dont have permission
         else
         {
           $sales= Sales::find($id);
@@ -1221,7 +1229,7 @@ class SalesController extends Controller
           return redirect()->route('frontend.slsmark.review')->withFlashSuccess('The data is saved.');
         }
 
-    }
+    } //storepaf
 
     public function createsc()
     {
@@ -1256,6 +1264,13 @@ class SalesController extends Controller
         $sales->salesorder =$request->input('salesorder');
         $sales->line = $request->input('line');
         $sales->salesline = $request->input('salesorder').'-'.$request->input('line');
+		if($request->input('deliverDate') == 0)
+		{
+			$dte = null;
+		}else
+		{
+			$dte  = \DateTime::createFromFormat('d/m/Y',$request->input('deliverDate'));
+		}
         $dte  = \DateTime::createFromFormat('d/m/Y',$request->input('deliverDate'));
         $sales->deliverDate = $dte ;
         $sales->status_item = 'N';
@@ -1444,8 +1459,9 @@ class SalesController extends Controller
       'addstocks.keep_qty','addstocks.manual_qty', 'addstocks.stockqty', 'sales.status_item','addstocks.woqty', 'addstocks.totalwoqty',
       'sales.deliverDate', 'sales.id', 'sales.record_status','sales.widremark','sales.soremark', 'sales.solineremark'
 
-    ])
+      ])
       ->where('finish', '=', 'N')
+	  ->orderBy('sales.id', 'desc');
       ;
 
       return Datatables::of($sales)
@@ -1902,78 +1918,105 @@ class SalesController extends Controller
 
     public function showformhistTable()
     {
-      if (access()->hasPermissions(['sales-marketing']))
-      {
-        $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
+			
+      // if (access()->hasPermissions(['sales-marketing']))
+      // {
+				 $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
         ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
         ->leftJoin('addstocks', 'addstocks.so_number','=', 'sales.salesorder')
-        ->select(['products.paf_number','sales.salesorder', 'sales.line', 'sales.wid', 'sales.purchaseOrder','sales.custName',
-        'items.partNo','items.partDesc', 'items.partDesc2','items.quantity',
+        ->select(['products.paf_number as paf','sales.salesorder', 'sales.line', 'sales.wid', 'sales.purchaseOrder','sales.custName',
+				'items.partNo','items.partDesc', 'items.partDesc2','items.quantity',
         'addstocks.keep_qty','addstocks.manual_qty', 'addstocks.stockqty', 'sales.status_item','addstocks.woqty', 'addstocks.totalwoqty',
         'sales.deliverDate', 'products.id','products.rev','products.done'
 
-      ])
-      ->where('products.done', '=', 'planner')
-      ->orWhere('products.done', '=', 'complete')
-      ;
+				])
+				->where('products.done', '=', 'planner')
+				->orWhere('products.done', '=', 'complete');
 
-          return Datatables::of($product)
-            ->editColumn('id', function ($product) {
+				return Datatables::of($product)
+					->editColumn('id', function ($product) {
 
-            $prod = Product::find($product->id);
-            $sales = Sales::where('sco_number', $prod->sco_number)->first();
+						$prod = Product::find($product->id);
+						$sales = Sales::where('sco_number', $prod->sco_number)->first();
 
-            return '<a href="'. route('frontend.slsmark.editform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit PAF"></i></a>
-                  <a href="'. route('frontend.slsmark.viewpaf', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View PAF"></i></a>
-            <a href="'. route('frontend.slsmark.delete', $product->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>
-            ';
-          })
-          ->escapeColumns([])
-          ->make();
-        }
-        elseif(access()->hasPermissions(['ctp']))
-        {
-          $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
-          ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
-          ->leftJoin('addstocks', 'addstocks.so_number','=', 'sales.salesorder')
-          ->select(['products.paf_number','sales.salesorder', 'sales.line', 'sales.wid', 'sales.purchaseOrder','sales.custName',
-          'items.partNo','items.partDesc', 'items.partDesc2','items.quantity',
-          'addstocks.keep_qty','addstocks.manual_qty', 'addstocks.stockqty', 'sales.status_item','addstocks.woqty', 'addstocks.totalwoqty',
-          'sales.deliverDate', 'products.id','products.rev','products.done'
+						return '<a href="'. route('frontend.slsmark.editform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit PAF"></i></a>
+								<a href="'. route('frontend.slsmark.viewpaf', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View PAF"></i></a>
+						<a href="'. route('frontend.slsmark.delete', $product->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>
+					';
+				})
+				->escapeColumns([])
+				->make();
+			// }	
+				
+        // $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
+        // ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
+        // ->leftJoin('addstocks', 'addstocks.so_number','=', 'sales.salesorder')
+        // ->select(['products.paf_number','sales.salesorder', 'sales.line', 'sales.wid', 'sales.purchaseOrder','sales.custName',
+				// 'items.partNo','items.partDesc', 'items.partDesc2','items.quantity',
+        // 'addstocks.keep_qty','addstocks.manual_qty', 'addstocks.stockqty', 'sales.status_item','addstocks.woqty', 'addstocks.totalwoqty',
+        // 'sales.deliverDate', 'products.id','products.rev','products.done'
 
-        ])
-                              ->where('products.done', '=', 'planner')
-                              ->orWhere('products.done', '=', 'complete');
+				// ])
+				// ->where('products.done', '=', 'planner')
+				// ->orWhere('products.done', '=', 'complete');
 
-          return Datatables::of($product)
-            ->editColumn('id', function ($product) {
-            return '<a href="'. route('frontend.slsmark.editform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit PAF"></i></a>
-            ';
-          })
-          ->escapeColumns([])
-          ->make();
-        }
-        else
-        {
-          $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
-          ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
-          ->leftJoin('addstocks', 'addstocks.so_number','=', 'sales.salesorder')
-          ->select(['products.paf_number','sales.salesorder', 'sales.line', 'sales.wid', 'sales.purchaseOrder','sales.custName',
-          'items.partNo','items.partDesc', 'items.partDesc2','items.quantity',
-          'addstocks.keep_qty','addstocks.manual_qty', 'addstocks.stockqty', 'sales.status_item','addstocks.woqty', 'addstocks.totalwoqty',
-          'sales.deliverDate', 'products.id','products.rev','products.done'
+				// return Datatables::of($product)
+					// ->editColumn('id', function ($product) {
 
-        ])
-                              ->where('products.done', '=', 'planner')
-                              ->orWhere('products.done', '=', 'complete');
+						// $prod = Product::find($product->id);
+						// $sales = Sales::where('sco_number', $prod->sco_number)->first();
 
-          return Datatables::of($product)
-            ->editColumn('id', function ($product) {
-            return '<a href="'. route('frontend.slsmark.viewpaf', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View PAF"></i></a>';
-          })
-          ->escapeColumns([])
-          ->make();
-        }
+						// return '<a href="'. route('frontend.slsmark.editform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit PAF"></i></a>
+								// <a href="'. route('frontend.slsmark.viewpaf', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View PAF"></i></a>
+						// <a href="'. route('frontend.slsmark.delete', $product->id) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove" onclick=" return confirm(\'Are you sure you want to do this?\')"></i></a>
+					// ';
+				// })
+				// ->escapeColumns([])
+				// ->make();
+      // }
+        // elseif(access()->hasPermissions(['ctp']))
+        // {
+          // $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
+					// ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
+					// ->leftJoin('addstocks', 'addstocks.so_number','=', 'sales.salesorder')
+					// ->select(['products.paf_number','sales.salesorder', 'sales.line', 'sales.wid', 'sales.purchaseOrder','sales.custName',
+					// 'items.partNo','items.partDesc', 'items.partDesc2','items.quantity',
+					// 'addstocks.keep_qty','addstocks.manual_qty', 'addstocks.stockqty', 'sales.status_item','addstocks.woqty', 'addstocks.totalwoqty',
+					// 'sales.deliverDate', 'products.id','products.rev','products.done'
+
+					// ])
+					// ->where('products.done', '=', 'planner')
+					// ->orWhere('products.done', '=', 'complete');
+
+					// return Datatables::of($product)
+					// ->editColumn('id', function ($product) {
+						// return '<a href="'. route('frontend.slsmark.editform', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit PAF"></i></a>
+						// ';
+					// })
+					// ->escapeColumns([])
+					// ->make();
+				// }
+        // else
+        // {
+          // $product = Product::leftJoin('items', 'products.items_id', '=', 'items.id')
+          // ->leftJoin('sales', 'items.sales_id', '=', 'sales.id')
+          // ->leftJoin('addstocks', 'addstocks.so_number','=', 'sales.salesorder')
+          // ->select(['products.paf_number','sales.salesorder', 'sales.line', 'sales.wid', 'sales.purchaseOrder','sales.custName',
+          // 'items.partNo','items.partDesc', 'items.partDesc2','items.quantity',
+          // 'addstocks.keep_qty','addstocks.manual_qty', 'addstocks.stockqty', 'sales.status_item','addstocks.woqty', 'addstocks.totalwoqty',
+          // 'sales.deliverDate', 'products.id','products.rev','products.done'
+
+        // ])
+        // ->where('products.done', '=', 'planner')
+        // ->orWhere('products.done', '=', 'complete');
+
+				// return Datatables::of($product)
+					// ->editColumn('id', function ($product) {
+					// return '<a href="'. route('frontend.slsmark.viewpaf', $product->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" title="View PAF"></i></a>';
+				// })
+				// ->escapeColumns([])
+				// ->make();
+        // }
     }
 
     public function viewpaf($id)
@@ -2796,8 +2839,10 @@ class SalesController extends Controller
             $product->issueBy =$request->input('issueBy');
             $remarkbig=$request->input('remarkbig');
             $dom = new \DomDocument();
-			error_reporting(E_ERROR);
-            $dom->loadHtml($remarkbig, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+						error_reporting(E_ERROR);
+            // $dom->loadHtml($remarkbig, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $dom->loadHtml($remarkbig);
+						//return $remarkbig;
             $images = $dom->getElementsByTagName('img');
            // foreach <img> in the submited message
             foreach($images as $img){
@@ -3044,7 +3089,7 @@ class SalesController extends Controller
       ])
       ->where('repeatdone', '=', 'planner')
       ->orWhere('repeatdone', '=', 'complete')
-      ->orWhere('repeatdone', '=', 'No')
+      ->orWhere('repeatdone', '=', 'N')
       ;
 
       return Datatables::of($sales)
@@ -3059,12 +3104,12 @@ class SalesController extends Controller
         ';
 
       })
-      ->editColumn('created_at', function ($date) {
-                return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
-            })
-       ->order(function ($sales) {
-                       $sales->orderBy('created_at', 'desc');
-                   })
+      // ->editColumn('created_at', function ($date) {
+                // return $date->created_at ? with(new Carbon($date->created_at))->format('d/m/Y') : '';
+            // })
+       // ->order(function ($sales) {
+                       // $sales->orderBy('created_at', 'desc');
+                   // })
       ->escapeColumns([])
       ->make();
       }
@@ -3125,6 +3170,7 @@ class SalesController extends Controller
 
     public function updatescof ($id,Request $request)
     {
+		error_reporting(E_ERROR);
       $finish = $request->input('finish');
       $salesline = $request->input('salesorder').'-'.$request->input('line');
       $sales = Sales::find($id);
@@ -3719,11 +3765,17 @@ class SalesController extends Controller
         }
         elseif($sales->finish == 'planner')
         {
-			//return $sales;
+			
+		  //return $sales;
           $salesqad = Salesqad::where('salesline', $sales->salesline)->first();
-		  //return $salesqad;
-          $salesqad->wid = $request->input('wid');
-          $salesqad->save();
+		 
+			if($salesqad){
+				 $salesqad->wid = $request->input('wid');
+				 $salesqad->save();
+			}
+			
+		  
+          
 
           $sales->edit_user = Auth::user()->id;
           if ($sales->workorder == $request->input('workorder'))
@@ -3983,8 +4035,10 @@ class SalesController extends Controller
           $sales->items_id = $items->id;
           $sales->workorders_id = $workorder->id;
           $sales->save();
-
-          $change->save();
+		  if($change){
+			  $change->save();
+		  }
+          
 
           $picture = '';
 
@@ -4129,7 +4183,10 @@ class SalesController extends Controller
           $sales->workorders_id = $workorder->id;
           $sales->save();
 
-          $req = Requisite::where('salesline', $sales->salesline)->first();
+          //$req = Requisite::where('salesline', $sales->salesline)->first();
+		  // wan changed, because some sro don't have sales order.
+		  $req = Requisite::where('SRO_number', $sales->sro_number)->first();
+		  //return $req;
           if (!empty($req))
           {
             $req->confirm = 'complete';
@@ -4207,7 +4264,7 @@ class SalesController extends Controller
         ->leftJoin('transactions', 'transactions.items_number', '=', 'items.partNo')
         ->select([
           'items.partNo','prodstructs.component','sales.salesorder', 'sales.purchaseOrder','sales.wid', 'sales.sro_number'  ,'sales.sco_number'
-        ,'sales.paf_number','addstocks.stockqty','addstocks.woqty', 'salesqads.Quantity_Ordered', 'transactions.loc_qty_change', 'transactions.date', 'statusstocks.balance'
+        ,'sales.paf_number','addstocks.stockqty','addstocks.woqty', 'salesqads.Quantity_Open', 'transactions.loc_qty_change', 'transactions.date', 'statusstocks.balance'
         ,'sales.status_item','statusstocks.cust_approval','sales.deliverDate', 'salesqads.widremark', 'salesqads.solineremark', 'salesqads.soremark'
         , 'statusstocks.remarks','statusstocks.remarks2','statusstocks.remarks3','statusstocks.remarks4','statusstocks.remarks5', 'sales.id'
       ])
@@ -4332,23 +4389,23 @@ class SalesController extends Controller
 
     public function stocktables2()
     {
-      $manual = Manual::
-      select(['part_no', 'child_part',  'keepqty', 'manualstock','stockcard', 'duedate', 'custpo', 'sono','soqty', 'paper', 'remark1','remark2','remark3','remark4','remark5', 'id', 'status'
-      ])
-      ->where('status', '=', 'complete')
-      ;
+      $manual = Manual::select(['part_no', 'child_part',  'keepqty', 'manualstock','stockcard', 'duedate', 'custpo', 'sono','soqty', 'paper', 'remark1','remark2','remark3','remark4','remark5', 'id', 'status'])
+      ->where('status', '=', 'complete');
 
       return Datatables::of($manual)
       ->editColumn('id', function ($manual) {
-        return '<a href="'. route('frontend.slsmark.addremarkmstock', $manual->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="add"></i></a>
-        ';
-
-        // <a href="'. route('frontend.slsmark.editstock', $sales->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="Forecast stock"></i></a>
-      })
+        return '<a href="'. route('frontend.slsmark.addremarkmstock', $manual->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-search" data-toggle="tooltip" title="add"></i></a>';
+			})
       ->editColumn('stockcard', function ($manual) {
 
-        $balance = DB::table("invqads")->where('items_number', $manual->part_no)->sum('qtyonhand_detail');
-        $bal1 = DB::table("addstocks")->where('so_number', $manual->sono)->where('items_number','=', $salesqad->part_no)->sum('woqty');
+        $balance = DB::table("invqads")
+				->where('items_number', $manual->part_no)->sum('qtyonhand_detail');
+				
+        $bal1 = DB::table("addstocks")
+				->where('so_number', $manual->sono)
+				->where('items_number','=', $salesqad->part_no)
+				->sum('woqty');
+				
         $bal2 = DB::table("salesqads")->where('Sales_Order','=', $manual->sono)->sum('Quantity_Ordered');
         $bal3 = DB::table("transactions")->where('items_number','=', $manual->part_no)->sum('loc_qty_change');
 
@@ -4703,7 +4760,7 @@ class SalesController extends Controller
 		   $requisite = Requisite::select(['requisites.SRO_number'
            ,'requisites.customerName',
            'requisites.partNumberSRO','requisites.partDescSRO', 'requisites.partDesc2SRO','requisites.quantitySRO',
-           'requisites.requiredDate', 'requisites.id','requisites.confirm'])
+           DB::raw('DATE_FORMAT(requisites.requiredDate, "%d-%b-%Y") as formatted_dob'), 'requisites.id','requisites.confirm'])
            //->select(['requisites.SRO_number'
            //,'requisites.customerName',
            //'requisites.partNumberSRO','requisites.partDescSRO', 'requisites.partDesc2SRO','requisites.quantitySRO',
@@ -4711,6 +4768,7 @@ class SalesController extends Controller
            // ,'requisites.salesorder', 'requisites.line', 'requisites.wid'
            // 'addstocks.keep_qty','addstocks.manual_qty', 'addstocks.stockqty','addstocks.woqty', 'addstocks.totalwoqty',
            // ->where('confirm', '=', null)
+		   //->orderBy('id', 'desc')
            ;
 
            return Datatables::of($requisite)

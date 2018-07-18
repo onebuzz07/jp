@@ -39,6 +39,7 @@
                   </tr>
               </thead>
           </table>
+			<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
 
           {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
           {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }}
@@ -50,8 +51,7 @@
                     processing: true,
                     serverSide: true,
                     ajax: '{!! route('frontend.slsmark.requisition') !!}',
-
-                    "order": [[ 6, "desc" ]]
+					order: [[ 0, 'asc' ]]
                 });
             });
         </script>

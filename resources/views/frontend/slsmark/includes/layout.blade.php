@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="http://211.24.114.106:8090/js/vendor/jquery/vue.js"></script>
+        <script type="text/javascript" src="http://192.168.8.17/js/vendor/jquery/vue.js"></script>
 
     </head>
     <body id="app-layout">
