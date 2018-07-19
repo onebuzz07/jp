@@ -39,7 +39,6 @@
             <table class="table table-bordered" id="users-table">
                 <thead>
                     <tr>
-                      {{-- <th>SO-line</th> --}}
                       <th>SO</th>
                       <th>Line</th>
                       <th>ID</th>

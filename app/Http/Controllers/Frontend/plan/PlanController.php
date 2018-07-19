@@ -291,6 +291,10 @@ class PlanController extends Controller
         $sales=Sales::find($id);
         $prodstruct = Prodstruct::all();
         $change = Change::where('sales_id', $sales->id)->first();
+				if(!$change)
+				{
+					$change = new Change;
+				}
         return view('frontend.plan.edit')->with('sales', $sales)->with('prodstruct', $prodstruct)->with('change',$change);
     }
 
@@ -5656,23 +5660,23 @@ class PlanController extends Controller
 
    }
 
-   public function storeeditbalance($id, Request $request)
-   {
-     $balance = Balance::find($id);
+  public function storeeditbalance($id, Request $request)
+  {
+		$balance = Balance::find($id);
 
-     $dt  = \DateTime::createFromFormat('d/m/Y',$request->input('wodate'));
-     $balance->wodate = $dt;
-     $balance->wid = $request->input('wid');
-     $balance->woqty = $request->input('woqty');
-     $balance->balwoqty = $request->input('balwoqty');
-     $balance->actqty = $request->input('actqty');
-     $balance->balactqty = $request->input('balactqty');
-     $balance->remarks = $request->input('remarks');
-     $balance->save();
+		$dt  = \DateTime::createFromFormat('d/m/Y',$request->input('wodate'));
+		$balance->wodate = $dt;
+		$balance->wid = $request->input('wid');
+		$balance->woqty = $request->input('woqty');
+		$balance->balwoqty = $request->input('balwoqty');
+		$balance->actqty = $request->input('actqty');
+		$balance->balactqty = $request->input('balactqty');
+		$balance->remarks = $request->input('remarks');
+		$balance->save();
 
-     $sheet = Sheet::find($balance->sheets_id);
-     return redirect()->route('frontend.plan.stockbalance', $sheet->id)->withFlashSuccess('The data is  saved.');
-   }
+		$sheet = Sheet::find($balance->sheets_id);
+		return redirect()->route('frontend.plan.stockbalance', $sheet->id)->withFlashSuccess('The data is  saved.');
+  }
 
 
 

@@ -36,19 +36,21 @@
                   <tbody>
                     <tr>
 
-                    <td>{!!$dax->salesqad->Line!!}</td>
-                      <td>{!!$dax->salesqad->Item_Number!!}</td>
-                      <td>{!!$dax->salesqad->Quantity_Ordered!!}</td>
+											<td>{!!$dax->salesqad->Line !!}</td>
+                      <td>{!! $dax->salesqad->Item_Number !!}</td>
+                      <td>{!! $dax->salesqad->Quantity_Ordered !!}</td>
                       <td>
                         @foreach ($dax->salesqad->invqads as $l)
-                        {!!$l->location.'-'.$l->qtyonhand_detail !!}<br>
+													@if ($l->qtyonhand_detail > 0)
+														{!!$l->location.'-'.$l->qtyonhand_detail !!}<br>
+													@endif
                         @endforeach
                       </td>
                       <td>
-                        {!!$dax->com_qty!!}
+                        {!! $dax->com_qty !!}
                       </td>
-                      <td>{!! $dax->remarks!!}</td>
-                      <td>{!!$dax->salesqad->Line!!}</td>
+                      <td>{!! $dax->remarks !!}</td>
+                      <td>{!! $dax->salesqad->Line !!}</td>
                     </tr>
                   </tbody>
                 </table>

@@ -22,7 +22,7 @@
                     <td>{!!$b->part_no!!}</td>
                     <td>{!!$b->qty!!}</td>
                     <td>  @if (!empty($b->salesqad->Sales_Order)){!!$b->salesqad->Sales_Order!!}@endif</td>
-                    <td>@if (!empty($b->invqad->location)){!!$b->invqad->location.'-'.$b->invqad->qtyonhand_detail!!}<br>@endif</td>
+                    <td>@if (!empty($b->invqad->location && $b->invqad->qtyonhand_detail > 0 )){!!$b->invqad->location.'-'.$b->invqad->qtyonhand_detail!!}<br>@endif</td>
                     <td>{!!$b->inv!!}</td>
                 </tr>
               </tbody>

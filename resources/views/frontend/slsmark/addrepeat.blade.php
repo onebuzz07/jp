@@ -29,9 +29,11 @@
             </tr>
         </thead>
     </table>
-    {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
+    
+    {{ Html::script("https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js") }}
     {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }}
   <script>
+		// {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
       $(function() {
           $('#users-table').DataTable({
               processing: true,
@@ -41,6 +43,6 @@
 
           });
       });
-      console.log(test);
+      //console.log(test);
   </script>
 @stop

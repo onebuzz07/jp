@@ -40,6 +40,7 @@ use App\Models\Access\Comment;
 use App\Models\Access\Prodqads;
 use App\Models\Access\Purchase;
 use App\Models\Access\Transaction;
+use App\Models\Access\Manual;
 
 use Image;
 use Carbon\Carbon;
@@ -585,68 +586,104 @@ class ImportedController extends Controller
          return redirect()->route('frontend.imported')->withFlashSuccess('The Inventory File is saved.');
      }
 
-     public function importbosch (Request $request)
-     {
-         if(Input::hasFile('import_bosch')){
-           $path = Input::file('import_bosch')->getRealPath();
+    public function importbosch (Request $request)
+    {
+			if(Input::hasFile('import_bosch')){
+			$path = Input::file('import_bosch')->getRealPath();
 
-           \Config::set('excel.csv.delimiter', ';');
-           $rows = Excel::load($path, function($reader) {
-                 $reader->toArray();
-                 $reader->noHeading();
+			\Config::set('excel.csv.delimiter', ';');
+			$rows = Excel::load($path, function($reader) {
+				$reader->toArray();
+				$reader->noHeading();
+			})
+			->get();
 
-             })->get();
-		//return $rows;
 
-            // return $rows;
-             foreach ($rows as $row) {
-                        $today = Carbon::today();
-                        $item = array([
-                          'cust_po' => $row[0],
-                          'part_no' => $row[1],
-                          'qty' => $row[2],
-                          'date_upload' =>$today
-                     ]);
-                     DB::table('bosches')->insert($item );
+			// return $rows;
+			foreach ($rows as $row) {
+				$today = Carbon::today();
+				$item = array([
+					'cust_po' => $row[0],
+					'part_no' => $row[1],
+					'qty' => $row[2],
+					'date_upload' =>$today
+				]);
+				DB::table('bosches')->insert($item );
 
-            }
-         }
-         return redirect()->route('frontend.slsmark.daselect')->withFlashSuccess('The File is saved.');
-     }
+				}
+			}
+			return redirect()->route('frontend.slsmark.daselect')->withFlashSuccess('The File is saved.');
+    }
 
      public function importmanual (Request $request)
      {
-         if(Input::hasFile('import_manual')){
-           $path = Input::file('import_manual')->getRealPath();
+				$duplicateExists = false;
+				$duplicates = [];
+        if(Input::hasFile('import_manual')){
+          $path = Input::file('import_manual')->getRealPath();
 
-           $rows = Excel::load($path, function($reader) {
-                 $reader->toArray();
-                 $reader->noHeading();
+          $rows = Excel::load($path, function($reader) {
+						$reader->toArray();
+						$reader->first();
+						$reader->noHeading();
+						//$reader->dd();
+						
+          })
+					->noHeading()
+					->get();
+					
+					//dd($rows);
+         
+					foreach ($rows as $row) {
+						$date = \DateTime::createFromFormat('d/m/Y',$row[6]);
+						//return date_format($date,"Y-m-d");
+						$item = array([
 
-             })->get();
+							// 'manual_id' => $row[0],
+							'part_no' => $row[1],
+							'child_part' => $row[2],
+							'soqty' => $row[3],
+							'keepqty' => $row[4],
+							'manualstock' => $row[5],
+							'duedate' => $date,
+							'custpo' => $row[7],
+							'sono' => $row[8],
+							'paper' => $row[9],
+							'status' => 'plan',
+							'created_at' => \Carbon\Carbon::now()
+							//wan added created at to array.
+						]);
+						$i = 0;
+						// $duplicates = collect(new Manual);
+						$duplicate = Manual::where('part_no', $row[1])
+						->where('duedate', date_format($date,"Y-m-d"))
+						->get();
+						
+						if($duplicate)
+						{
+							// $duplicates->push($duplicate);
+							$duplicateExists = true;
+						}
+						
+						
+						DB::table('manuals')->insert($item );
 
-            // return $rows;
-             foreach ($rows as $row) {
-               $date = \DateTime::createFromFormat('d/m/Y',$row[6]);
-                        $item = array([
+					}
+        }
+				
+				
+				
+				if($duplicateExists)
+				{
+					
+					return view('frontend.slsmark.manualduplicatewarning')
+					->withDuplicates($duplicate);
+				}else
+				{
+					
+					return redirect()->route('frontend.slsmark.histmanualso')->withFlashSuccess('The File is saved.');
 
-                          // 'manual_id' => $row[0],
-                          'part_no' => $row[1],
-                          'child_part' => $row[2],
-                          'soqty' => $row[3],
-                          'keepqty' => $row[4],
-                          'manualstock' => $row[5],
-                          'duedate' => $date,
-                          'custpo' => $row[7],
-                          'sono' => $row[8],
-                          'paper' => $row[9],
-                          'status' => 'plan'
-                     ]);
-                     DB::table('manuals')->insert($item );
-
-            }
-         }
-         return redirect()->route('frontend.slsmark.histmanualso')->withFlashSuccess('The File is saved.');
+				}
      }
 
      public function importcomment()

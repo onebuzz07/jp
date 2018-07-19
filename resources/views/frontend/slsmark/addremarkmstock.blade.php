@@ -2,16 +2,16 @@
 @section('content')
   <h1>Sales Marketing Department</h1>
 @include('frontend.slsmark.includes.nav')
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+{{-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"> --}}
   <div class="page-header">
-      <h3 class="box-title"> {!! trans('STOCK STATUS') !!}</h3>
+      <h3 class="box-title"> {!! 'STOCK STATUS' !!}</h3>
   </div>
   <div class="container-fluid">
     <div class="col-md-12 row" id="app">
       {!! Form::model($manual, array('route' => array('frontend.slsmark.storeremarkmanual', $manual->id), 'method' => 'POST', 'files'=>true)) !!}
           <div class="form-group row ">
             {!! Form::label('part_no', 'Part #', array('class' => 'col-md-2')) !!}
-            <div class="col-md-10">{!! Form::text('part_no', $manual->partNo, array('class' => 'form-control', 'readonly', => true)) !!}</div>
+            <div class="col-md-10">{!! Form::text('part_no', $manual->partNo, array('class' => 'form-control', 'readonly' => 'readonly')) !!}</div>
           </div>
 
       @if (!empty($manual->remark))
