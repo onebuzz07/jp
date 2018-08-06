@@ -14,7 +14,7 @@
         </div>
         <div class="form-group row ">
           {!! Form::label('remark', 'Remarks  ', array('class' => 'col-md-2')) !!}
-          <div class="col-md-10">{!! Form::textarea('remark', '', array('class' => 'form-control')) !!}</div>
+          <div class="col-md-10">{!! Form::textarea('widremark', null, array('class' => 'form-control')) !!}</div>
         </div>
 
         <div class="form-group row">

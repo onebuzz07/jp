@@ -1,7 +1,7 @@
 @extends('frontend.layouts.app')
 
 @section('content')
-    <h1>Sales Marketing Department</h1>
+    <h3>Sales Marketing Department</h3>
   @include('frontend.slsmark.includes.nav')
     <div class="col-md-12">
       </div>
@@ -23,9 +23,11 @@
               <th>So No</th>
               <th>Paper</th>
               <th>Status</th>
+							<th>Actions</th>
             </tr>
         </thead>
     </table>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css">
     {{ Html::script("https://cdn.datatables.net/v/bs/dt-1.10.15/datatables.min.js") }}
     {{ Html::script("js/backend/plugin/datatables/dataTables-extend.js") }}
   <script>

@@ -27,7 +27,12 @@
         <div class="form-group row">
             <button type="submit" class="btn btn-success " value="SAVE"> SAVE </button>
         </div>
-      {!!Form::close();!!}
+					
+				
+					
+				
+
+      {!!Form::close()!!}
     </div>
   </div>
 @endsection

@@ -14,13 +14,18 @@
                 <div class="col-md-3">
                     <label>Import Robert Bosch data here</label>
                 </div>
+								
                 <div class="col-md-3">
                   <div class="col-md-10">{!! Form::file('import_bosch', null , array( 'class' => 'form-control ')) !!}</div>
                 </div>
                 <div class="col-md-2">
                     <button class="btn btn-primary" type="submit">Import</button>
                 </div>
-                <div class="col-md-4" id="button"><a class="btn btn-md btn-success" href="{!!route('frontend.slsmark.bosch')!!}">Print Bosch</a>&nbsp<a class="btn btn-md btn-success" href="{!!route('frontend.slsmark.otherformat')!!}">Print Other</a></div>
+                <div class="col-md-4" id="button">
+									<a class="btn btn-md btn-success" href="{!!route('frontend.slsmark.bosch')!!}">Print Bosch</a>
+									<a class="btn btn-md btn-success" href="{!!route('frontend.slsmark.otherformat')!!}">Print Other</a>
+									<a class="btn btn-md btn-success" href="{!!route('frontend.slsmark.daIndex')!!}">All</a>
+								</div>
 
                 </div>
               </div>

@@ -1609,8 +1609,8 @@ class SalesController extends Controller
     {
       if (access()->hasPermissions(['sales-marketing']))
       {
-        $manual = Manual::select(['customer_name','manual_wid', 'manual_wo','part_no','child_part', 'soqty' , 'keepqty','manualstock','stockcard','duedate','custpo' ,'sono', 'paper', 'status'])
-        ->where('status', '=', 'complete' )
+        $manual = Manual::select(['customer_name','manual_wid', 'manual_wo','part_no','child_part', 'soqty' , 'keepqty','manualstock','stockcard','duedate','custpo' ,'sono', 'paper', 'status', 'id'])
+        ->where('status','complete' )
         ->orWhere('status', '=', 'plan')
         ;
         return Datatables::of($manual)
@@ -1628,13 +1628,18 @@ class SalesController extends Controller
           return ''.$balance+$bal1-$bal2+$bal3.'';
 
         })
+				->editColumn('id', function ($manual){
+					return '<a href="'.route('frontend.slsmark.editManualSO', $manual->id).'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Edit"></i></a>';
+				
+				})
+			
         ->escapeColumns([])
         ->make();
       }
       else
       {
-        $manual = Manual::select(['manual_id','part_no', 'soqty' , 'keepqty','manualstock','stockcard', 'duedate','sono', 'paper', 'status'])
-        ->where('status', '=', 'plan' )
+        $manual = Manual::select(['manual_id','part_no', 'soqty' , 'keepqty','manualstock','stockcard', 'duedate','sono', 'paper', 'status', 'id'])
+        ->where('status', '=', 'plan')
         ->orWhere('status', '=', 'complete')
         ;
 
@@ -1648,6 +1653,41 @@ class SalesController extends Controller
       }
     }
 
+		public function editManualSO($id)
+		{
+
+			$m = Manual::find($id);
+			//return $m;
+			return view('frontend.slsmark.editManualSO')->with('mso',$m);
+		}
+		
+		public function updateManualSO(Request $r)
+		{
+			$m = Manual::find($r->id);
+			
+			$m->manual_wid = $r->manual_wid;
+			$m->manual_wo = $r->manual_wo;
+			$m->part_no = $r->part_no;
+			$m->child_part = $r->child_part;
+			$m->soqty = $r->so_qty;
+			$m->keepqty = $r->keep_qty;
+			$m->duedate = $r->duedate;
+			$m->sono = $r->sono;
+			$m->paper = $r->paper;
+			$m->remark1 = $r->remark2;
+			$m->remark2 = $r->remark2;
+			$m->remark3 = $r->remark3;
+			$m->remark4 = $r->remark4;
+			$m->remark5 = $r->remark5;
+			$m->stockcard = $r->stockcard;
+			$m->save();
+			
+			 $sales=Sales::all();
+        $manual = Manual::all();
+        return view('frontend.slsmark.histmanualso')->with('sales',$sales)->with('manual',$manual);
+			
+		}
+			
     public function updatewid()
     {
       $salesqad = Salesqad::all();
@@ -5281,43 +5321,66 @@ class SalesController extends Controller
 
            return redirect()->route('frontend.slsmark.showsales')->withFlashSuccess('The data is  saved ');
        }
+			 
+			public function daIndex()
+			{
+				
+				//return $da;
+				return view('frontend.slsmark.daIndex');
+			}
+			
+			public function da_table()
+			{
+				$da = Dachild::select(['item_number', 'customer_po', 'duedate',  'quantity', 'id'])
+				->orderBy('duedate', 'desc');
+				
+				return Datatables::of($da)
+				->addColumn('id', function ($da) {
 
+  
+					return ' <input type="checkbox" name="things[]" value="'.$da->id.'" >
+                  <input type="hidden" name="item_number[]" value="'.$da->id.'" >
+					';
+      
+				})
+				->escapeColumns([])
+				->make();
+			}
+			
+			public function daselect2(Request $r)
+			{
+				//return $r->all();
+				$da = Dachild::whereIn('id', $r->things)->get();
+				
+				$data = [
+					'da' => $da,
+					'da2' => $da
+					
+				];
+        $pdf = PDF::loadView('frontend.slsmark.printda', $data);
+        return $pdf->stream("bosch_".date('Y_m_d_H_i').".pdf");
+			}
 
        public function daselect ()
        {
-         // $salesqad = Salesqad::all();
-         $salesqad = Salesqad::distinct()->get(['Sold_To', 'Name']);
-        return view('frontend.slsmark.dalist')->with('salesqad', $salesqad);
+					// $salesqad = Salesqad::all();
+					$salesqad = Salesqad::distinct()->get(['Sold_To', 'Name']);
+					return view('frontend.slsmark.dalist')
+					->with('salesqad', $salesqad);
        }
 
-       public function dalist(Request $request)
-       {
-         // $sales= Sales::find($id);
-          // return view('frontend.plan.selectformula');
+      public function dalist(Request $request)
+      {
           $type = Input::get('type');
           $sold = $request->input('Sold_To');
           $date = Salesqad::where('Sold_To', $sold)->distinct()->get();
 
           if ($type == 'a')
           {
-            // $salesqad = Salesqad::find($id);
-            // $name = (Salesqad::where('Sold_To', $salesqad->Sold_To)->distinct()->get());
-            // $date = Salesqad::select('Due_Date', 'Sales_Order')->where('Sold_To', $salesqad->Sold_To)->distinct()->get();
-            // $custs = Cust::where('code', $salesqad->Sold_To)->first();
-            // $das = Das::where('custs_id', $custs->id)->get();
-
-            // $bosch = Bosch::distinct()->get(['cust_po']);
             $bosch1 = Bosch::select('id','cust_po', 'part_no', 'qty', 'inv', 'warehouse', 'date_upload')->distinct()->get();
-            // foreach($bosch1 as $b){
-            //   return( $b->invqad);
-            //
-            // }
-
             $type = 'a';
             return view ('frontend.slsmark.format1')->with('type', $type)
-            ->with('bosch1', $bosch1)
-            // ->with('TDR0001', $salesqad)
-            ;
+            ->with('bosch1', $bosch1);
           }
 
           else if ($type == 'none')
@@ -5329,7 +5392,7 @@ class SalesController extends Controller
             $type = 'none';
             return view ('frontend.slsmark.editname')->with('type', $type)->with('salesqad', $salesqad)->with('name', $name)->with('cust', $cust);
           }
-       }
+      }
 
        public function changebosch(Request $request)
        {
@@ -5370,26 +5433,22 @@ class SalesController extends Controller
          return view ('frontend.slsmark.bosch')->with('bosch1', $bosch1)->with('bosch2', $bosch2);
        } 
 
-       public function boschpdf(Request $request)
-       {
-         $wa = $request->input('warehouse');
-         $c = count($wa);
-         // $ware = collect();
-         for($i=0; $i < $c; $i++){
-
-             $bosch = Bosch::whereIn('warehouse', $wa)->get();
-             // return $bosch;
-             $bosch1 = Bosch::select('warehouse')->whereIn('warehouse', $wa)->distinct()->get();
-             // $ware->push($bosch);
-         }
-             $data = [
-               'bosch' =>$bosch,
-               // 'bosch2' =>$bosch2,
-               'bosch1' =>$bosch1,
-             ];
-         $pdf = PDF::loadView('frontend.slsmark.printbosch', $data);
-         return $pdf->stream("bosch_".date('Y_m_d_H_i').".pdf");
-       }
+      public function boschpdf(Request $request)
+      {
+        $wa = $request->input('warehouse');
+        $c = count($wa);
+         
+        for($i=0; $i < $c; $i++){
+					$bosch = Bosch::whereIn('warehouse', $wa)->get(); 
+					$bosch1 = Bosch::select('warehouse')->whereIn('warehouse', $wa)->distinct()->get();
+        }
+				$data = [
+					'bosch' =>$bosch, 
+					'bosch1' =>$bosch1,
+				];
+        $pdf = PDF::loadView('frontend.slsmark.printbosch', $data);
+        return $pdf->stream("bosch_".date('Y_m_d_H_i').".pdf");
+      }
 
 
 

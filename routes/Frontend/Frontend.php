@@ -208,9 +208,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('report', 'SalesController@report')->name('slsmark.report');
         Route::get('createstock/{id}', 'SalesController@createstock')->name('slsmark.createstock');
         Route::post('stockstores/{id}', 'SalesController@stockstores')->name('slsmark.stockstores');
+				
+				Route::get('daIndex', 'SalesController@daIndex')->name('slsmark.daIndex');
+				Route::post('da_table', 'SalesController@da_table')->name('slsmark.da_table');
+				Route::post('daselect2', 'SalesController@daselect2')->name('slsmark.daselect2'); 
 
-
-
+				Route::get('editManualSO/{id}', 'SalesController@editManualSO')->name('slsmark.editManualSO');
+				Route::post('updateManualSO', 'SalesController@updateManualSO')->name('slsmark.updateManualSO');
+	
     });
 
     Route::group(['prefix' => 'plan', 'namespace' => 'plan', 'middleware' => 'auth',], function () {

@@ -303,8 +303,12 @@ class PlanController extends Controller
             $sales = Sales::find($id);
 
             $salesqad = Salesqad::where('salesline', $sales->salesline)->first();
-            $salesqad->wid = $request->input('wid');
-            $salesqad->save();
+						if($salesqad)
+						{
+							$salesqad->wid = $request->input('wid');
+							$salesqad->save();
+						}
+            
 
             $sales->workorder = $request->input('workorder');
             $sales->wid = $request->input('wid');
@@ -315,7 +319,7 @@ class PlanController extends Controller
             $workorder->save();
 
             $prodstruct = Prodstruct::where('items_number', $sales->items->partNo)->first();
-              if(!empty($prodstruct))
+              if($prodstruct)
               {
                 $sales->finish = 'complete';
                 $sales->planning_bom = 'Y';
@@ -5484,7 +5488,8 @@ class PlanController extends Controller
          $balances->actqty  = $request->input('actqty');
          $balances->balactqty  = $request->input('balactqty');
          $balances->wid  = $request->input('wid');
-         $balances->wodate  = $request->input('wodate');
+				 $wodate = \Carbon\Carbon::createFromFormat('d/m/Y', $request->input('wodate'));
+         $balances->wodate  = $wodate;
 
          $balances->save();
 
@@ -5631,7 +5636,7 @@ class PlanController extends Controller
    public function tablebalance(Request $request)
    {
      $balances = Balance::leftJoin('sheets', 'sheets.id', 'balances.sheets_id')
-     ->select([ 'balances.wodate', 'balances.wid','balances.woqty', 'balances.balwoqty', 'balances.actqty', 'balances.balactqty', 'balances.id'])
+     ->select([ 'balances.wodate', 'balances.wid','balances.woqty', 'balances.balwoqty', 'balances.actqty', 'balances.balactqty', 'balances.remarks', 'balances.id'])
      ->where('sheets_id', $request->input('sheets_id'))
      ;
      return Datatables::of($balances)
@@ -5705,7 +5710,8 @@ class PlanController extends Controller
      $balances->actqty  = '0';
      $balances->balactqty  = $ha;
      $balances->wid  = null;
-     $balances->wodate  = \Carbon\Carbon::now()->format('d/m/Y');
+     $balances->wodate  = null;
+		 $balances->remarks = 'after delete';
      $balances->save();
 
      $balance = Balance::findOrFail($id)->forceDelete();

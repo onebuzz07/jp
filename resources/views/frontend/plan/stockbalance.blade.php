@@ -163,6 +163,7 @@
                     <th>Balance WO QTY(MT)</th>
                     <th>Actual Qty</th>
                     <th>Balance QTY(MT)</th>
+										<th>Remarks</th>
                     <th>ACTION</th>
                   </tr>
               </thead>

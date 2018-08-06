@@ -41,6 +41,8 @@ use App\Models\Access\Prodqads;
 use App\Models\Access\Purchase;
 use App\Models\Access\Transaction;
 use App\Models\Access\Manual;
+use App\Models\Access\Dachild;
+use App\Models\Access\Bosch;
 
 use Image;
 use Carbon\Carbon;
@@ -62,165 +64,146 @@ class ImportedController extends Controller
          return view('frontend.imported');
      }
 
-     public function importedsales (Request $request)
-     {
-       if(Input::hasFile('import_file_sales')){
-             $path = Input::file('import_file_sales')->getRealPath();
+			public function importedsales (Request $request)
+			{
+				if(Input::hasFile('import_file_sales')){
+          $path = Input::file('import_file_sales')->getRealPath();
 
-             $rows = Excel::load($path, function($reader) {
-                   $reader->toArray();
-                   $reader->noHeading();
-               })->get();
+          $rows = Excel::load($path, function($reader) {
+            $reader->toArray();
+            $reader->noHeading();
+					})->get();
 
-               foreach ($rows as $r){
-                 $addstocks = Addstock::where('items_number', $r[5])
-                 ->where('so_number', $r[0])
-                 ->first();
+					foreach ($rows as $r){
+						 $addstocks = Addstock::where('items_number', $r[5])
+						 ->where('so_number', $r[0])
+						 ->first();
 
-                 if($addstocks)
-                 {
-                   $row8 = str_replace(",", "", $r[10]);
-                     $item = ([
-                       'items_number' => $r[5],
-                       'so_number' =>$r[0],
-                      'soqty' => $row8
+						 if($addstocks)
+						 {
+							 $row8 = str_replace(",", "", $r[10]);
+								 $item = ([
+									 'items_number' => $r[5],
+									 'so_number' =>$r[0],
+									'soqty' => $row8
 
-                   ]);
-                   DB::table('addstocks')->where('so_number', $addstocks->so_number)->where('items_number', $addstocks->items_number)->update($item );
-                 }
-                 else
-                 {
-                   $row8 = str_replace(",", "", $r[10]);
-                   $item = ([
-                     'items_number' => $r[5],
-                     'so_number' =>$r[0],
-                     'soqty' => $row8
+							 ]);
+							 DB::table('addstocks')->where('so_number', $addstocks->so_number)->where('items_number', $addstocks->items_number)->update($item );
+						 }
+						 else
+						 {
+							 $row8 = str_replace(",", "", $r[10]);
+							 $item = ([
+								 'items_number' => $r[5],
+								 'so_number' =>$r[0],
+								 'soqty' => $row8
 
-                ]);
-                DB::table('addstocks')->insert($item );
-                 }
+						]);
+						DB::table('addstocks')->insert($item );
+						 }
 
-               }
+					}
 
-               foreach ($rows as $re){
-                 $stock = Stock::where('item_number', $re[5])
-                 ->where('soline', $re[0].'-'.$re[4])
-                 ->distinct()
-                 ->first();
+					foreach ($rows as $re){
+						 $stock = Stock::where('item_number', $re[5])
+						 ->where('soline', $re[0].'-'.$re[4])
+						 ->distinct()
+						 ->first();
 
-                 if($stock)
-                 {
-                     $item = ([
-                       'item_number' => $re[5],
-                       'salesorder' => $re[0],
-                       'line' => $re[4],
-                       'soline' => $re[0].'-'.$re[4]
+						 if($stock)
+						 {
+								 $item = ([
+									 'item_number' => $re[5],
+									 'salesorder' => $re[0],
+									 'line' => $re[4],
+									 'soline' => $re[0].'-'.$re[4]
 
-                   ]);
-                   DB::table('stocks')->where('item_number', $stock->item_number)->where('soline', $stock->soline )->update($item );
-                 }
-                 else
-                 {
-                   $item = ([
-                     'item_number' => $re[5],
-                     'salesorder' => $re[0],
-                     'line' => $re[4],
-                     'soline' => $re[0].'-'.$re[4]
+							 ]);
+							 DB::table('stocks')->where('item_number', $stock->item_number)->where('soline', $stock->soline )->update($item );
+						 }
+						 else
+						 {
+							 $item = ([
+								 'item_number' => $re[5],
+								 'salesorder' => $re[0],
+								 'line' => $re[4],
+								 'soline' => $re[0].'-'.$re[4]
 
-                ]);
-                DB::table('stocks')->insert($item );
-                 }
+						]);
+						DB::table('stocks')->insert($item );
+						 }
 
-               }
+					}
 
-              foreach ($rows as $row) {
-                $salesqad = Salesqad::where('Item_Number', $row[5])->where('salesline', $row[0].'-'.$row[4])
+					foreach ($rows as $row) {
+						$salesqad = Salesqad::where('Item_Number', $row[5])->where('salesline', $row[0].'-'.$row[4])
+						->first();
 
-                 ->first();
+						if ($salesqad)
+						{
+							 
+						}
+						else
+						{
+							$row8 = str_replace(",", "", $row[10]);
+							$row1 = str_replace(",", "", $row[11]);
+							$row2 = str_replace(",", "", $row[13]);
+							$date = \DateTime::createFromFormat('d/m/Y',$row[12]);
+							$date2 = \DateTime::createFromFormat('d/m/Y',$row[22]);
+							$item = ([
+								'Sales_Order' => $row[0],
+								'Sold_To' => $row[1],
+								'Name' => $row[2],
+								'status' => $row[3],
+								'salesline' => $row[0].'-'.$row[4],
+								'Line' => $row[4],
+								'Item_Number' => $row[5],
+								'Customer_Item' => $row[6],
+								'Description' => $row[7],
+								'Description_1' => $row[8],
+								'Unit_Measure' => $row[9],
+								'Quantity_Ordered' => $row8,
+								'Quantity_Open' => $row1,
+								'Due_Date' => $date,
+								'Quantity_Shipped' => $row2,
+								'Quote' => $row[14],
+								'Ship_Type' => $row[15],
+								'Purchase_order' => $row[16],
+								'Ship_To' => $row[17],
+								'Site' => $row[18],
+								'Expires' => $row[19],
+								'Price' => $row[20],
+								'Channel' => $row[21],
+								'Order_Date' => $date2,
+								'lotserial' => $row[23],
+								'status_item' => 'R',
+								'record_status' => 'New'
+							]);
+							DB::table('salesqads')->insert($item );
 
-                 if ($salesqad)
-                 {
-                   // $row8 = str_replace(",", "", $row[10]);
-                   // $row1 = str_replace(",", "", $row[11]);
-                   // $row2 = str_replace(",", "", $row[13]);
-                   // $date = \DateTime::createFromFormat('d/m/Y',$row[12]);
-                   // $date2 = \DateTime::createFromFormat('d/m/Y',$row[22]);
-                   //       $item = ([
-                   //        'Sales_Order' => $row[0],
-                   //        'Sold_To' => $row[1],
-                   //        'Name' => $row[2],
-                   //        'status' => $row[3],
-                   //        'salesline' => $row[0].'-'.$row[4],
-                   //        'Line' => $row[4],
-                   //        'Item_Number' => $row[5],
-                   //        'Customer_Item' => $row[6],
-                   //        'Description' => $row[7],
-                   //        'Description_1' => $row[8],
-                   //        'Unit_Measure' => $row[9],
-                   //        'Quantity_Ordered' => $row8,
-                   //        'Quantity_Open' => $row1,
-                   //        'Due_Date' => $date,
-                   //        'Quantity_Shipped' => $row2,
-                   //        'Quote' => $row[14],
-                   //        'Ship_Type' => $row[15],
-                   //        'Purchase_order' => $row[16],
-                   //        'Ship_To' => $row[17],
-                   //        'Site' => $row[18],
-                   //        'Expires' => $row[19],
-                   //        'Price' => $row[20],
-                   //        'Channel' => $row[21],
-                   //        'Order_Date' => $date2,
-                   //        'lotserial' => $row[23],
-                   //        'status_item' => 'R',
-                   //        'record_status' => 'New'
-                   //    ]);
-                   //    DB::table('salesqads')->where('Item_Number', $salesqad->Item_Number)->where('salesline', $salesqad->salesline)->update($item );
-                 }
-                 else
-                 {
-                   $row8 = str_replace(",", "", $row[10]);
-                   $row1 = str_replace(",", "", $row[11]);
-                   $row2 = str_replace(",", "", $row[13]);
-                   $date = \DateTime::createFromFormat('d/m/Y',$row[12]);
-                   $date2 = \DateTime::createFromFormat('d/m/Y',$row[22]);
-                         $item = ([
-                          'Sales_Order' => $row[0],
-                          'Sold_To' => $row[1],
-                          'Name' => $row[2],
-                          'status' => $row[3],
-                          'salesline' => $row[0].'-'.$row[4],
-                          'Line' => $row[4],
-                          'Item_Number' => $row[5],
-                          'Customer_Item' => $row[6],
-                          'Description' => $row[7],
-                          'Description_1' => $row[8],
-                          'Unit_Measure' => $row[9],
-                          'Quantity_Ordered' => $row8,
-                          'Quantity_Open' => $row1,
-                          'Due_Date' => $date,
-                          'Quantity_Shipped' => $row2,
-                          'Quote' => $row[14],
-                          'Ship_Type' => $row[15],
-                          'Purchase_order' => $row[16],
-                          'Ship_To' => $row[17],
-                          'Site' => $row[18],
-                          'Expires' => $row[19],
-                          'Price' => $row[20],
-                          'Channel' => $row[21],
-                          'Order_Date' => $date2,
-                          'lotserial' => $row[23],
-                          'status_item' => 'R',
-                          'record_status' => 'New'
-                      ]);
-                      DB::table('salesqads')->insert($item );
+						} //if else if salesqad
+						
+						if(Dachild::where('item_number', $row[1])
+						->where('customer_po', $row[0])
+						->where('cust_id', 'XXX0001')
+						->where('duedate', $row[6])->count() == 0)
+						{
+							$da = new Dachild;
+							$da->item_number = $row[5];
+							$da->customer_po = $row[16];
+							$da->cust_id = $row[1];
+							$da->quantity = $row8;
+							$da->uploaded_by = Auth::user()->id;
+							$da->duedate = $date;
+							$da->uploaded_with = 'SO IMPORT';
+							$da->save();
+						}
+						
+					} //foreach
 
-               }
-
-             }
-
-           }
-         return redirect()->route('frontend.imported')->withFlashSuccess('The sales data is imported.');
-     }
+				}
+        return redirect()->route('frontend.imported')->withFlashSuccess('The sales data is imported.');
+			}
 
      public function imported2 (Request $request)
    	{
@@ -591,26 +574,58 @@ class ImportedController extends Controller
 			if(Input::hasFile('import_bosch')){
 			$path = Input::file('import_bosch')->getRealPath();
 
-			\Config::set('excel.csv.delimiter', ';');
-			$rows = Excel::load($path, function($reader) {
-				$reader->toArray();
-				$reader->noHeading();
-			})
-			->get();
+				\Config::set('excel.csv.delimiter', ';');
+				$rows = Excel::load($path, function($reader) {
+					$reader->toArray();
+					$reader->noHeading();
+				})
+				->get();
 
 
-			// return $rows;
-			foreach ($rows as $row) {
-				$today = Carbon::today();
-				$item = array([
-					'cust_po' => $row[0],
-					'part_no' => $row[1],
-					'qty' => $row[2],
-					'date_upload' =>$today
-				]);
-				DB::table('bosches')->insert($item );
-
+				
+				foreach ($rows as $row) 
+				{
+					$today = Carbon::today();
+					$item = array([
+						'cust_po' => $row[0],
+						'part_no' => $row[1],
+						'qty' => $row[2],
+						'date_upload' =>$today
+					]);
+					
+					if(Bosch::where('item_number',$row[1])
+						->where('customer_po', $row[0])
+						->where('cust_id', 'XXX0001')
+						->where('due_date', $row[6])
+						)
+					{
+						$bosch = new Bosch;
+						$bosch->part_no = $row[1];
+						$bosch->cust_po = $row[0];
+						$bosch->duedate =  $row[6];
+						$bosch->save();
+					}
+					//DB::table('bosches')->insert($item );
+					
+					if(Dachild::where('item_number', $row[1])
+						->where('customer_po', $row[0])
+						->where('cust_id', 'XXX0001')
+						->where('duedate', $row[6])->count() == 0)
+					{
+						$da = new Dachild;
+						$da->item_number = $row[1];
+						$da->customer_po = $row[0];
+						$da->cust_id = "XXX0001";
+						$da->quantity = $row[2];
+						$da->uploaded_by = Auth::user()->id;
+						$da->duedate = $row[6];
+						$da->uploaded_with = 'BOSCH IMPORT';
+						$da->save();
+					}
+					
+					
 				}
+				
 			}
 			return redirect()->route('frontend.slsmark.daselect')->withFlashSuccess('The File is saved.');
     }
@@ -667,7 +682,23 @@ class ImportedController extends Controller
 						
 						
 						DB::table('manuals')->insert($item );
-
+						
+						if(Dachild::where('item_number', $row[1])
+						->where('customer_po', $row[7])
+						->where('cust_id', 'XXX0001')
+						->where('duedate', $row[6])->count() == 0) 
+						{ 
+							$da = new Dachild;
+							$da->item_number = $row[1];
+							$da->customer_po = $row[0];
+							$da->cust_id = "XXX0001";
+							$da->quantity = $row[3];
+							$da->uploaded_by = Auth::user()->id;
+							$da->duedate = $date;
+							$da->so = $row[8];
+							$da->uploaded_with = 'MANUAL SO';
+							$da->save();
+						}
 					}
         }
 				
