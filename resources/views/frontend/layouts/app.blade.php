@@ -32,7 +32,8 @@
         <script src="http://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
         <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
        
-		<script type="text/javascript" src="http://192.168.8.17/js/vendor/jquery/vue.js"></script>
+		<!--<script type="text/javascript" src="http://192.168.8.17/js/vendor/jquery/vue.js"></script>-->
+		{{ HTML::script(URL::asset('js/vendor/jquery/vuejs')) }}
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
         <script type="text/javascript" src="//gyrocode.github.io/jquery-datatables-checkboxes/1.2.9/js/dataTables.checkboxes.min.js"></script>
